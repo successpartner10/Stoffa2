@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/Stoffa2/',          // ← important
+    base: '/Stoffa2/',          // ← add this line
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
@@ -21,4 +21,3 @@ export default defineConfig(() => {
     },
   };
 });
-base: '/Stoffa2/',
