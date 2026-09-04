@@ -67,6 +67,7 @@ export interface Product {
   id: string;
   title: string;
   subtitle: string;
+  brand?: string;
   category: 'Shoes' | 'Bags' | 'Heels' | 'Boots' | 'Flats & Loafers' | 'Totes' | 'Shoulder Bags' | 'Sandals & Mules' | string;
   occasions: string[];
   occasionNote?: string;
@@ -156,4 +157,38 @@ export interface Order {
   affiliateId?: string;
   status: 'confirmed' | 'processing' | 'shipped';
   createdAt: string;
+  trackingNumber?: string;
 }
+
+export interface B2BOrderItem {
+  product: Product;
+  sizeBreakdown: Record<string, number>;
+  colorName: string;
+  totalQuantity: number;
+  unitPriceUSD: number;
+  discountedUnitPriceUSD: number;
+}
+
+export interface ShipmentMilestone {
+  stage: 'ordered' | 'verified' | 'dispatched' | 'in_transit' | 'out_for_delivery' | 'delivered';
+  title: string;
+  location: string;
+  date: string;
+  completed: boolean;
+  current: boolean;
+  notes?: string;
+}
+
+export interface TrackingDetails {
+  trackingNumber: string;
+  carrier: string;
+  status: 'In Transit' | 'Out for Delivery' | 'Delivered' | 'Order Confirmed' | 'Processing';
+  estimatedDelivery: string;
+  origin: string;
+  destination: string;
+  weight: string;
+  milestones: ShipmentMilestone[];
+  itemsSummary: string;
+}
+
+export type SortOption = 'featured' | 'price-low-to-high' | 'price-high-to-low' | 'newest';

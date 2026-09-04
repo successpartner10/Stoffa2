@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import {
   ArrowRight,
+  Building2,
   Check,
   ChevronDown,
   Globe,
   Layers,
+  Package,
   Search,
   ShoppingBag,
   Sliders,
@@ -28,7 +30,7 @@ export const Navbar: React.FC = () => {
     setCurrency,
     languages,
     activeLanguage,
-    setLanguage,
+    requestLanguageChange,
     cart,
     setIsCartOpen,
     activeCampaign,
@@ -36,12 +38,18 @@ export const Navbar: React.FC = () => {
     activateCampaignBySlug,
     viewMode,
     setViewMode,
+    searchTerm,
+    setSearchTerm,
+    setIsB2BModalOpen,
+    setIsTrackingModalOpen,
+    lookupTracking,
     t,
   } = useCommerce();
 
   const [isCurrencyMenuOpen, setIsCurrencyMenuOpen] = useState(false);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [isCampaignMenuOpen, setIsCampaignMenuOpen] = useState(false);
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [selectedContinentFilter, setSelectedContinentFilter] = useState<string>('all');
   const [languageSearchTerm, setLanguageSearchTerm] = useState<string>('');
 
@@ -283,7 +291,9 @@ export const Navbar: React.FC = () => {
                                 key={lang.code}
                                 id={`language-option-${lang.code}`}
                                 onClick={() => {
-                                  setLanguage(lang.code);
+                                  if (lang.code !== activeLanguage.code) {
+                                    requestLanguageChange(lang.code);
+                                  }
                                   setIsLanguageMenuOpen(false);
                                   setLanguageSearchTerm('');
                                 }}
@@ -460,8 +470,63 @@ export const Navbar: React.FC = () => {
           )}
         </div>
 
-        {/* Right Action Icons & Active Campaign Quick Switcher */}
-        <div className="flex items-center gap-3">
+        {/* Right Action Icons & Search Bar */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Real-Time Search Field */}
+          {viewMode === 'storefront' && (
+            <div className="relative flex items-center">
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 text-stone-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  id="navbar-search-input"
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search Stöffa, suede, boots, totes..."
+                  className="w-36 sm:w-52 md:w-64 bg-white border border-stone-300 rounded-full pl-8 pr-7 py-1.5 text-xs text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-900 focus:w-72 transition-all shadow-2xs"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm('')}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-0.5"
+                    aria-label="Clear search"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* B2B Wholesale Portal Button */}
+          <button
+            id="nav-b2b-btn"
+            onClick={() => setIsB2BModalOpen(true)}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-800 transition-colors shadow-2xs"
+            title="Open B2B Bulk Purchasing and PO builder"
+          >
+            <Building2 className="w-3.5 h-3.5 text-amber-700" />
+            <span>B2B Orders</span>
+          </button>
+
+          {/* Shipment Tracking Shortcut */}
+          <button
+            id="nav-track-btn"
+            onClick={() => {
+              const el = document.getElementById('order-tracker-footer-section');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+              } else {
+                setIsTrackingModalOpen(true);
+              }
+            }}
+            className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors"
+            title="Track shipment progress"
+          >
+            <Package className="w-3.5 h-3.5 text-stone-500" />
+            <span>Track</span>
+          </button>
+
           {/* Custom Campaign URL Simulation Pill */}
           <div className="relative">
             <button
@@ -478,8 +543,8 @@ export const Navbar: React.FC = () => {
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-stone-900" />
-              <span className="truncate max-w-[130px] sm:max-w-[190px] font-mono">
-                {activeCampaign ? `/c/${activeCampaign.slug}` : 'Test Social URL'}
+              <span className="truncate max-w-[90px] sm:max-w-[140px] font-mono">
+                {activeCampaign ? `/c/${activeCampaign.slug}` : 'VIP URL'}
               </span>
               <ChevronDown className="w-3 h-3 opacity-60" />
             </button>

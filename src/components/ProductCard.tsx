@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Check, Eye, ShoppingBag, Sparkles, Star } from 'lucide-react';
+import {
+  AlertCircle,
+  Building2,
+  Check,
+  Columns2,
+  Eye,
+  ShoppingBag,
+  Sparkles,
+  Star,
+  X,
+} from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
 import { Product } from '../types';
 
@@ -16,6 +26,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     setSelectedProductModal,
     selectedOccasion,
     setSelectedOccasion,
+    comparisonList,
+    addToComparison,
+    removeFromComparison,
+    setIsComparisonOpen,
+    setIsB2BModalOpen,
+    setB2BTargetProduct,
     t,
   } = useCommerce();
 
@@ -24,6 +40,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [activeAngleIndex, setActiveAngleIndex] = useState(0);
   const [isQuickBuying, setIsQuickBuying] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [showQuickPreview, setShowQuickPreview] = useState(false);
 
   // Collect angles: prefer product.angles if defined, fallback to product.images
   const angles = product.angles && product.angles.length > 0
@@ -41,6 +58,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const discountRate = activeCampaign ? activeCampaign.discountPercent / 100 : 0;
   const discountedPriceUSD = product.priceUSD * (1 - discountRate);
 
+  const isCompared = comparisonList.some((p) => p.id === product.id);
+
+  // Inventory & Low Stock Calculation
+  const currentSizeInventory = product.inventory[selectedSize] ?? 4;
+  const isLowStock = currentSizeInventory < 3;
+
   const handleQuickBuy = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsQuickBuying(true);
@@ -55,22 +78,38 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }, 1800);
   };
 
+  const handleToggleCompare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isCompared) {
+      removeFromComparison(product.id);
+    } else {
+      addToComparison(product);
+    }
+  };
+
+  const handleOpenB2B = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setB2BTargetProduct(product);
+    setIsB2BModalOpen(true);
+  };
+
   return (
     <div
       id={`product-card-${product.id}`}
       onClick={() => setSelectedProductModal(product)}
-      className="group relative rounded-xl bg-white border border-stone-200/90 hover:border-stone-400 hover:shadow-md overflow-hidden flex flex-col transition-all duration-300 cursor-pointer"
+      onMouseLeave={() => setShowQuickPreview(false)}
+      className="group relative rounded-xl bg-white border border-stone-200/90 hover:border-stone-400 hover:shadow-lg overflow-hidden flex flex-col transition-all duration-300 cursor-pointer"
     >
-      {/* 1 Big Product Image Container */}
+      {/* 1 Big Product Image Container with tactile zoom animation */}
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100">
         <img
           src={activeAngle.url}
           alt={`${product.title} - ${activeAngle.label}`}
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-103"
+          className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-108"
         />
 
-        {/* Top Badges */}
+        {/* Top Badges (New, Best Seller, VIP discount, and Low Stock) */}
         <div className="absolute top-3 start-3 flex flex-col gap-1.5 z-10">
           {product.isNewArrival && (
             <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-stone-900 text-stone-50 shadow-sm">
@@ -78,7 +117,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </span>
           )}
           {product.isBestSeller && (
-            <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-amber-600 text-white shadow-sm">
+            <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-amber-700 text-white shadow-sm">
               Best Seller
             </span>
           )}
@@ -87,10 +126,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               -{activeCampaign.discountPercent}% VIP
             </span>
           )}
+          {isLowStock && (
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider bg-amber-800 text-amber-50 shadow-sm flex items-center gap-1 border border-amber-600/50">
+              <AlertCircle className="w-2.5 h-2.5" />
+              <span>Low Stock ({currentSizeInventory} left)</span>
+            </span>
+          )}
         </div>
 
-        {/* Active Angle Overlay Pill */}
-        <div className="absolute top-3 end-3 z-10">
+        {/* Top Right: Active Angle & Quick View trigger */}
+        <div className="absolute top-3 end-3 z-10 flex items-center gap-1.5">
           <span
             className={`px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide backdrop-blur-md shadow-xs flex items-center gap-1 ${
               activeAngle.isAiImage
@@ -101,15 +146,40 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {activeAngle.isAiImage && <Sparkles className="w-3 h-3 text-amber-300 shrink-0" />}
             <span>{activeAngle.tag || activeAngle.label}</span>
           </span>
+
+          {/* Quick View Button on each card */}
+          <button
+            id={`quick-view-btn-${product.id}`}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowQuickPreview(!showQuickPreview);
+            }}
+            onMouseEnter={() => setShowQuickPreview(true)}
+            className={`p-1.5 rounded-full backdrop-blur-md border shadow-sm transition-all ${
+              showQuickPreview
+                ? 'bg-stone-900 text-white border-stone-800'
+                : 'bg-white/90 text-stone-700 border-stone-300 hover:bg-white hover:text-stone-950'
+            }`}
+            title="Quick View preview overlay"
+          >
+            <Eye className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        {/* On-Body AI Badge at bottom left of image */}
-        {activeAngle.isAiImage && (
+        {/* On-Body AI Badge at bottom of image */}
+        {activeAngle.isAiImage && !showQuickPreview && (
           <div className="absolute bottom-2.5 start-2.5 end-2.5 z-10 pointer-events-none">
             <div className="bg-stone-900/90 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-[10px] border border-stone-700/50 shadow-md flex items-center justify-between">
               <span className="truncate font-medium flex items-center gap-1.5">
                 <Sparkles className="w-3 h-3 text-amber-300 shrink-0" />
-                <span>{isShoes ? 'AI On-Model: American Legs & Feet' : 'AI On-Model: Arm & Bag Styling'}</span>
+                <span>
+                  {activeAngle.aiDescription
+                    ? activeAngle.aiDescription
+                    : isShoes
+                    ? `Wearing ${product.title.replace('The Stöffa ', '')}`
+                    : `Styling ${product.title.replace('The Stöffa ', '')}`}
+                </span>
               </span>
               <span className="text-[9px] uppercase tracking-wider text-amber-300 font-bold shrink-0 ml-1">
                 {activeAngle.shotType === 'ai_cu' ? 'CU & Mid' : 'Full Length'}
@@ -118,13 +188,78 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         )}
 
-        {/* Quick View overlay on hover (when not hovering thumbnails) */}
-        {!activeAngle.isAiImage && (
-          <div className="absolute inset-0 bg-stone-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4 pointer-events-none">
-            <span className="px-4 py-2 rounded-full bg-white/95 backdrop-blur-md border border-stone-300 text-xs text-stone-800 font-medium flex items-center gap-2 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
-              <Eye className="w-3.5 h-3.5 text-stone-600" />
-              <span>Inspect All Angles & AI Lookbook</span>
-            </span>
+        {/* Hover-based Quick View Preview Overlay */}
+        {showQuickPreview && (
+          <div
+            className="absolute inset-0 bg-stone-950/85 backdrop-blur-sm p-4 text-white z-20 flex flex-col justify-between animate-in fade-in duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between border-b border-stone-700/80 pb-2">
+              <div>
+                <span className="text-[9px] uppercase font-mono tracking-wider text-amber-300 font-bold">
+                  Quick View Spec Sheet
+                </span>
+                <h4 className="font-serif text-sm font-medium line-clamp-1">{product.title}</h4>
+              </div>
+              <button
+                onClick={() => setShowQuickPreview(false)}
+                className="text-stone-400 hover:text-white p-1"
+                aria-label="Dismiss Quick View"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Quick Specs */}
+            <div className="space-y-2 text-xs font-light text-stone-200 my-auto">
+              <p className="line-clamp-2 text-[11px] leading-relaxed text-stone-300">
+                {product.description}
+              </p>
+
+              <div className="text-[11px] border-t border-stone-800 pt-1.5">
+                <span className="text-stone-400 font-mono text-[10px] uppercase block">Materials & Provenance:</span>
+                <span className="text-stone-200 font-light">{product.materials}</span>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] border-t border-stone-800 pt-1.5">
+                <span className="text-stone-400 font-mono text-[10px] uppercase">Selected Size Stock:</span>
+                <span className={`font-mono font-bold ${isLowStock ? 'text-amber-400' : 'text-emerald-400'}`}>
+                  {currentSizeInventory} available ({selectedSize})
+                </span>
+              </div>
+            </div>
+
+            {/* Quick Action Buttons inside Preview Overlay */}
+            <div className="space-y-1.5 pt-2 border-t border-stone-800">
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={handleToggleCompare}
+                  className={`flex-1 py-1.5 px-2 rounded text-[10px] uppercase tracking-wider font-semibold border flex items-center justify-center gap-1 transition-colors ${
+                    isCompared
+                      ? 'bg-amber-500 border-amber-400 text-stone-950 font-bold'
+                      : 'border-stone-700 bg-stone-900/90 text-stone-200 hover:bg-stone-800'
+                  }`}
+                >
+                  <Columns2 className="w-3 h-3" />
+                  <span>{isCompared ? 'In Compare' : 'Compare'}</span>
+                </button>
+                <button
+                  onClick={handleOpenB2B}
+                  className="flex-1 py-1.5 px-2 rounded text-[10px] uppercase tracking-wider font-semibold border border-stone-700 bg-stone-900/90 hover:bg-stone-800 text-stone-200 flex items-center justify-center gap-1 transition-colors"
+                >
+                  <Building2 className="w-3 h-3 text-amber-300" />
+                  <span>Wholesale</span>
+                </button>
+              </div>
+
+              <button
+                onClick={() => setSelectedProductModal(product)}
+                className="w-full py-2 rounded bg-white text-stone-950 hover:bg-stone-100 text-[10px] uppercase tracking-widest font-bold flex items-center justify-center gap-1.5 transition-colors"
+              >
+                <span>Full Architectural Dossier</span>
+                <Eye className="w-3 h-3" />
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -192,7 +327,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.subtitle}
           </p>
 
-          {/* Architectural Occasion Tagging (Antler & Juun.J Minimalist Details) */}
+          {/* Architectural Occasion Tagging */}
           {product.occasions && product.occasions.length > 0 && (
             <div
               className="mt-2.5 flex items-center gap-1.5 flex-wrap"
@@ -251,25 +386,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         </div>
 
-        {/* Size Selection Pills */}
+        {/* Size Selection Pills with inventory indication */}
         <div
           className="flex items-center gap-1.5 flex-wrap pt-0.5"
           onClick={(e) => e.stopPropagation()}
         >
           <span className="text-[10px] uppercase font-mono text-stone-400 mr-0.5">Size:</span>
-          {product.sizes.map((sz) => (
-            <button
-              key={sz}
-              onClick={() => setSelectedSize(sz)}
-              className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
-                selectedSize === sz
-                  ? 'bg-stone-900 text-white font-semibold shadow-xs'
-                  : 'bg-stone-100 text-stone-600 hover:text-stone-900 hover:bg-stone-200 border border-stone-200/80'
-              }`}
-            >
-              {sz}
-            </button>
-          ))}
+          {product.sizes.map((sz) => {
+            const stock = product.inventory[sz] ?? 4;
+            return (
+              <button
+                key={sz}
+                onClick={() => setSelectedSize(sz)}
+                className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors relative ${
+                  selectedSize === sz
+                    ? 'bg-stone-900 text-white font-semibold shadow-xs'
+                    : 'bg-stone-100 text-stone-600 hover:text-stone-900 hover:bg-stone-200 border border-stone-200/80'
+                }`}
+                title={`${sz}: ${stock < 3 ? `Low Stock (${stock} left)` : 'In Stock'}`}
+              >
+                <span>{sz}</span>
+                {stock < 3 && (
+                  <span className="inline-block w-1 h-1 rounded-full bg-amber-500 ml-1 mb-1"></span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Price & Quick Buy Button */}

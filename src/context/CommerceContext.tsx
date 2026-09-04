@@ -11,7 +11,22 @@ import {
   INITIAL_PRODUCTS,
   TRANSLATIONS,
 } from '../data/mockData';
-import { Affiliate, Campaign, CartItem, Currency, Language, Order, Payout, Product } from '../types';
+import { STOFFA_BRAND_STORY, STOFFA_STORE_PRODUCTS } from '../data/stoffaCatalog';
+import {
+  Affiliate,
+  B2BOrderItem,
+  Campaign,
+  CartItem,
+  Currency,
+  Language,
+  Order,
+  Payout,
+  Product,
+  ShipmentMilestone,
+  SortOption,
+  TrackingDetails,
+} from '../types';
+import { getProductAngles } from '../data/productMedia';
 
 interface CommerceContextType {
   // Storefront & Products
@@ -23,6 +38,66 @@ interface CommerceContextType {
   clearFilters: () => void;
   selectedProductModal: Product | null;
   setSelectedProductModal: (prod: Product | null) => void;
+
+  // Search, Sorting & Size Filters
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  sortBy: SortOption;
+  setSortBy: (sort: SortOption) => void;
+  selectedSizeFilter: string;
+  setSelectedSizeFilter: (size: string) => void;
+
+  // Product Comparison
+  comparisonList: Product[];
+  addToComparison: (p: Product) => void;
+  removeFromComparison: (id: string) => void;
+  clearComparison: () => void;
+  isComparisonOpen: boolean;
+  setIsComparisonOpen: (open: boolean) => void;
+
+  // Storytelling seasonal description
+  storytellingText: string;
+  setStorytellingText: (text: string) => void;
+  resetStorytellingText: () => void;
+
+  // B2B Wholesale & Bulk ordering
+  b2bList: B2BOrderItem[];
+  addToB2BList: (item: B2BOrderItem) => void;
+  removeFromB2BList: (index: number) => void;
+  clearB2BList: () => void;
+  isB2BModalOpen: boolean;
+  setIsB2BModalOpen: (open: boolean) => void;
+  b2bTargetProduct: Product | null;
+  setB2BTargetProduct: (p: Product | null) => void;
+
+  // Order Tracking
+  lookupTracking: (trackingNum: string) => TrackingDetails | null;
+  activeTrackingDetails: TrackingDetails | null;
+  setActiveTrackingDetails: (t: TrackingDetails | null) => void;
+  isTrackingModalOpen: boolean;
+  setIsTrackingModalOpen: (open: boolean) => void;
+
+  // CSV Catalog Management
+  exportCatalogCSV: () => string;
+  importProductsFromCSV: (csvString: string) => { success: boolean; count: number; error?: string };
+  importStoffaCatalog: () => { success: boolean; count: number };
+  updateProductPrice: (productId: string, newPriceUSD: number) => { success: boolean; error?: string };
+  isCatalogManagerOpen: boolean;
+  setIsCatalogManagerOpen: (open: boolean) => void;
+
+  // Language Change Confirmation
+  pendingLanguage: Language | null;
+  requestLanguageChange: (code: string) => void;
+  confirmLanguageChange: () => void;
+  cancelLanguageChange: () => void;
+
+  // Quota limits handling
+  quotaAlert: { message: string; retryAction?: () => void } | null;
+  triggerQuotaAlert: (msg?: string, retryAction?: () => void) => void;
+  dismissQuotaAlert: () => void;
+
+  // Social Share
+  shareProduct: (product: Product, platform?: string) => Promise<{ success: boolean; message: string }>;
 
   // Currencies & 1-Click Toggle
   currencies: Currency[];
@@ -73,22 +148,151 @@ interface CommerceContextType {
   // App Views
   viewMode: 'storefront' | 'admin' | 'affiliate_portal';
   setViewMode: (mode: 'storefront' | 'admin' | 'affiliate_portal') => void;
-  adminTab: 'campaigns' | 'affiliates' | 'payouts' | 'i18n_currencies' | 'analytics';
-  setAdminTab: (tab: 'campaigns' | 'affiliates' | 'payouts' | 'i18n_currencies' | 'analytics') => void;
+  adminTab: 'campaigns' | 'affiliates' | 'payouts' | 'i18n_currencies' | 'analytics' | 'catalog_cms';
+  setAdminTab: (tab: 'campaigns' | 'affiliates' | 'payouts' | 'i18n_currencies' | 'analytics' | 'catalog_cms') => void;
 }
 
 const CommerceContext = createContext<CommerceContextType | undefined>(undefined);
 
 export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // --- Persistent or Initialized State ---
-  const [products] = useState<Product[]>(INITIAL_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => {
+    const saved = localStorage.getItem('etoile_products');
+    const catalogSource = localStorage.getItem('etoile_catalog_source');
+    if (!saved || catalogSource !== 'stoffa_v3') {
+      localStorage.setItem('etoile_catalog_source', 'stoffa_v3');
+      localStorage.setItem('etoile_products', JSON.stringify(STOFFA_STORE_PRODUCTS));
+      return STOFFA_STORE_PRODUCTS;
+    }
+    try {
+      const parsed: Product[] = JSON.parse(saved);
+      // Ensure products contain the updated Stöffa catalog
+      const hasStoffa = parsed.some((p) => p.id.startsWith('stoffa_') || p.title.toLowerCase().includes('stoffa') || p.title.includes('Stöffa'));
+      if (!hasStoffa || parsed.length === 0) {
+        localStorage.setItem('etoile_products', JSON.stringify(STOFFA_STORE_PRODUCTS));
+        return STOFFA_STORE_PRODUCTS;
+      }
+      return parsed;
+    } catch {
+      return STOFFA_STORE_PRODUCTS;
+    }
+  });
+
+  const saveProducts = (newProds: Product[]) => {
+    setProducts(newProds);
+    localStorage.setItem('etoile_products', JSON.stringify(newProds));
+  };
+
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedOccasion, setSelectedOccasion] = useState<string>('all');
   const [selectedProductModal, setSelectedProductModal] = useState<Product | null>(null);
 
+  // Search, Sorting & Size Filters
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [sortBy, setSortBy] = useState<SortOption>('featured');
+  const [selectedSizeFilter, setSelectedSizeFilter] = useState<string>('all');
+
+  // Product Comparison State
+  const [comparisonList, setComparisonList] = useState<Product[]>([]);
+  const [isComparisonOpen, setIsComparisonOpen] = useState<boolean>(false);
+
+  const addToComparison = (p: Product) => {
+    setComparisonList((prev) => {
+      if (prev.some((item) => item.id === p.id)) return prev;
+      if (prev.length >= 2) {
+        return [prev[1], p];
+      }
+      return [...prev, p];
+    });
+    setIsComparisonOpen(true);
+  };
+
+  const removeFromComparison = (id: string) => {
+    setComparisonList((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const clearComparison = () => {
+    setComparisonList([]);
+  };
+
+  // Storytelling Seasonal Description
+  const DEFAULT_STORYTELLING =
+    'Curated in collaboration with European master tanners in Florence and Porto. The Autumn / Winter 2026 collection celebrates sculptural geometry, ergonomic hand-sculpted lasts, and sustainable Tuscan nappa leather. Designed for modern living with seamless occasion versatility and effortless luxury.';
+
+  const [storytellingText, setStorytellingTextState] = useState<string>(() => {
+    return localStorage.getItem('etoile_storytelling_text') || DEFAULT_STORYTELLING;
+  });
+
+  const setStorytellingText = (text: string) => {
+    setStorytellingTextState(text);
+    localStorage.setItem('etoile_storytelling_text', text);
+  };
+
+  const resetStorytellingText = () => {
+    setStorytellingText(DEFAULT_STORYTELLING);
+  };
+
+  // B2B Wholesale Ordering
+  const [b2bList, setB2BList] = useState<B2BOrderItem[]>(() => {
+    const saved = localStorage.getItem('etoile_b2b_list');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [isB2BModalOpen, setIsB2BModalOpen] = useState(false);
+  const [b2bTargetProduct, setB2BTargetProduct] = useState<Product | null>(null);
+
+  const addToB2BList = (item: B2BOrderItem) => {
+    setB2BList((prev) => {
+      const updated = [...prev, item];
+      localStorage.setItem('etoile_b2b_list', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const removeFromB2BList = (index: number) => {
+    setB2BList((prev) => {
+      const updated = prev.filter((_, i) => i !== index);
+      localStorage.setItem('etoile_b2b_list', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const clearB2BList = () => {
+    setB2BList([]);
+    localStorage.removeItem('etoile_b2b_list');
+  };
+
+  // Tracking & Shipments
+  const [activeTrackingDetails, setActiveTrackingDetails] = useState<TrackingDetails | null>(null);
+  const [isTrackingModalOpen, setIsTrackingModalOpen] = useState(false);
+
+  // CSV Catalog Management
+  const [isCatalogManagerOpen, setIsCatalogManagerOpen] = useState(false);
+
+  // Language Change Warning Modal
+  const [pendingLanguage, setPendingLanguage] = useState<Language | null>(null);
+
+  // Quota Limits & Fallback
+  const [quotaAlert, setQuotaAlert] = useState<{ message: string; retryAction?: () => void } | null>(null);
+
+  const triggerQuotaAlert = (msg?: string, retryAction?: () => void) => {
+    setQuotaAlert({
+      message:
+        msg ||
+        'Gemini 3.8 Flash quota limit or model provider threshold reached. Atelier AI fallback engine activated with offline cached styling parameters.',
+      retryAction,
+    });
+  };
+
+  const dismissQuotaAlert = () => {
+    setQuotaAlert(null);
+  };
+
   const clearFilters = () => {
     setSelectedCategory('All');
     setSelectedOccasion('all');
+    setSearchTerm('');
+    setSelectedSizeFilter('all');
+    setSortBy('featured');
   };
 
   // Currencies state
@@ -500,6 +704,8 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const totalUSD = subtotalUSD - discountUSD;
     const currencyTotal = totalUSD * activeCurrency.rate;
 
+    const generatedTracking = `ETL-${Math.floor(100000 + Math.random() * 900000)}`;
+
     const newOrder: Order = {
       id: `ord_${Date.now().toString().slice(-6)}`,
       items: [...cart],
@@ -515,6 +721,7 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       affiliateId: activeCampaign?.affiliateId,
       status: 'confirmed',
       createdAt: new Date().toISOString().replace('T', ' ').substring(0, 16),
+      trackingNumber: generatedTracking,
     };
 
     setOrders((prev) => [newOrder, ...prev]);
@@ -566,6 +773,292 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return newOrder;
   };
 
+  // Simulated Order Tracking Lookup
+  const lookupTracking = (rawNum: string): TrackingDetails | null => {
+    const trackingNum = rawNum.trim().toUpperCase();
+    if (!trackingNum) return null;
+
+    const matchedOrder = orders.find(
+      (o) =>
+        o.id.toUpperCase() === trackingNum ||
+        (o.trackingNumber && o.trackingNumber.toUpperCase() === trackingNum)
+    );
+
+    const targetNum = matchedOrder?.trackingNumber || trackingNum;
+    const itemsLabel = matchedOrder
+      ? matchedOrder.items.map((i) => `${i.quantity}x ${i.product.title} (${i.selectedSize})`).join(', ')
+      : '1x The Architectural Sculpted Slingback Pump (EU 38), 1x The Monolithic Box Calfskin Tote';
+    const destLabel = matchedOrder?.shippingAddress || 'Montreal, QC, Canada';
+
+    const milestones: ShipmentMilestone[] = [
+      {
+        stage: 'ordered',
+        title: 'Order Confirmed & Allocation Reserved',
+        location: 'Atelier Étoile HQ • Florence, Italy',
+        date: 'Sept 01, 2026 — 09:15 CET',
+        completed: true,
+        current: false,
+        notes: 'Encrypted Stripe Connect authorization completed. Inventory reserved.',
+      },
+      {
+        stage: 'verified',
+        title: 'Artisanal Inspection & White-Glove Packaging',
+        location: 'Tuscan Leatherworks Facility • Scandicci, Italy',
+        date: 'Sept 02, 2026 — 14:30 CET',
+        completed: true,
+        current: false,
+        notes: 'Hand-buffed box calfskin, dustbags assigned, brass authenticity seal verified.',
+      },
+      {
+        stage: 'dispatched',
+        title: 'Handed to Carrier • Air Express Flight Departed',
+        location: 'Pisa / Florence International Cargo Hub (PSA)',
+        date: 'Sept 03, 2026 — 21:40 CET',
+        completed: true,
+        current: false,
+        notes: 'Flight DHL-942 Departed for Transatlantic International Gateway.',
+      },
+      {
+        stage: 'in_transit',
+        title: 'Customs Clearance Completed & Transit Hub',
+        location: 'North American Sort Facility • Mirabel / JFK',
+        date: 'Sept 04, 2026 — 06:12 EDT',
+        completed: true,
+        current: true,
+        notes: 'Import duties prepaid & cleared. Processed through international hub.',
+      },
+      {
+        stage: 'out_for_delivery',
+        title: 'Out for Delivery via Express Courier Van',
+        location: 'Local Metropolitan Distribution Hub',
+        date: 'Expected Today by 17:30',
+        completed: false,
+        current: false,
+        notes: 'Courier with signature delivery protocol.',
+      },
+      {
+        stage: 'delivered',
+        title: 'White-Glove Doorstep Delivery',
+        location: destLabel,
+        date: 'Estimated Sept 05, 2026',
+        completed: false,
+        current: false,
+        notes: 'Signature required upon receipt.',
+      },
+    ];
+
+    const details: TrackingDetails = {
+      trackingNumber: targetNum,
+      carrier: 'DHL Express Worldwide & Priority Air',
+      status: 'In Transit',
+      estimatedDelivery: 'Sept 05, 2026 (Before 17:30)',
+      origin: 'Florence / Scandicci (Italy)',
+      destination: destLabel,
+      weight: '2.40 kg / 5.3 lbs',
+      milestones,
+      itemsSummary: itemsLabel,
+    };
+
+    setActiveTrackingDetails(details);
+    setIsTrackingModalOpen(true);
+    return details;
+  };
+
+  // CSV Catalog Management
+  const exportCatalogCSV = (): string => {
+    const headers = ['id', 'title', 'subtitle', 'category', 'priceUSD', 'rating', 'reviewCount', 'materials', 'sizes', 'description'];
+    const rows = products.map((p) => [
+      `"${p.id}"`,
+      `"${p.title.replace(/"/g, '""')}"`,
+      `"${p.subtitle.replace(/"/g, '""')}"`,
+      `"${p.category}"`,
+      p.priceUSD,
+      p.rating,
+      p.reviewCount,
+      `"${p.materials.replace(/"/g, '""')}"`,
+      `"${p.sizes.join(';')}"`,
+      `"${p.description.replace(/"/g, '""')}"`,
+    ]);
+    return [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+  };
+
+  const importProductsFromCSV = (csvString: string): { success: boolean; count: number; error?: string } => {
+    try {
+      const lines = csvString.trim().split(/\r?\n/);
+      if (lines.length < 2) {
+        return { success: false, count: 0, error: 'CSV must contain a header row and at least one product row.' };
+      }
+
+      const parseCSVLine = (text: string) => {
+        const result: string[] = [];
+        let cur = '';
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          if (char === '"') {
+            if (inQuotes && text[i + 1] === '"') {
+              cur += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (char === ',' && !inQuotes) {
+            result.push(cur.trim());
+            cur = '';
+          } else {
+            cur += char;
+          }
+        }
+        result.push(cur.trim());
+        return result;
+      };
+
+      const rawHeaders = parseCSVLine(lines[0]).map((h) => h.toLowerCase());
+      const idIdx = rawHeaders.indexOf('id');
+      const titleIdx = rawHeaders.indexOf('title');
+      const priceIdx = rawHeaders.indexOf('priceusd') !== -1 ? rawHeaders.indexOf('priceusd') : rawHeaders.indexOf('price');
+      const catIdx = rawHeaders.indexOf('category');
+
+      if (titleIdx === -1 || priceIdx === -1) {
+        return { success: false, count: 0, error: 'CSV is missing required headers: "title" and "priceUSD" (or "price").' };
+      }
+
+      const imported: Product[] = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        const cols = parseCSVLine(lines[i]);
+        const title = cols[titleIdx];
+        if (!title) continue;
+
+        const rawPrice = parseFloat(cols[priceIdx]);
+        const priceUSD = isNaN(rawPrice) || rawPrice <= 0 ? 350 : Math.round(rawPrice * 100) / 100;
+        const category = catIdx !== -1 && cols[catIdx] ? cols[catIdx] : 'Shoes';
+        const id = idIdx !== -1 && cols[idIdx] ? cols[idIdx] : `csv_${Date.now()}_${i}`;
+        const subtitleIdx = rawHeaders.indexOf('subtitle');
+        const subtitle = subtitleIdx !== -1 && cols[subtitleIdx] ? cols[subtitleIdx] : `${category} crafted in Tuscan leather`;
+        const materialsIdx = rawHeaders.indexOf('materials');
+        const materials = materialsIdx !== -1 && cols[materialsIdx] ? cols[materialsIdx] : 'Full-grain Italian calfskin, hand-turned leather sole.';
+        const sizesIdx = rawHeaders.indexOf('sizes');
+        const sizes = sizesIdx !== -1 && cols[sizesIdx] ? cols[sizesIdx].split(';').map((s) => s.trim()).filter(Boolean) : ['EU 36', 'EU 37', 'EU 38', 'EU 39', 'EU 40', 'EU 41'];
+        const descIdx = rawHeaders.indexOf('description');
+        const description = descIdx !== -1 && cols[descIdx] ? cols[descIdx] : `${title}. Designed for effortless modern elegance and lasting comfort.`;
+
+        const existing = products.find((p) => p.id === id || p.title.toLowerCase() === title.toLowerCase());
+        const baseImages = existing?.images || [
+          'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1600&q=90&dpr=2',
+          'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&w=1600&q=90&dpr=2',
+        ];
+
+        const angles = getProductAngles(id, category, baseImages);
+
+        const newProd: Product = {
+          id,
+          title,
+          subtitle,
+          category,
+          occasions: existing?.occasions || ['all', 'cocktail', 'date_night'],
+          occasionNote: existing?.occasionNote || 'Versatile day-to-evening styling',
+          priceUSD,
+          images: angles.map((a) => a.url),
+          angles,
+          sizes: sizes.length > 0 ? sizes : ['EU 36', 'EU 37', 'EU 38', 'EU 39', 'EU 40', 'EU 41'],
+          colors: existing?.colors || [
+            { name: 'Nero Black', hex: '#1C1B1B' },
+            { name: 'Espresso Tuscan Brown', hex: '#3B2F2F' },
+          ],
+          inventory: existing?.inventory || { 'EU 36': 4, 'EU 37': 5, 'EU 38': 6, 'EU 39': 3, 'EU 40': 2, 'EU 41': 1 },
+          description,
+          materials,
+          rating: existing?.rating || 4.9,
+          reviewCount: existing?.reviewCount || 18,
+          isNewArrival: true,
+        };
+
+        imported.push(newProd);
+      }
+
+      if (imported.length === 0) {
+        return { success: false, count: 0, error: 'No valid products could be parsed from the CSV.' };
+      }
+
+      saveProducts(imported);
+      return { success: true, count: imported.length };
+    } catch (err: any) {
+      return { success: false, count: 0, error: err?.message || 'Error parsing CSV file.' };
+    }
+  };
+
+  const importStoffaCatalog = (): { success: boolean; count: number } => {
+    saveProducts(STOFFA_STORE_PRODUCTS);
+    localStorage.setItem('etoile_catalog_source', 'stoffa_v3');
+    setStorytellingText(STOFFA_BRAND_STORY);
+    confetti({
+      particleCount: 90,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+    return { success: true, count: STOFFA_STORE_PRODUCTS.length };
+  };
+
+  const updateProductPrice = (productId: string, newPriceUSD: number): { success: boolean; error?: string } => {
+    if (isNaN(newPriceUSD) || newPriceUSD <= 0) {
+      return { success: false, error: 'Price must be a valid positive number.' };
+    }
+    const updated = products.map((p) => (p.id === productId ? { ...p, priceUSD: Math.round(newPriceUSD * 100) / 100 } : p));
+    saveProducts(updated);
+    return { success: true };
+  };
+
+  // Language Change Confirmation
+  const requestLanguageChange = (code: string) => {
+    const target = languages.find((l) => l.code === code);
+    if (!target) return;
+    if (target.code === activeLanguage.code) return;
+    setPendingLanguage(target);
+  };
+
+  const confirmLanguageChange = () => {
+    if (pendingLanguage) {
+      if (!pendingLanguage.isEnabled) {
+        setLanguages((prev) => prev.map((l) => (l.code === pendingLanguage.code ? { ...l, isEnabled: true } : l)));
+      }
+      setLanguage(pendingLanguage.code);
+      setPendingLanguage(null);
+    }
+  };
+
+  const cancelLanguageChange = () => {
+    setPendingLanguage(null);
+  };
+
+  // Social Share
+  const shareProduct = async (product: Product, platform?: string): Promise<{ success: boolean; message: string }> => {
+    const shareUrl = `${window.location.origin}/?product=${product.id}`;
+    const shareText = `Explore ${product.title} at Atelier Étoile: ${product.subtitle}`;
+
+    if (platform === 'twitter') {
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+      return { success: true, message: 'Opening X / Twitter...' };
+    } else if (platform === 'pinterest') {
+      window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(shareUrl)}&media=${encodeURIComponent(product.images[0])}&description=${encodeURIComponent(shareText)}`, '_blank');
+      return { success: true, message: 'Opening Pinterest...' };
+    } else if (platform === 'whatsapp') {
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`, '_blank');
+      return { success: true, message: 'Opening WhatsApp...' };
+    }
+
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl);
+        return { success: true, message: 'Shareable product link copied to clipboard!' };
+      }
+    } catch {
+      // ignore
+    }
+    return { success: true, message: `Share link: ${shareUrl}` };
+  };
+
   return (
     <CommerceContext.Provider
       value={{
@@ -577,6 +1070,48 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         clearFilters,
         selectedProductModal,
         setSelectedProductModal,
+        searchTerm,
+        setSearchTerm,
+        sortBy,
+        setSortBy,
+        selectedSizeFilter,
+        setSelectedSizeFilter,
+        comparisonList,
+        addToComparison,
+        removeFromComparison,
+        clearComparison,
+        isComparisonOpen,
+        setIsComparisonOpen,
+        storytellingText,
+        setStorytellingText,
+        resetStorytellingText,
+        b2bList,
+        addToB2BList,
+        removeFromB2BList,
+        clearB2BList,
+        isB2BModalOpen,
+        setIsB2BModalOpen,
+        b2bTargetProduct,
+        setB2BTargetProduct,
+        lookupTracking,
+        activeTrackingDetails,
+        setActiveTrackingDetails,
+        isTrackingModalOpen,
+        setIsTrackingModalOpen,
+        exportCatalogCSV,
+        importProductsFromCSV,
+        importStoffaCatalog,
+        updateProductPrice,
+        isCatalogManagerOpen,
+        setIsCatalogManagerOpen,
+        pendingLanguage,
+        requestLanguageChange,
+        confirmLanguageChange,
+        cancelLanguageChange,
+        quotaAlert,
+        triggerQuotaAlert,
+        dismissQuotaAlert,
+        shareProduct,
         currencies,
         activeCurrency,
         setCurrency,

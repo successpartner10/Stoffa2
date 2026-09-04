@@ -1,5 +1,6 @@
 import { Affiliate, Campaign, Currency, Language, Occasion, Payout, Product } from '../types';
 import { getProductAngles } from './productMedia';
+import { STOFFA_STORE_PRODUCTS } from './stoffaCatalog';
 
 export const OCCASIONS_LIST: Occasion[] = [
   {
@@ -1621,14 +1622,7 @@ const RAW_PRODUCTS: Omit<Product, 'angles'>[] = [
   },
 ];
 
-export const INITIAL_PRODUCTS: Product[] = RAW_PRODUCTS.map((p) => {
-  const angles = getProductAngles(p.id, p.category, p.images);
-  return {
-    ...p,
-    angles,
-    images: angles.map((a) => a.url),
-  };
-});
+export const INITIAL_PRODUCTS: Product[] = STOFFA_STORE_PRODUCTS;
 
 export const INITIAL_AFFILIATES: Affiliate[] = [
   {

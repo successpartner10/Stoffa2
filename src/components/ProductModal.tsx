@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import {
+  Building2,
   Camera,
   Check,
   ChevronLeft,
   ChevronRight,
+  Columns2,
+  Copy,
   RotateCcw,
+  Share2,
   ShoppingBag,
   Sparkles,
   Star,
@@ -15,6 +19,7 @@ import { useCommerce } from '../context/CommerceContext';
 
 export const ProductModal: React.FC = () => {
   const {
+    products,
     selectedProductModal,
     setSelectedProductModal,
     addToCart,
@@ -23,6 +28,11 @@ export const ProductModal: React.FC = () => {
     activeCampaign,
     selectedOccasion,
     setSelectedOccasion,
+    shareProduct,
+    addToComparison,
+    setIsComparisonOpen,
+    setIsB2BModalOpen,
+    setB2BTargetProduct,
     t,
   } = useCommerce();
 
@@ -33,6 +43,7 @@ export const ProductModal: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedAngleIndex, setSelectedAngleIndex] = useState(0);
   const [added, setAdded] = useState(false);
+  const [copiedShare, setCopiedShare] = useState(false);
 
   // Normalize angles array
   const angles = product.angles && product.angles.length > 0
@@ -50,6 +61,11 @@ export const ProductModal: React.FC = () => {
   const discountRate = activeCampaign ? activeCampaign.discountPercent / 100 : 0;
   const discountedPriceUSD = product.priceUSD * (1 - discountRate);
 
+  // Recommended products in same category or complementary silhouettes
+  const recommendedProducts = products
+    .filter((p) => p.id !== product.id)
+    .slice(0, 4);
+
   const handleNextAngle = () => {
     setSelectedAngleIndex((prev) => (prev + 1) % angles.length);
   };
@@ -62,6 +78,25 @@ export const ProductModal: React.FC = () => {
     addToCart(product, selectedSize, selectedColor, 1);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+  };
+
+  const handleShare = async () => {
+    const url = shareProduct(product.id);
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(url);
+    }
+    setCopiedShare(true);
+    setTimeout(() => setCopiedShare(false), 2200);
+  };
+
+  const handleOpenB2B = () => {
+    setB2BTargetProduct(product);
+    setIsB2BModalOpen(true);
+  };
+
+  const handleOpenCompare = () => {
+    addToComparison(product);
+    setIsComparisonOpen(true);
   };
 
   return (
@@ -210,16 +245,18 @@ export const ProductModal: React.FC = () => {
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-950">
                   <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>AI Lookbook & Fit Guide</span>
+                  <span>AI On-Model Fit Guide</span>
                 </div>
                 <span className="text-[10px] text-amber-800 uppercase tracking-wider font-mono">
-                  {isShoes ? 'Denim • Dresses • CU' : 'Blazer Arm • Street Look'}
+                  {isShoes ? 'Worn On-Model • 1:1 Match' : 'Worn & Carried • 1:1 Match'}
                 </span>
               </div>
               <p className="text-xs text-amber-900/90 font-light mb-3">
-                {isShoes
-                  ? 'Inspect how this footwear fits on American women’s legs and feet across cropped raw-hem jeans and evening dresses in both close-up (CU) and full-length perspective.'
-                  : 'Inspect proportion and drop on American women’s arms with tailored outerwear and full-length street silhouettes.'}
+                {product.brand === 'Stöffa' || product.title.includes('Stöffa')
+                  ? `AI lookbook models wear this exact ${product.title.replace('The Stöffa ', '')} styled with relaxed Italian tailoring and Florentine craftsmanship.`
+                  : isShoes
+                  ? 'Inspect how this footwear fits on-model across cropped raw-hem jeans and evening dresses in both close-up (CU) and full-length perspective.'
+                  : 'Inspect proportion and drop on-model with tailored outerwear and full-length street silhouettes.'}
               </p>
               <div className="flex flex-wrap gap-2">
                 {angles
@@ -359,7 +396,7 @@ export const ProductModal: React.FC = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="space-y-3 pt-2">
+            <div className="space-y-2.5 pt-2">
               <button
                 id="modal-add-to-bag-btn"
                 onClick={handleAdd}
@@ -377,6 +414,48 @@ export const ProductModal: React.FC = () => {
                   </>
                 )}
               </button>
+
+              {/* Utility Row: Share, B2B, Compare */}
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  id="modal-share-btn"
+                  onClick={handleShare}
+                  className="py-2.5 px-2 rounded-lg border border-stone-300 hover:border-stone-400 bg-white text-stone-700 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                  title="Generate shareable product link"
+                >
+                  {copiedShare ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <span className="text-emerald-700 font-semibold">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="w-3.5 h-3.5 text-stone-500" />
+                      <span>Share</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  id="modal-compare-btn"
+                  onClick={handleOpenCompare}
+                  className="py-2.5 px-2 rounded-lg border border-stone-300 hover:border-stone-400 bg-white text-stone-700 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+                  title="Compare specs with another piece"
+                >
+                  <Columns2 className="w-3.5 h-3.5 text-stone-500" />
+                  <span>Compare</span>
+                </button>
+
+                <button
+                  id="modal-b2b-btn"
+                  onClick={handleOpenB2B}
+                  className="py-2.5 px-2 rounded-lg border border-amber-300 hover:border-amber-400 bg-amber-50/80 text-amber-900 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                  title="Wholesale bulk purchasing"
+                >
+                  <Building2 className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Wholesale</span>
+                </button>
+              </div>
             </div>
 
             {/* Item Details & Assurance */}
@@ -435,6 +514,46 @@ export const ProductModal: React.FC = () => {
                 <div className="flex items-center gap-2 p-2.5 rounded-lg bg-stone-50 border border-stone-200">
                   <RotateCcw className="w-4 h-4 text-stone-900 shrink-0" />
                   <span className="text-[11px]">Complimentary 30-Day Returns</span>
+                </div>
+              </div>
+
+              {/* Recommended for You Section */}
+              <div className="pt-5 border-t border-stone-200">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-serif font-semibold text-stone-900">
+                    Recommended Complementary Pieces
+                  </span>
+                  <span className="text-[10px] text-stone-400 font-mono">Curated Pairings</span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {recommendedProducts.map((rec) => (
+                    <button
+                      key={rec.id}
+                      onClick={() => {
+                        setSelectedProductModal(rec);
+                        setSelectedAngleIndex(0);
+                      }}
+                      className="text-left group/rec p-2 rounded-lg bg-stone-50 hover:bg-stone-100 border border-stone-200 transition-all flex flex-col justify-between"
+                    >
+                      <div className="aspect-square rounded overflow-hidden bg-white border border-stone-200/80 mb-1.5">
+                        <img
+                          src={rec.images[0]}
+                          alt={rec.title}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover group-hover/rec:scale-105 transition-transform"
+                        />
+                      </div>
+                      <div>
+                        <div className="font-serif text-[11px] font-medium text-stone-900 line-clamp-1 group-hover/rec:text-stone-700">
+                          {rec.title}
+                        </div>
+                        <div className="font-mono text-[10px] text-stone-500 mt-0.5">
+                          {formatPrice(rec.priceUSD)}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

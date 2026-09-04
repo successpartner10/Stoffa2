@@ -2,19 +2,27 @@ import React, { useState } from 'react';
 import {
   AlertCircle,
   ArrowUpRight,
+  BookOpen,
+  Building2,
   Check,
   CheckCircle2,
   ChevronRight,
   Coins,
   Copy,
   DollarSign,
+  Download,
+  Edit3,
   ExternalLink,
+  FileSpreadsheet,
+  FileText,
   Globe,
   Layers,
   Link as LinkIcon,
   Play,
   Plus,
   RefreshCw,
+  RotateCcw,
+  Save,
   Search,
   Share2,
   ShieldCheck,
@@ -24,9 +32,11 @@ import {
   ToggleRight,
   Trash2,
   TrendingUp,
+  Upload,
   Users,
 } from 'lucide-react';
 import { AVAILABLE_CURRENCY_PRESETS, AVAILABLE_LANGUAGE_PRESETS } from '../../data/mockData';
+import { STOFFA_BRAND_STORY, STOFFA_CATALOG_CSV, STOFFA_STORE_PRODUCTS } from '../../data/stoffaCatalog';
 import { useCommerce } from '../../context/CommerceContext';
 import { Campaign } from '../../types';
 
@@ -35,6 +45,7 @@ export const AdminDashboard: React.FC = () => {
     adminTab,
     setAdminTab,
     currencies,
+    activeCurrency,
     toggleCurrency,
     addCurrencyPreset,
     updateCurrencyRate,
@@ -52,11 +63,29 @@ export const AdminDashboard: React.FC = () => {
     orders,
     formatPrice,
     setViewMode,
+    products,
+    exportCatalogCSV,
+    importProductsFromCSV,
+    importStoffaCatalog,
+    updateProductPrice,
+    storytellingText,
+    setStorytellingText,
+    resetStorytellingText,
+    setIsB2BModalOpen,
+    b2bList,
   } = useCommerce();
 
   // Currency & Language modal states
   const [showAddCurrencyModal, setShowAddCurrencyModal] = useState(false);
   const [showAddLanguageModal, setShowAddLanguageModal] = useState(false);
+
+  // CSV Catalog & Storytelling State
+  const [csvInputText, setCsvInputText] = useState('');
+  const [csvFeedback, setCsvFeedback] = useState<{ success: boolean; message: string } | null>(null);
+  const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
+  const [tempPrice, setTempPrice] = useState<string>('');
+  const [storyDraft, setStoryDraft] = useState<string>(storytellingText);
+  const [storySuccess, setStorySuccess] = useState(false);
 
   // New Campaign Form State
   const [newSlug, setNewSlug] = useState('');
@@ -235,6 +264,19 @@ export const AdminDashboard: React.FC = () => {
         >
           <TrendingUp className="w-4 h-4" />
           <span>High-Volume Architecture & Funnel</span>
+        </button>
+
+        <button
+          id="admin-tab-catalog-cms"
+          onClick={() => setAdminTab('catalog_cms')}
+          className={`px-4 py-2.5 rounded-lg text-xs font-medium transition-all flex items-center gap-2 shrink-0 ${
+            adminTab === 'catalog_cms'
+              ? 'bg-stone-900 text-white font-semibold shadow-xs'
+              : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+          }`}
+        >
+          <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+          <span>CSV Catalog & Storytelling CMS</span>
         </button>
       </div>
 
@@ -978,6 +1020,481 @@ export const AdminDashboard: React.FC = () => {
                 </table>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* TAB 5: CSV CATALOG MANAGEMENT & SEASONAL STORYTELLING CMS                */}
+      {/* ========================================================================= */}
+      {adminTab === 'catalog_cms' && (
+        <div className="space-y-8 animate-in fade-in">
+          {/* Top Overview / Summary */}
+          <div className="p-6 rounded-2xl bg-white border border-stone-200 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-mono text-emerald-800 font-semibold mb-1">
+                <FileSpreadsheet className="w-4 h-4 text-emerald-700" />
+                <span>MERCHANT DATA & EDITORIAL CMS</span>
+              </div>
+              <h3 className="text-xl font-serif text-stone-900 font-medium">
+                Catalog CSV Sync & Seasonal Narrative
+              </h3>
+              <p className="text-xs text-stone-500 mt-1">
+                Export and import product data via industry-standard CSV, modify live retail pricing, and author seasonal storytelling text.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <button
+                id="import-stoffa-header-btn"
+                onClick={() => {
+                  const res = importStoffaCatalog();
+                  setCsvFeedback({
+                    success: true,
+                    message: `Successfully synced all ${res.count} official Stöffa store products and editorial imagery into the active storefront!`,
+                  });
+                  setStoryDraft(STOFFA_BRAND_STORY);
+                }}
+                className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xs transition-colors"
+              >
+                <Sparkles className="w-4 h-4 text-stone-950" />
+                <span>Import Stöffa Collection (16 Items)</span>
+              </button>
+
+              <button
+                id="export-catalog-csv-btn"
+                onClick={() => {
+                  const csv = exportCatalogCSV();
+                  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                  const url = URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.setAttribute('download', `stoffa_store_catalog_${new Date().toISOString().slice(0, 10)}.csv`);
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-2 shadow-xs transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                <span>Export Catalog CSV</span>
+              </button>
+
+              <button
+                onClick={() => setIsB2BModalOpen(true)}
+                className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold border border-stone-300 flex items-center gap-2 transition-colors"
+              >
+                <Building2 className="w-4 h-4 text-stone-600" />
+                <span>Open B2B Order PO ({b2bList.length} items)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Dedicated Stöffa Store Import Banner */}
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-stone-900 to-stone-800 text-white shadow-md space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[10px] font-mono font-bold uppercase tracking-wider">
+                    Official Store Import
+                  </span>
+                  <span className="text-xs text-stone-300 font-mono">stoffastyle.com</span>
+                </div>
+                <h3 className="text-xl font-serif text-white font-medium">
+                  Stöffa Store Products & High-Fashion Lookbook
+                </h3>
+                <p className="text-xs text-stone-300 max-w-2xl leading-relaxed">
+                  Directly imported from Stöffa. Includes water-resistant Tuscan suede babouche slippers, hand-pleated elastic boots, soft foldover lamb nappa totes, suede weekender duffels, and 4x Retina HD editorial lookbook imagery with consistent signature footwear.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
+                <button
+                  id="sync-stoffa-instant-btn"
+                  onClick={() => {
+                    const res = importStoffaCatalog();
+                    setCsvFeedback({
+                      success: true,
+                      message: `Successfully synced all ${res.count} official Stöffa store products and editorial imagery into the active storefront!`,
+                    });
+                    setStoryDraft(STOFFA_BRAND_STORY);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition-transform active:scale-95"
+                >
+                  <RefreshCw className="w-4 h-4 text-stone-950" />
+                  <span>Sync 16 Stöffa Products</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setCsvInputText(STOFFA_CATALOG_CSV);
+                    setCsvFeedback({
+                      success: true,
+                      message: 'Loaded raw Stöffa catalog CSV into editor below.',
+                    });
+                  }}
+                  className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/20 transition-colors"
+                >
+                  Load Stöffa CSV
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-white/10 text-xs">
+              <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
+                <div className="text-[10px] text-stone-400 uppercase font-mono">Footwear Silhouettes</div>
+                <div className="font-semibold text-white mt-0.5">Babouches, Boots, Slingbacks, Loafers</div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
+                <div className="text-[10px] text-stone-400 uppercase font-mono">Architectural Leather</div>
+                <div className="font-semibold text-white mt-0.5">Foldover Totes, Weekenders, Hobos</div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
+                <div className="text-[10px] text-stone-400 uppercase font-mono">Artisanal Tanneries</div>
+                <div className="font-semibold text-white mt-0.5">Florence, Scandicci & Marche</div>
+              </div>
+              <div className="p-2.5 rounded-lg bg-white/5 border border-white/10">
+                <div className="text-[10px] text-stone-400 uppercase font-mono">AI Visual Consistency</div>
+                <div className="font-semibold text-white mt-0.5">100% Identical Footwear On-Model</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 1: Seasonal Storytelling Editor */}
+          <div className="p-6 rounded-2xl bg-white border border-stone-200 shadow-xs space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-100">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-mono text-stone-600 font-semibold">
+                  <BookOpen className="w-4 h-4 text-stone-800" />
+                  <span>SEASONAL STORYTELLING CMS</span>
+                </div>
+                <h4 className="text-lg font-serif text-stone-900 font-medium mt-0.5">
+                  Editorial Banner & Collection Story
+                </h4>
+                <p className="text-xs text-stone-500">
+                  This narrative is prominently showcased across the hero and collection header on the live storefront.
+                </p>
+              </div>
+
+              {/* Story Preset Templates */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] uppercase font-mono text-stone-400">Presets:</span>
+                <button
+                  onClick={() => {
+                    setStoryDraft(STOFFA_BRAND_STORY);
+                  }}
+                  className="px-2.5 py-1 rounded-md text-[11px] bg-amber-100 hover:bg-amber-200 text-amber-900 font-semibold border border-amber-300 transition-colors"
+                >
+                  Stöffa Ethos
+                </button>
+                <button
+                  onClick={() => {
+                    const text = 'Autumn / Winter 2026 Footwear & Architectural Leather Edition. Handcrafted in Tuscany by multi-generational artisans using certified vegetable-tanned calfskin and sculpted ergonomic lasts.';
+                    setStoryDraft(text);
+                  }}
+                  className="px-2.5 py-1 rounded-md text-[11px] bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium transition-colors"
+                >
+                  Tuscan Artisan
+                </button>
+                <button
+                  onClick={() => {
+                    const text = 'Juun.J & Antler Architectural Capsule: Radical minimalist silhouettes, monolithic block heels, and unstructured box totes engineered for gallery evenings and global travel.';
+                    setStoryDraft(text);
+                  }}
+                  className="px-2.5 py-1 rounded-md text-[11px] bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium transition-colors"
+                >
+                  Juun.J & Antler
+                </button>
+                <button
+                  onClick={() => {
+                    const text = 'High Summer Riviera Edit: Buttery soft Italian nappa lambskin slingbacks and hand-woven raffia leather carryalls designed for seaside ease and metropolitan evenings.';
+                    setStoryDraft(text);
+                  }}
+                  className="px-2.5 py-1 rounded-md text-[11px] bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium transition-colors"
+                >
+                  Riviera Nappa
+                </button>
+              </div>
+            </div>
+
+            {/* Story Editor Input Area */}
+            <div className="space-y-3">
+              <textarea
+                id="storytelling-text-input"
+                value={storyDraft}
+                onChange={(e) => setStoryDraft(e.target.value)}
+                rows={3}
+                className="w-full p-3.5 rounded-xl border border-stone-300 focus:border-stone-900 focus:ring-1 focus:ring-stone-900 text-sm font-sans text-stone-900 leading-relaxed placeholder-stone-400"
+                placeholder="Write the seasonal storytelling narrative..."
+              />
+
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => {
+                    resetStorytellingText();
+                    setStoryDraft('Autumn / Winter 2026 Footwear & Architectural Leather Edition. Handcrafted in Florence by certified master cordwainers using Tuscan vegetable-tanned calfskin and ergonomic sculpted lasts.');
+                  }}
+                  className="text-xs text-stone-500 hover:text-stone-900 flex items-center gap-1 transition-colors"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset to Original Narrative</span>
+                </button>
+
+                <div className="flex items-center gap-3">
+                  {storySuccess && (
+                    <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1 animate-in fade-in">
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Saved to Live Storefront!</span>
+                    </span>
+                  )}
+                  <button
+                    id="save-storytelling-btn"
+                    onClick={() => {
+                      setStorytellingText(storyDraft);
+                      setStorySuccess(true);
+                      setTimeout(() => setStorySuccess(false), 2500);
+                    }}
+                    className="px-5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-2 shadow-xs transition-colors"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>Publish Story Narrative</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Live Preview Box */}
+              <div className="mt-3 p-4 rounded-xl bg-stone-50 border border-stone-200/80">
+                <div className="text-[10px] uppercase font-mono tracking-wider text-stone-400 font-semibold mb-1">
+                  Live Storefront Preview
+                </div>
+                <p className="font-serif text-sm text-stone-800 italic leading-relaxed">
+                  &ldquo;{storyDraft}&rdquo;
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: CSV Import Engine */}
+          <div className="p-6 rounded-2xl bg-white border border-stone-200 shadow-xs space-y-5">
+            <div className="pb-4 border-b border-stone-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-mono text-stone-600 font-semibold">
+                  <Upload className="w-4 h-4 text-stone-800" />
+                  <span>CSV CATALOG IMPORTER</span>
+                </div>
+                <h4 className="text-lg font-serif text-stone-900 font-medium mt-0.5">
+                  Import or Replace Product Catalog via CSV
+                </h4>
+                <p className="text-xs text-stone-500">
+                  Upload a `.csv` file or paste raw CSV text. Products are immediately indexed and available in the storefront.
+                </p>
+              </div>
+
+              <label className="cursor-pointer px-4 py-2 rounded-xl bg-white hover:bg-stone-50 border border-stone-300 text-stone-800 text-xs font-medium flex items-center gap-2 shadow-2xs transition-colors">
+                <Upload className="w-4 h-4 text-stone-600" />
+                <span>Upload .CSV File</span>
+                <input
+                  type="file"
+                  accept=".csv,text/csv"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                      const text = event.target?.result as string;
+                      if (text) {
+                        setCsvInputText(text);
+                        const result = importProductsFromCSV(text);
+                        setCsvFeedback({
+                          success: result.success,
+                          message: result.success
+                            ? `Successfully imported ${result.count} products into the catalog!`
+                            : result.error || 'Failed to import CSV.',
+                        });
+                      }
+                    };
+                    reader.readAsText(file);
+                  }}
+                />
+              </label>
+            </div>
+
+            {/* Paste CSV Textarea */}
+            <div className="space-y-3">
+              <textarea
+                id="csv-text-input"
+                value={csvInputText}
+                onChange={(e) => setCsvInputText(e.target.value)}
+                rows={4}
+                placeholder="Paste CSV content here... (Format: id,title,subtitle,category,priceUSD,rating,reviewCount,materials,sizes,description)"
+                className="w-full p-3 rounded-xl border border-stone-300 font-mono text-xs text-stone-800 focus:border-stone-900 focus:ring-1 focus:ring-stone-900"
+              />
+
+              {csvFeedback && (
+                <div
+                  className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
+                    csvFeedback.success
+                      ? 'bg-emerald-50 text-emerald-900 border border-emerald-300'
+                      : 'bg-red-50 text-red-900 border border-red-300'
+                  }`}
+                >
+                  {csvFeedback.success ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                  )}
+                  <span>{csvFeedback.message}</span>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => {
+                    const sample = exportCatalogCSV();
+                    setCsvInputText(sample);
+                  }}
+                  className="text-xs text-stone-500 hover:text-stone-900 underline font-mono"
+                >
+                  Load Current Catalog as CSV Template
+                </button>
+
+                <button
+                  id="process-csv-btn"
+                  onClick={() => {
+                    if (!csvInputText.trim()) return;
+                    const result = importProductsFromCSV(csvInputText);
+                    setCsvFeedback({
+                      success: result.success,
+                      message: result.success
+                        ? `Successfully imported ${result.count} products into the active catalog!`
+                        : result.error || 'Failed to import CSV.',
+                    });
+                  }}
+                  className="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-xs"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Parse & Apply CSV</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Live Catalog Price Quick Editor */}
+          <div className="p-6 rounded-2xl bg-white border border-stone-200 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-mono text-stone-600 font-semibold">
+                  <DollarSign className="w-4 h-4 text-stone-800" />
+                  <span>PRICING & INVENTORY MANAGEMENT</span>
+                </div>
+                <h4 className="text-lg font-serif text-stone-900 font-medium mt-0.5">
+                  Live Product Prices ({products.length} Items)
+                </h4>
+              </div>
+              <span className="text-xs font-mono text-stone-500">
+                Active: {activeCurrency.code} ({activeCurrency.symbol})
+              </span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-stone-200 text-stone-500 font-mono uppercase text-[10px]">
+                    <th className="py-2.5 px-3">Product</th>
+                    <th className="py-2.5 px-3">Category</th>
+                    <th className="py-2.5 px-3">Base Price (USD)</th>
+                    <th className="py-2.5 px-3">Active Display ({activeCurrency.code})</th>
+                    <th className="py-2.5 px-3">Sizes</th>
+                    <th className="py-2.5 px-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-100 font-sans">
+                  {products.map((p) => {
+                    const isEditing = editingPriceId === p.id;
+                    return (
+                      <tr key={p.id} className="hover:bg-stone-50 transition-colors">
+                        <td className="py-2.5 px-3">
+                          <div className="flex items-center gap-2.5">
+                            <img
+                              src={p.images[0]}
+                              alt={p.title}
+                              referrerPolicy="no-referrer"
+                              className="w-9 h-9 rounded object-cover border border-stone-200 shrink-0"
+                            />
+                            <div>
+                              <div className="font-serif font-medium text-stone-900">{p.title}</div>
+                              <div className="text-[10px] text-stone-400 font-mono">ID: {p.id}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-2.5 px-3">
+                          <span className="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[11px] font-mono">
+                            {p.category}
+                          </span>
+                        </td>
+                        <td className="py-2.5 px-3 font-mono font-semibold text-stone-900">
+                          {isEditing ? (
+                            <div className="flex items-center gap-1">
+                              <span className="text-stone-400">$</span>
+                              <input
+                                type="number"
+                                value={tempPrice}
+                                onChange={(e) => setTempPrice(e.target.value)}
+                                className="w-20 px-2 py-1 rounded border border-stone-300 text-xs font-mono"
+                                autoFocus
+                              />
+                            </div>
+                          ) : (
+                            <span>${p.priceUSD.toFixed(2)}</span>
+                          )}
+                        </td>
+                        <td className="py-2.5 px-3 font-mono text-emerald-800 font-semibold">
+                          {formatPrice(p.priceUSD)}
+                        </td>
+                        <td className="py-2.5 px-3 text-stone-500 font-mono text-[11px]">
+                          {p.sizes.slice(0, 4).join(', ')}{p.sizes.length > 4 ? '...' : ''}
+                        </td>
+                        <td className="py-2.5 px-3 text-right">
+                          {isEditing ? (
+                            <div className="flex items-center justify-end gap-1.5">
+                              <button
+                                onClick={() => {
+                                  const num = parseFloat(tempPrice);
+                                  if (!isNaN(num) && num > 0) {
+                                    updateProductPrice(p.id, num);
+                                  }
+                                  setEditingPriceId(null);
+                                }}
+                                className="px-2 py-1 rounded bg-stone-900 text-white text-[11px] font-semibold"
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => setEditingPriceId(null)}
+                                className="px-2 py-1 rounded border border-stone-300 text-stone-600 text-[11px]"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setEditingPriceId(p.id);
+                                setTempPrice(p.priceUSD.toString());
+                              }}
+                              className="p-1 rounded text-stone-400 hover:text-stone-900 hover:bg-stone-100"
+                              title="Edit Price"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
