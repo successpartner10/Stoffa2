@@ -234,7 +234,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
   {
     "id": "stoffa_7534162935967",
     "title": "Classic High K Wedge Champagne",
-    "subtitle": "As worn by Madhuri Dixit & Sonali Bendre",
+    "subtitle": "Signature Handcrafted Wedge with Dual-Density Comfort",
     "brand": "Stoffa Style",
     "category": "Shoes",
     "collection": "High Wedges (3.5\")",
@@ -247,10 +247,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
     "priceUSD": 86,
-    "originalPriceUSD": 65,
-    "badge": "WORN BY MADHURI DIXIT",
+    "badge": "ICONIC BEST SELLER",
     "images": [
-      "https://stoffastyle.com/cdn/shop/files/Madhuri_Dixit-_STO_115_Champagne__jpg_8c2611ad-d6b7-4f1a-957d-6f331246f76f.jpg",
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_112_A_cdfc565f-5672-4574-8964-7027b23a596e.jpg?v=1663996102",
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_112_L_f2be657e-4f52-4e05-a9d1-8dc94daf9193.jpg?v=1663996102",
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_112_T_3bd1cdef-032f-41f2-92fc-4619d8218c7c.jpg?v=1663996102",
@@ -264,9 +262,9 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     ],
     "angles": [
       {
-        "url": "https://stoffastyle.com/cdn/shop/files/Madhuri_Dixit-_STO_115_Champagne__jpg_8c2611ad-d6b7-4f1a-957d-6f331246f76f.jpg",
-        "label": "Celebrity Spotting: Madhuri Dixit & Sonali Bendre",
-        "tag": "Celebrity Spotting",
+        "url": "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_112_A_cdfc565f-5672-4574-8964-7027b23a596e.jpg?v=1663996102",
+        "label": "Front Perspective",
+        "tag": "Hero Front",
         "shotType": "hero"
       },
       {
@@ -729,7 +727,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
   {
     "id": "stoffa_7534773862559",
     "title": "Classic High K Wedge Pewter",
-    "subtitle": "As worn by Kareena Kapoor",
+    "subtitle": "Handcrafted Pewter Kolhapuri Wedge with Comfort Foam",
     "brand": "Stoffa Style",
     "category": "Shoes",
     "collection": "High Wedges (3.5\")",
@@ -742,10 +740,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
     "priceUSD": 86,
-    "originalPriceUSD": 65,
-    "badge": "WORN BY KAREENA KAPOOR",
+    "badge": "SIGNATURE PEWTER",
     "images": [
-      "https://stoffastyle.com/cdn/shop/files/Karina_Kapoor-_STO_115_Pewter_jpg.jpg",
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_113_A_65364f10-646c-412b-bbf0-a1700fbc5e86.jpg?v=1663995999",
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_113_L_fac0cf64-e3a6-4752-a06f-9f95a19e76d5.jpg?v=1663995999",
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_112_B_2ecea76c-615d-4a9a-be75-f6bf258762d6.jpg?v=1663995999",
@@ -759,9 +755,9 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     ],
     "angles": [
       {
-        "url": "https://stoffastyle.com/cdn/shop/files/Karina_Kapoor-_STO_115_Pewter_jpg.jpg",
-        "label": "Celebrity Spotting: Kareena Kapoor",
-        "tag": "Celebrity Spotting",
+        "url": "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_113_A_65364f10-646c-412b-bbf0-a1700fbc5e86.jpg?v=1663995999",
+        "label": "Front Perspective",
+        "tag": "Hero Front",
         "shotType": "hero"
       },
       {
@@ -2078,10 +2074,10 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
   {
     "id": "stoffa_10903029645471",
     "title": "Border Flat Bag Gold",
-    "subtitle": "Handcrafted Kolhapuri Flats in Gold with cushioned footbed",
+    "subtitle": "Handcrafted Embroidered Flat Bag in Gold with convertible chain",
     "brand": "Stoffa Style",
     "category": "Bags",
-    "collection": "Kolhapuri Flats",
+    "collection": "Bags & Potlis",
     "occasions": [
       "wedding",
       "festive",
@@ -3213,7 +3209,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "title": "Crystal Baguette Flats",
     "subtitle": "Handcrafted Kolhapuri Flats in Metallic Gold with cushioned footbed",
     "brand": "Stoffa Style",
-    "category": "Bags",
+    "category": "Flats & Loafers",
     "collection": "Kolhapuri Flats",
     "occasions": [
       "wedding",
@@ -3663,7 +3659,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "title": "Crystal  Baguette Low Wedge Light Gold",
     "subtitle": "Handcrafted Low Wedges (2.5\") in Light Gold with cushioned footbed",
     "brand": "Stoffa Style",
-    "category": "Bags",
+    "category": "Shoes",
     "collection": "Low Wedges (2.5\")",
     "occasions": [
       "wedding",
@@ -3749,7 +3745,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "title": "Crystal  Baguette High Wedge Light Gold",
     "subtitle": "Handcrafted High Wedges (3.5\") in Light Gold with cushioned footbed",
     "brand": "Stoffa Style",
-    "category": "Bags",
+    "category": "Shoes",
     "collection": "High Wedges (3.5\")",
     "occasions": [
       "wedding",

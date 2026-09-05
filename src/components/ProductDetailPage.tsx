@@ -53,7 +53,7 @@ export const ProductDetailPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'details' | 'craft' | 'shipping'>('details');
 
   // Normalize image angles
-  const angles =
+  const rawAngles =
     product.angles && product.angles.length > 0
       ? product.angles
       : product.images.map((url, i) => ({
@@ -62,6 +62,20 @@ export const ProductDetailPage: React.FC = () => {
           tag: i === 0 ? 'Front' : i === 1 ? 'Detail' : 'Side',
           isAiImage: false,
         }));
+
+  const angles = rawAngles.filter(
+    (a) =>
+      !a.url.includes('Madhuri') &&
+      !a.url.includes('Karina') &&
+      !a.url.includes('Kareena') &&
+      !a.url.includes('Alia') &&
+      !a.url.includes('RASHMIKA') &&
+      !a.url.includes('SHREYA') &&
+      !a.url.includes('SONALI') &&
+      !a.url.includes('KARISHMA') &&
+      !a.url.includes('Genelia') &&
+      !a.url.includes('BHAVANA')
+  );
 
   const activeAngle = angles[selectedAngleIndex] || angles[0];
   const { mainTitle, colorTitle } = formatStoffaDisplayTitle(product);
@@ -254,16 +268,6 @@ export const ProductDetailPage: React.FC = () => {
                 <span className="text-3xl font-extrabold font-mono text-stone-950">
                   {formatPrice(product.priceUSD)}
                 </span>
-                {isSale && originalPriceUSD && (
-                  <>
-                    <span className="text-lg font-mono text-stone-400 line-through">
-                      {formatPrice(originalPriceUSD)}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold uppercase tracking-wider">
-                      Save {Math.round(((originalPriceUSD - product.priceUSD) / originalPriceUSD) * 100)}%
-                    </span>
-                  </>
-                )}
               </div>
               <p className="text-xs text-stone-500 font-mono">
                 Taxes included • Free express shipping on orders over $150

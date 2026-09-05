@@ -53,16 +53,27 @@ export function getProductAngles(
   baseImages: string[]
 ): ProductAngle[] {
   const validBase = (baseImages || []).filter(
-    (u) => typeof u === 'string' && u.length > 0 && !u.includes('unsplash.com') && !u.includes('placeholder')
+    (u) =>
+      typeof u === 'string' &&
+      u.length > 0 &&
+      !u.includes('unsplash.com') &&
+      !u.includes('placeholder') &&
+      !u.toUpperCase().includes('ALIA') &&
+      !u.toUpperCase().includes('KARINA') &&
+      !u.toUpperCase().includes('KAREENA') &&
+      !u.toUpperCase().includes('MADHURI') &&
+      !u.toUpperCase().includes('RASHMIKA') &&
+      !u.toUpperCase().includes('SHREYA') &&
+      !u.toUpperCase().includes('SONALI') &&
+      !u.toUpperCase().includes('KARISHMA') &&
+      !u.toUpperCase().includes('GENELIA') &&
+      !u.toUpperCase().includes('BHAVANA')
   );
 
   // If the product is sourced from stoffastyle.com with authentic studio shots
   if (validBase.length > 0 && validBase.some((u) => u.includes('stoffastyle.com') || u.includes('cdn.shopify.com'))) {
     return validBase.map((url, i) => {
       const u = url.toUpperCase();
-      if (u.includes('ALIA') || u.includes('KARINA') || u.includes('MADHURI') || u.includes('RASHMIKA') || u.includes('SHREYA') || u.includes('SONALI') || u.includes('KARISHMA') || u.includes('GENELIA') || u.includes('BHAVANA')) {
-        return { url, label: 'Celebrity Spotting: Stoffa Style', tag: 'Celebrity Style', shotType: 'hero' };
-      }
       if (u.includes('_A.') || u.includes('_A_') || u.includes('_FRONT')) {
         return { url, label: 'Front Angle Perspective', tag: 'Hero Front', shotType: 'hero' };
       }

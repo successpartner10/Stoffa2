@@ -417,20 +417,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Price & Quick Buy Button */}
         <div className="pt-3 border-t border-stone-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex flex-col">
-            {activeCampaign ? (
-              <div className="flex items-baseline gap-1.5">
-                <span className="font-mono text-base font-bold text-emerald-800">
-                  {formatPrice(discountedPriceUSD)}
-                </span>
-                <span className="font-mono text-xs text-stone-400 line-through">
-                  {formatPrice(product.priceUSD)}
-                </span>
-              </div>
-            ) : (
-              <span className="font-mono text-base font-semibold text-stone-900">
-                {formatPrice(product.priceUSD)}
-              </span>
-            )}
+            <span className="font-mono text-base font-semibold text-stone-900">
+              {formatPrice(activeCampaign ? discountedPriceUSD : product.priceUSD)}
+            </span>
             <span className="text-[10px] text-stone-400 uppercase tracking-wider font-mono">
               {activeCurrency.code} ({activeCurrency.symbol})
             </span>

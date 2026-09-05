@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Compass, ShieldCheck, Sparkles, Waves } from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
 import { STOFFA_BRAND_ASSETS } from '../data/stoffaMediaAssets';
+import heroModelImg from '../assets/images/fashion_hero_model_1788635702143.jpg';
 
 export const Hero: React.FC = () => {
   const { formatPrice, activeCurrency, setSelectedCategory } = useCommerce();
@@ -24,30 +25,26 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="relative overflow-hidden bg-slate-950 text-white">
-      {/* High-Impact Hero Banner directly from stoffastyle.com */}
+      {/* High-Impact AI Fashion Editorial Hero Banner */}
       <div className="relative min-h-[500px] sm:min-h-[560px] lg:min-h-[620px] flex items-center justify-center">
-        {/* Background Image from stoffastyle.com */}
+        {/* Background Image: AI Generated Fashion Model with Stoffa Wedges & Clutch */}
         <img
-          src={STOFFA_BRAND_ASSETS.heroBanner}
-          alt="Stoffa Style New Arrivals Banner from stoffastyle.com"
+          src={heroModelImg}
+          alt="Stoffa Style High Fashion Editorial Collection"
           referrerPolicy="no-referrer"
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-75"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-85"
         />
 
         {/* Soft harmonious gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/50 to-slate-950/75" />
-        <div className="absolute inset-0 bg-radial from-transparent via-transparent to-slate-950/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/60 to-slate-950/75" />
+        <div className="absolute inset-0 bg-radial from-transparent via-transparent to-slate-950/70" />
 
         {/* Hero Content Box */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-16 sm:py-24 flex flex-col items-center">
-          {/* Logo Badge */}
+          {/* Tag Badge */}
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-mono tracking-widest uppercase mb-4 shadow-sm">
-            <img
-              src={STOFFA_BRAND_ASSETS.logo}
-              alt="Stoffa Style Logo"
-              className="h-4 w-auto brightness-0 invert"
-            />
-            <span className="font-semibold tracking-widest">HANDCRAFTED IN MUMBAI &bull; STOFFASTYLE.COM</span>
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span className="font-bold tracking-widest">HANDCRAFTED LUXURY &bull; STOFFASTYLE.COM</span>
           </div>
 
           {/* Headline */}

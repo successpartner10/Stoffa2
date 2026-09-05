@@ -1,6 +1,7 @@
 import React from 'react';
 import { Minus, Plus, ShieldCheck, ShoppingBag, Trash2, X } from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
+import { BasketCartIcon } from './BasketCartIcon';
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -35,8 +36,8 @@ export const CartDrawer: React.FC = () => {
         <div className="w-screen max-w-md bg-[#faf9f6] border-l border-stone-200 text-stone-900 shadow-2xl flex flex-col">
           {/* Header */}
           <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-white">
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-stone-900" />
+            <div className="flex items-center gap-2.5">
+              <BasketCartIcon className="w-5 h-5 text-stone-900 stroke-[1.8]" />
               <h2 className="font-serif text-lg font-bold text-stone-950 uppercase tracking-wider">
                 {t('cart')} ({cart.reduce((a, b) => a + b.quantity, 0)})
               </h2>
@@ -53,7 +54,7 @@ export const CartDrawer: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-5 space-y-4">
             {cart.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
-                <ShoppingBag className="w-12 h-12 text-stone-400 stroke-1" />
+                <BasketCartIcon className="w-12 h-12 text-stone-400 stroke-1" size={48} />
                 <p className="text-stone-950 font-serif text-xl font-bold">{t('cart_empty') || 'Your cart is empty'}</p>
                 <p className="text-xs text-stone-600 max-w-xs font-medium">
                   Explore our handcrafted footwear and Tuscan leather bags with 1-click quick buy.

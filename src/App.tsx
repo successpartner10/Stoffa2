@@ -20,22 +20,39 @@ import { EdgeToEdgeNewArrivals } from './components/EdgeToEdgeNewArrivals';
 import { BeachToTableStory } from './components/BeachToTableStory';
 import { VacationAccessoriesScroll } from './components/VacationAccessoriesScroll';
 import { CategoryCollectionSection } from './components/CategoryCollectionSection';
+import { CollectionsDirectoryView } from './components/CollectionsDirectoryView';
 import { Footer } from './components/Footer';
 import { CommerceProvider, useCommerce } from './context/CommerceContext';
 
 const StorefrontContent: React.FC = () => {
   const { selectedCategory, setSelectedCategory } = useCommerce();
 
+  const isCollectionsDirectory =
+    selectedCategory === 'Collections' ||
+    selectedCategory === 'The Collections' ||
+    selectedCategory === 'all-collections';
+
   const isCategoryFiltered = selectedCategory !== 'All' && Boolean(selectedCategory);
 
   return (
     <div className="bg-[#faf9f6]">
-      {/* If category is active, show the focused Category Collection View right at top */}
-      {isCategoryFiltered ? (
+      {/* If viewing the 15 Collections Directory 1-Page 3-Column View */}
+      {isCollectionsDirectory ? (
+        <div className="space-y-12 pb-16">
+          <CollectionsDirectoryView
+            onSelectCollection={(col) => setSelectedCategory(col)}
+            onBackToHome={() => setSelectedCategory('All')}
+          />
+          <EdgeToEdgeNewArrivals />
+          <BeachToTableStory />
+        </div>
+      ) : isCategoryFiltered ? (
+        /* If category is active, show the focused Category Collection View right at top */
         <div className="space-y-12 pb-16">
           <CategoryCollectionSection
             categoryTitle={selectedCategory}
             onBackToHome={() => setSelectedCategory('All')}
+            onBackToCollections={() => setSelectedCategory('Collections')}
           />
           <EdgeToEdgeNewArrivals />
           <BeachToTableStory />

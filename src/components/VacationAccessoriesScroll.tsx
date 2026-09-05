@@ -44,7 +44,7 @@ export const VacationAccessoriesScroll: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-amber-800 font-bold mb-1">
             <Compass className="w-3.5 h-3.5 text-amber-600" />
-            <span>Handcrafted Edits &bull; stoffastyle.com</span>
+            <span>Handcrafted Edits</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-serif text-slate-900 font-medium tracking-tight">
             Embellished Potlis & Artisanal Flats

@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
+  Check,
   ChevronDown,
   Globe,
-  ShoppingBag,
-  Sparkles,
   ShieldCheck,
   FileSpreadsheet,
   LogOut,
@@ -13,7 +12,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
-import { SeashellLogo } from './SeashellLogo';
+import { BasketCartIcon } from './BasketCartIcon';
 
 interface ShoeSubItem {
   id: string;
@@ -25,6 +24,8 @@ export const Navbar: React.FC = () => {
   const {
     activeLanguage,
     setIsLanguageModalOpen,
+    languages,
+    setLanguage,
     cart,
     setIsCartOpen,
     setViewMode,
@@ -40,12 +41,18 @@ export const Navbar: React.FC = () => {
 
   const [shoesDropdownOpen, setShoesDropdownOpen] = useState(false);
   const [collectionsDropdownOpen, setCollectionsDropdownOpen] = useState(false);
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileShoesExpanded, setMobileShoesExpanded] = useState(true);
   const [mobileCollectionsExpanded, setMobileCollectionsExpanded] = useState(false);
 
   const shoesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const collectionsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const languageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Supported languages for quick hover selection
+  const targetLanguageCodes = ['en', 'fr', 'es', 'de', 'it', 'pt'];
+  const quickLanguages = languages.filter((l) => targetLanguageCodes.includes(l.code));
 
   const totalCartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -79,13 +86,54 @@ export const Navbar: React.FC = () => {
   ];
 
   const collectionSubItems = [
-    { label: 'Bridal Wedges', filterValue: 'Bridal Wedges' },
-    { label: 'High Wedges (3.5")', filterValue: 'High wedges - 3.5 inch' },
-    { label: 'Kolhapuri Flats', filterValue: 'Flats' },
-    { label: 'Low Wedges (2.5")', filterValue: 'Low wedges - 2.5 inch' },
-    { label: 'Block Heels', filterValue: 'Block Heels' },
-    { label: 'Bags & Potlis', filterValue: 'Bags' },
-    { label: 'View All Collections', filterValue: 'Collections' },
+    { label: 'Bride on Her Feet', filterValue: 'Bride on Her Feet' },
+    { label: 'Mother of the Bride', filterValue: 'Mother of the Bride' },
+    { label: 'The Bridesmaid Edit', filterValue: 'The Bridesmaid Edit' },
+    { label: 'The Destination Bride', filterValue: 'The Destination Bride' },
+    { label: 'The Sangeet Ceremony', filterValue: 'The Sangeet Ceremony' },
+    { label: 'Something Blue', filterValue: 'Something Blue' },
+    { label: 'Prom Night', filterValue: 'Prom Night' },
+    { label: 'Quinceañera Glam', filterValue: 'Quinceañera Glam' },
+    { label: 'Cruise Ready', filterValue: 'Cruise Ready' },
+    { label: 'The Holiday Edit', filterValue: 'The Holiday Edit' },
+    { label: 'Garden Party', filterValue: 'Garden Party' },
+    { label: 'Red Carpet Ready', filterValue: 'Red Carpet Ready' },
+    { label: 'Christmas Brunch', filterValue: 'Christmas Brunch' },
+    { label: "Girls' Night Out", filterValue: "Girls' Night Out" },
+    { label: 'Date Night', filterValue: 'Date Night' },
+  ];
+
+  const collectionThemedGroups = [
+    {
+      theme: 'Wedding & Ceremonies',
+      items: [
+        { label: 'Bride on Her Feet', filterValue: 'Bride on Her Feet' },
+        { label: 'Mother of the Bride', filterValue: 'Mother of the Bride' },
+        { label: 'The Bridesmaid Edit', filterValue: 'The Bridesmaid Edit' },
+        { label: 'The Destination Bride', filterValue: 'The Destination Bride' },
+        { label: 'The Sangeet Ceremony', filterValue: 'The Sangeet Ceremony' },
+        { label: 'Something Blue', filterValue: 'Something Blue' },
+      ],
+    },
+    {
+      theme: 'Galas & Celebrations',
+      items: [
+        { label: 'Red Carpet Ready', filterValue: 'Red Carpet Ready' },
+        { label: 'Prom Night', filterValue: 'Prom Night' },
+        { label: 'Quinceañera Glam', filterValue: 'Quinceañera Glam' },
+        { label: 'Garden Party', filterValue: 'Garden Party' },
+        { label: 'Christmas Brunch', filterValue: 'Christmas Brunch' },
+      ],
+    },
+    {
+      theme: 'Resort & Evenings',
+      items: [
+        { label: 'Cruise Ready', filterValue: 'Cruise Ready' },
+        { label: 'The Holiday Edit', filterValue: 'The Holiday Edit' },
+        { label: "Girls' Night Out", filterValue: "Girls' Night Out" },
+        { label: 'Date Night', filterValue: 'Date Night' },
+      ],
+    },
   ];
 
   const handleSelectNav = (filterValue: string) => {
@@ -139,6 +187,25 @@ export const Navbar: React.FC = () => {
     }, 150);
   };
 
+  const handleLanguageMouseEnter = () => {
+    if (languageTimeoutRef.current) clearTimeout(languageTimeoutRef.current);
+    setLanguageDropdownOpen(true);
+  };
+
+  const handleLanguageMouseLeave = () => {
+    languageTimeoutRef.current = setTimeout(() => {
+      setLanguageDropdownOpen(false);
+    }, 180);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (shoesTimeoutRef.current) clearTimeout(shoesTimeoutRef.current);
+      if (collectionsTimeoutRef.current) clearTimeout(collectionsTimeoutRef.current);
+      if (languageTimeoutRef.current) clearTimeout(languageTimeoutRef.current);
+    };
+  }, []);
+
   // Check if current category matches Shoes or one of its 5 children
   const isShoesActive =
     selectedCategory === 'Shoes' ||
@@ -190,36 +257,7 @@ export const Navbar: React.FC = () => {
         </div>
       )}
 
-      {/* 1. Top Announcement Bar in Clean High-Contrast Dark Slate */}
-      <div className="bg-[#0f172a] text-white px-4 sm:px-8 py-2.5 flex items-center justify-between gap-4 border-b border-slate-800">
-        {/* Left: Brand Announcement with larger bold font */}
-        <div className="flex items-center gap-2.5 text-xs sm:text-sm font-bold tracking-wider">
-          <Sparkles className="w-4 h-4 text-amber-400 shrink-0 animate-pulse" />
-          <span className="font-serif tracking-widest text-amber-100 uppercase hidden md:inline">
-            ACCESSOIREE LUXURY ✦ ALL PRICES EXCLUSIVELY IN USD ($) ✦ COMPLIMENTARY WORLDWIDE EXPRESS DELIVERY
-          </span>
-          <span className="font-serif tracking-widest text-amber-100 uppercase md:hidden">
-            ACCESSOIREE LUXURY ✦ USD ($)
-          </span>
-        </div>
-
-        {/* Top Right: Language Selector */}
-        <div className="flex items-center gap-3 shrink-0 ms-auto">
-          <button
-            id="navbar-language-modal-btn"
-            onClick={() => setIsLanguageModalOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold transition-all cursor-pointer border border-white/20 shadow-2xs hover:border-amber-300"
-            title="Select storefront language"
-          >
-            <Globe className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-            <span className="tracking-wide">
-              {activeLanguage.nativeName || activeLanguage.name}
-            </span>
-          </button>
-        </div>
-      </div>
-
-      {/* 2. Main Brand Header Row (Crisp White with centered luxury typography) */}
+      {/* Main Brand Header Row (Crisp White with centered luxury typography) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 flex items-center justify-between gap-4">
         {/* Left: Mobile Menu Toggle or Spacer */}
         <div className="w-1/4 sm:w-1/3 flex items-center">
@@ -231,51 +269,137 @@ export const Navbar: React.FC = () => {
           >
             <Menu className="w-6 h-6" />
           </button>
-          <div className="hidden md:block">
-            <span className="text-xs uppercase font-bold tracking-[0.2em] text-stone-700">
-              Est. 2026 • Mumbai &amp; New York
-            </span>
-          </div>
         </div>
 
-        {/* Center: Brand Identity with less bold, 20% smaller typography */}
+        {/* Center: Brand Identity - Only Text Logo */}
         <div className="flex-1 flex justify-center text-center">
           <button
             id="brand-logo-btn"
             onClick={handleLogoClick}
-            className="flex flex-col items-center group cursor-pointer"
+            className="flex flex-col items-center group cursor-pointer py-1"
           >
-            <div className="transition-transform duration-300 group-hover:scale-105 mb-1">
-              <SeashellLogo size={36} />
-            </div>
             <span className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] tracking-[0.18em] text-stone-900 font-medium lowercase transition-colors group-hover:text-stone-950 leading-none">
               accessoiree
             </span>
           </button>
         </div>
 
-        {/* Right: Walker & Wade Inspired Cart Icon & Count */}
-        <div className="w-1/4 sm:w-1/3 flex items-center justify-end gap-3">
+        {/* Right: Language Selector with hover dropdown and visual indicator just to the left of Cart */}
+        <div className="w-1/4 sm:w-1/3 flex items-center justify-end gap-2 sm:gap-4">
+          {/* Language Selector with visual indicator & choose/select on hover */}
+          <div
+            className="relative"
+            onMouseEnter={handleLanguageMouseEnter}
+            onMouseLeave={handleLanguageMouseLeave}
+          >
+            <button
+              id="navbar-language-btn"
+              onClick={() => setLanguageDropdownOpen((prev) => !prev)}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer group ${
+                languageDropdownOpen
+                  ? 'border-stone-300 bg-stone-100 text-stone-950'
+                  : 'border-transparent hover:border-stone-200 hover:bg-stone-50 text-[#243c68] hover:text-stone-950'
+              }`}
+              title="Select storefront language"
+              aria-label="Select storefront language"
+              aria-haspopup="true"
+              aria-expanded={languageDropdownOpen}
+            >
+              <Globe className="w-4 h-4 text-[#243c68] group-hover:text-stone-950 transition-colors shrink-0" />
+              <span className="text-[14px] sm:text-base font-medium tracking-normal">
+                {activeLanguage.nativeName || activeLanguage.name}
+              </span>
+              {/* Visual indicator to select/dropdown language */}
+              <ChevronDown
+                className={`w-3.5 h-3.5 text-stone-500 group-hover:text-stone-900 transition-transform duration-200 shrink-0 ${
+                  languageDropdownOpen ? 'rotate-180 text-stone-950' : ''
+                }`}
+              />
+            </button>
+
+            {/* Hover dropdown to choose or select language */}
+            {languageDropdownOpen && (
+              <div
+                className="absolute right-0 top-full pt-1.5 z-50 w-56 animate-in fade-in slide-in-from-top-1 duration-150"
+                onMouseEnter={handleLanguageMouseEnter}
+                onMouseLeave={handleLanguageMouseLeave}
+              >
+                <div className="bg-white rounded-xl shadow-xl border border-stone-200 p-2 text-stone-900 ring-1 ring-black/5">
+                  <div className="px-2.5 py-1.5 mb-1 border-b border-stone-100 flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                      Select Language
+                    </span>
+                    <span className="text-[10px] text-stone-400 font-mono font-semibold">
+                      {activeLanguage.code.toUpperCase()}
+                    </span>
+                  </div>
+
+                  <div className="space-y-0.5 max-h-64 overflow-y-auto">
+                    {quickLanguages.map((lang) => {
+                      const isSelected = activeLanguage.code === lang.code;
+                      return (
+                        <button
+                          key={lang.code}
+                          id={`quick-lang-select-${lang.code}`}
+                          onClick={() => {
+                            setLanguage(lang.code);
+                            setLanguageDropdownOpen(false);
+                          }}
+                          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left text-sm transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-teal-50 text-teal-950 font-bold'
+                              : 'text-stone-700 hover:bg-stone-100 hover:text-stone-950'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <span className="text-base leading-none">{lang.flag}</span>
+                            <span className="text-[13px]">{lang.nativeName || lang.name}</span>
+                          </div>
+                          {isSelected ? (
+                            <Check className="w-3.5 h-3.5 text-teal-800 shrink-0" />
+                          ) : (
+                            <span className="text-[10px] text-stone-400 font-mono uppercase">
+                              {lang.code}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-1 pt-1.5 border-t border-stone-100">
+                    <button
+                      onClick={() => {
+                        setLanguageDropdownOpen(false);
+                        setIsLanguageModalOpen(true);
+                      }}
+                      className="w-full text-center py-1 text-[11px] font-medium text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
+                    >
+                      More Language Options &rarr;
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <button
             id="cart-toggle-btn"
             onClick={() => setIsCartOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full border border-stone-300 hover:border-stone-950 bg-white hover:bg-stone-50 text-stone-950 transition-all shadow-2xs hover:shadow-sm cursor-pointer group"
+            className="flex items-center gap-2 sm:gap-2.5 text-[#243c68] hover:text-stone-950 transition-colors cursor-pointer group py-1.5 px-1"
             aria-label="View Shopping Cart"
           >
+            <span className="text-[15px] sm:text-base font-medium tracking-normal">
+              {t('cart') || 'Cart'}
+            </span>
             <div className="relative flex items-center justify-center">
-              <ShoppingBag className="w-5 h-5 text-stone-900 stroke-[1.75] group-hover:scale-105 transition-transform" />
+              <BasketCartIcon className="w-5 h-5 stroke-[1.8] group-hover:scale-105 transition-transform" />
               {totalCartCount > 0 && (
-                <span className="absolute -top-1.5 -right-2 w-4 h-4 rounded-full bg-stone-950 text-white text-[10px] font-bold flex items-center justify-center font-mono">
+                <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-stone-950 text-white text-[10px] font-bold flex items-center justify-center font-mono">
                   {totalCartCount}
                 </span>
               )}
             </div>
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-[0.14em]">
-              {t('cart')}
-            </span>
-            <span className="text-xs font-mono font-semibold text-stone-600">
-              ({totalCartCount})
-            </span>
           </button>
         </div>
       </div>
@@ -442,26 +566,30 @@ export const Navbar: React.FC = () => {
                     : 'opacity-0 translate-y-2 pointer-events-none invisible'
                 }`}
               >
-                <div className="w-[300px] bg-white rounded-2xl shadow-2xl border border-stone-200/90 overflow-hidden py-3">
-                  <div className="px-5 py-2.5 border-b border-stone-100 bg-stone-50/80">
-                    <span className="text-[11px] uppercase tracking-[0.18em] font-extrabold text-stone-800">
-                      Curated Editions
-                    </span>
-                  </div>
-                  <div className="py-2">
-                    {collectionSubItems.map((c) => (
-                      <button
-                        key={c.label}
-                        onClick={() => handleSelectNav(c.filterValue)}
-                        className={`w-full px-5 py-2.5 text-left text-sm font-bold tracking-wide transition-colors cursor-pointer flex items-center justify-between ${
-                          selectedCategory === c.filterValue
-                            ? 'bg-amber-50 text-stone-950 border-l-4 border-stone-950'
-                            : 'text-stone-900 hover:bg-stone-50 hover:text-stone-950'
-                        }`}
-                      >
-                        <span>{c.label}</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 hover:opacity-100 text-stone-500" />
-                      </button>
+                <div className="w-[680px] bg-white rounded-2xl shadow-2xl border border-stone-200/90 overflow-hidden py-3">
+                  {/* 3 Themed Columns as requested */}
+                  <div className="p-4 grid grid-cols-3 gap-4">
+                    {collectionThemedGroups.map((group) => (
+                      <div key={group.theme} className="space-y-1.5">
+                        <div className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-amber-900 border-b border-stone-200 pb-1.5 mb-2">
+                          {group.theme}
+                        </div>
+                        <div className="space-y-0.5">
+                          {group.items.map((c) => (
+                            <button
+                              key={c.label}
+                              onClick={() => handleSelectNav(c.filterValue)}
+                              className={`w-full px-2 py-1.5 text-left text-xs sm:text-[13px] font-semibold tracking-wide rounded-lg transition-colors cursor-pointer flex items-center justify-between ${
+                                selectedCategory === c.filterValue
+                                  ? 'bg-amber-50 text-stone-950 border-l-2 border-stone-950 font-bold'
+                                  : 'text-stone-800 hover:bg-stone-50 hover:text-stone-950'
+                              }`}
+                            >
+                              <span className="truncate">{c.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -600,15 +728,31 @@ export const Navbar: React.FC = () => {
                   />
                 </button>
                 {mobileCollectionsExpanded && (
-                  <div className="pl-3 py-2 space-y-2 border-l-2 border-stone-200 ml-2 mt-2">
-                    {collectionSubItems.map((c) => (
-                      <button
-                        key={c.label}
-                        onClick={() => handleSelectNav(c.filterValue)}
-                        className="w-full text-left py-1 text-base font-semibold text-stone-800 hover:text-stone-950"
-                      >
-                        {c.label}
-                      </button>
+                  <div className="pl-3 py-2 space-y-3 border-l-2 border-stone-200 ml-2 mt-2">
+                    {collectionThemedGroups.map((group) => (
+                      <div key={group.theme} className="space-y-1">
+                        <div className="text-[10px] uppercase font-bold tracking-[0.16em] text-amber-900 pt-1 pb-0.5">
+                          {group.theme}
+                        </div>
+                        <div className="space-y-0.5 pl-1.5 border-l border-stone-200">
+                          {group.items.map((c) => (
+                            <button
+                              key={c.label}
+                              onClick={() => handleSelectNav(c.filterValue)}
+                              className={`w-full text-left py-1.5 px-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-between ${
+                                selectedCategory === c.filterValue
+                                  ? 'bg-amber-100 text-stone-950 font-bold'
+                                  : 'text-stone-800 hover:text-stone-950 hover:bg-stone-50'
+                              }`}
+                            >
+                              <span>{c.label}</span>
+                              {selectedCategory === c.filterValue && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-stone-950" />
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 )}

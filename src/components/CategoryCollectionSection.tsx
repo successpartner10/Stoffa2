@@ -13,6 +13,7 @@ import { Product } from '../types';
 interface CategoryCollectionSectionProps {
   categoryTitle: string;
   onBackToHome?: () => void;
+  onBackToCollections?: () => void;
 }
 
 export function formatStoffaDisplayTitle(product: Product): { mainTitle: string; colorTitle: string } {
@@ -38,6 +39,7 @@ export function formatStoffaDisplayTitle(product: Product): { mainTitle: string;
 export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps> = ({
   categoryTitle,
   onBackToHome,
+  onBackToCollections,
 }) => {
   const {
     products,
@@ -57,6 +59,23 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
   const [selectedPriceFilter, setSelectedPriceFilter] = useState<string>('all');
   const [isSortMenuOpen, setIsSortMenuOpen] = useState(false);
 
+  // Helper functions for strict classification:
+  // Strictly separates shoes from bags: no bags when under shoes, no shoes when in bags
+  const isBagProduct = (p: Product): boolean => {
+    const cat = (p.category || '').toLowerCase();
+    const col = (p.collection || '').toLowerCase();
+    const title = (p.title || '').toLowerCase();
+    if (cat === 'bags' || col.includes('bags & potlis') || col.includes('bag')) return true;
+    if (/\b(bag|bags|potli|potlis|clutch|clutches|tote|totes|handbag|handbags)\b/i.test(title)) {
+      if (!title.includes('baguette flats') && !title.includes('baguette low') && !title.includes('baguette high')) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const isShoeProduct = (p: Product): boolean => !isBagProduct(p);
+
   // Normalize categoryTitle matching
   const normalizedTitle = categoryTitle.toLowerCase().trim();
 
@@ -67,29 +86,38 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
     const pTitle = p.title.toLowerCase();
     const pColors = p.colors.map((c) => c.name.toLowerCase());
     const pSubtitle = (p.subtitle || '').toLowerCase();
+    const occs = (p.occasions || []).map((o) => o.toLowerCase());
+    const badge = (p.badge || '').toLowerCase();
 
     if (normalizedTitle === 'all' || normalizedTitle === 'home') return true;
 
-    // 1. Low wedges - 2.5 inch (from handwritten note)
+    // ==========================================
+    // 1. STRICT SHOE SUB-MENUS (NO BAGS ALLOWED)
+    // ==========================================
+
+    // 1a. Low wedges - 2.5 inch
     if (
       normalizedTitle.includes('2.5') ||
       normalizedTitle.includes('low wedge') ||
       normalizedTitle === 'low wedges - 2.5 inch'
     ) {
+      if (!isShoeProduct(p)) return false;
       return (
         pCollection.includes('low wedge') ||
         pTitle.includes('2.5') ||
-        pTitle.includes('low') ||
-        pCollection.includes('low')
+        pTitle.includes('2.25') ||
+        pCollection.includes('low') ||
+        (pTitle.includes('low') && pTitle.includes('wedge'))
       );
     }
 
-    // 3. Higher wedge - 4.25 inch (check BEFORE high wedges to avoid collisions)
+    // 1b. Higher wedge - 4.25 inch (check BEFORE high wedges to avoid collisions)
     if (
       normalizedTitle.includes('4.25') ||
       normalizedTitle.includes('higher wedge') ||
       normalizedTitle === 'higher wedge - 4.25 inch'
     ) {
+      if (!isShoeProduct(p)) return false;
       return (
         pCollection.includes('higher wedge') ||
         pTitle.includes('4.25') ||
@@ -97,34 +125,38 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
       );
     }
 
-    // 2. High wedges - 3.5 inch (from handwritten note)
+    // 1c. High wedges - 3.5 inch
     if (
       normalizedTitle.includes('3.5') ||
       normalizedTitle.includes('high wedge') ||
       normalizedTitle === 'high wedges - 3.5 inch'
     ) {
+      if (!isShoeProduct(p)) return false;
       return (
         (pCollection.includes('high wedge') ||
           pTitle.includes('3.5') ||
           pTitle.includes('high k') ||
-          pTitle.includes('classic high')) &&
+          pTitle.includes('classic high') ||
+          (pTitle.includes('high') && pTitle.includes('wedge'))) &&
         !pCollection.includes('higher') &&
         !pTitle.includes('higher') &&
         !pTitle.includes('4.25')
       );
     }
 
-    // 4. Block Heels (from handwritten note)
+    // 1d. Block Heels
     if (normalizedTitle.includes('block') || normalizedTitle === 'block heels') {
+      if (!isShoeProduct(p)) return false;
       return pCollection.includes('block') || pTitle.includes('block');
     }
 
-    // 5. Flats (from handwritten note)
+    // 1e. Flats (Strictly flats and loafers, no bags like Border Flat Bag)
     if (
-      normalizedTitle.includes('flat') ||
+      normalizedTitle === 'flats' ||
       normalizedTitle.includes('kolhapuri') ||
-      normalizedTitle === 'flats'
+      normalizedTitle === 'flats & loafers'
     ) {
+      if (!isShoeProduct(p)) return false;
       return (
         pCollection.includes('flat') ||
         pCat.includes('flat') ||
@@ -133,33 +165,211 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
       );
     }
 
-    // Shoes (All Footwear)
+    // 1f. Shoes / Footwear general category (ALL shoes, STRICTLY NO bags)
     if (normalizedTitle === 'shoes' || normalizedTitle === 'footwear') {
-      return !pCat.includes('bag') && !pTitle.includes('bag') && !pTitle.includes('potli');
+      return isShoeProduct(p);
     }
 
-    // Bags & Handcrafted Totes
-    if (normalizedTitle.includes('bag') || normalizedTitle.includes('tote') || normalizedTitle.includes('potli')) {
+    // ==========================================
+    // 2. STRICT BAGS & ACCESSORIES (NO SHOES)
+    // ==========================================
+    if (
+      normalizedTitle === 'bags' ||
+      normalizedTitle === 'bags & potlis' ||
+      normalizedTitle.includes('potli') ||
+      normalizedTitle.includes('clutch') ||
+      normalizedTitle.includes('tote') ||
+      normalizedTitle === 'accessories'
+    ) {
+      return isBagProduct(p);
+    }
+
+    // ==========================================
+    // 3. THE 14 USER-REQUESTED CURATED COLLECTIONS
+    // ==========================================
+
+    // Collection 1: Bride on Her Feet (Comfortable bridal footwear for standing & dancing)
+    if (normalizedTitle === 'bride on her feet') {
+      if (!isShoeProduct(p)) return false;
       return (
-        pCat.includes('bag') ||
-        pCat.includes('accessories') ||
-        pTitle.includes('bag') ||
+        badge.includes('bridal') ||
+        pTitle.includes('bridal') ||
+        pTitle.includes('crystal') ||
+        pCollection.includes('low wedge') ||
+        pCollection.includes('kolhapuri flats') ||
+        pColors.some((c) => ['champagne', 'gold', 'light gold', 'rose gold', 'silver', 'white'].includes(c))
+      ) && (occs.includes('wedding') || pCollection.includes('wedge') || pCollection.includes('flat'));
+    }
+
+    // Collection 2: Mother of the Bride (Refined low wedges, block heels, metallic accessories)
+    if (normalizedTitle === 'mother of the bride') {
+      return (
+        pCollection.includes('low wedge') ||
+        pCollection.includes('block') ||
+        pTitle.includes('border clutch') ||
+        pTitle.includes('border flat bag') ||
+        pColors.some((c) => ['champagne', 'pewter', 'antique', 'silver', 'gold', 'light gold'].includes(c))
+      ) && (pCollection.includes('low') || pCollection.includes('block') || isBagProduct(p) || pTitle.includes('classic'));
+    }
+
+    // Collection 3: The Bridesmaid Edit (Festive flats, block heels, shimmering potlis)
+    if (normalizedTitle === 'the bridesmaid edit') {
+      return (
+        pCollection.includes('kolhapuri flats') ||
+        pCollection.includes('block') ||
         pTitle.includes('potli') ||
-        pTitle.includes('clutch') ||
-        pTitle.includes('tote')
+        pTitle.includes('baguette') ||
+        pColors.some((c) => ['rose gold', 'champagne', 'light gold', 'pink', 'gold'].includes(c))
       );
     }
 
-    // Just In / Latest Arrivals
-    if (
-      normalizedTitle.includes('latest') ||
-      normalizedTitle.includes('new arrival') ||
-      normalizedTitle.includes('just in')
-    ) {
-      return p.isNewArrival || Boolean(p.badge?.includes('NEW'));
+    // Collection 4: The Destination Bride (Outdoor/resort wedding wedges, lawn/sand-friendly, braided)
+    if (normalizedTitle === 'the destination bride') {
+      return (
+        pCollection.includes('wedge') &&
+        (pColors.some((c) => ['gold', 'rose gold', 'champagne', 'light gold', 'tan', 'camel'].includes(c)) ||
+          pTitle.includes('bridal') ||
+          pTitle.includes('braided') ||
+          pTitle.includes('tassel') ||
+          occs.includes('resort'))
+      );
     }
 
-    // Collections
+    // Collection: The Sangeet Ceremony (Dance-floor comfort, festive sparkle, low wedges, block heels, shimmering potlis)
+    if (normalizedTitle === 'the sangeet ceremony' || normalizedTitle.includes('sangeet')) {
+      return (
+        pCollection.includes('low wedge') ||
+        pCollection.includes('block') ||
+        pCollection.includes('kolhapuri flats') ||
+        pTitle.includes('crystal') ||
+        pTitle.includes('baguette') ||
+        pTitle.includes('potli') ||
+        pTitle.includes('clutch')
+      ) && (
+        pColors.some((c) => ['gold', 'rose gold', 'champagne', 'light gold', 'silver', 'pewter', 'antique gold', 'pink'].includes(c)) ||
+        occs.includes('wedding') ||
+        occs.includes('festive') ||
+        occs.includes('party') ||
+        isBagProduct(p)
+      );
+    }
+
+    // Collection 5: Something Blue (Navy, ink, blue tones & icy silver crystal pairings)
+    if (normalizedTitle === 'something blue') {
+      return (
+        pColors.some((c) => c.includes('navy') || c.includes('blue') || c.includes('ink') || c.includes('silver') || c.includes('pewter')) ||
+        pTitle.includes('navy') ||
+        pTitle.includes('ink') ||
+        pTitle.includes('blue') ||
+        pTitle.includes('silver') ||
+        pTitle.includes('pewter')
+      );
+    }
+
+    // Collection 6: Prom Night (High wedges, baguette crystal flats & heels, glam clutches)
+    if (normalizedTitle === 'prom night') {
+      return (
+        pCollection.includes('high wedge') ||
+        pCollection.includes('higher wedge') ||
+        pTitle.includes('crystal') ||
+        pTitle.includes('baguette') ||
+        pTitle.includes('clutch') ||
+        pColors.some((c) => ['rose gold', 'silver', 'gold', 'light gold'].includes(c))
+      );
+    }
+
+    // Collection 7: Quinceañera Glam (Princess crystal embellishments, rose gold, celebratory potlis)
+    if (
+      normalizedTitle === 'quinceañera glam' ||
+      normalizedTitle.includes('quinceanera') ||
+      normalizedTitle.includes('quinceañera')
+    ) {
+      return (
+        pTitle.includes('crystal') ||
+        pTitle.includes('embellished') ||
+        pTitle.includes('potli') ||
+        pColors.some((c) => ['rose gold', 'gold', 'light gold', 'champagne'].includes(c))
+      );
+    }
+
+    // Collection 8: Cruise Ready (Effortless resort comfort, braided slide flats, 2.5" wedges, warm neutrals)
+    if (normalizedTitle === 'cruise ready') {
+      return (
+        pCollection.includes('low wedge') ||
+        pCollection.includes('kolhapuri flats') ||
+        pTitle.includes('braided') ||
+        pTitle.includes('tassel') ||
+        pColors.some((c) => ['camel', 'tan', 'taupe', 'gold', 'light gold'].includes(c))
+      );
+    }
+
+    // Collection 9: The Holiday Edit (Festive golds, rich pewter, black crystal, statement potlis)
+    if (normalizedTitle === 'the holiday edit') {
+      return (
+        pTitle.includes('potli') ||
+        pTitle.includes('crystal') ||
+        pColors.some((c) => ['black', 'pewter', 'gold', 'antique'].includes(c)) ||
+        badge.includes('best')
+      );
+    }
+
+    // Collection 10: Garden Party (Grass-stable block heels, low wedges, airy flats, neutral tones)
+    if (normalizedTitle === 'garden party') {
+      return (
+        pCollection.includes('block') ||
+        pCollection.includes('low wedge') ||
+        (pCollection.includes('flat') &&
+          (pColors.some((c) => ['camel', 'tan', 'taupe', 'light gold', 'rose gold'].includes(c)) ||
+            pTitle.includes('braided')))
+      );
+    }
+
+    // Collection 11: Red Carpet Ready (Celebrity-worn statement pieces, crystal drama, sculptural wedges)
+    if (normalizedTitle === 'red carpet ready') {
+      return (
+        badge.includes('worn by') ||
+        pTitle.includes('crystal') ||
+        pCollection.includes('higher wedge') ||
+        pSubtitle.includes('worn by') ||
+        badge.includes('bridal edit')
+      );
+    }
+
+    // Collection 12: Christmas Brunch (Warm festive metallics, champagne flats, border holiday bags & block heels)
+    if (normalizedTitle === 'christmas brunch') {
+      return (
+        pCollection.includes('block') ||
+        (pCollection.includes('flat') && pColors.some((c) => ['gold', 'champagne', 'light gold'].includes(c))) ||
+        pTitle.includes('border') ||
+        pTitle.includes('potli')
+      );
+    }
+
+    // Collection 13: Girls' Night Out (Chic block heels, metallic flats, party clutches & potlis)
+    if (normalizedTitle === "girls' night out" || normalizedTitle.includes('girls')) {
+      return (
+        pCollection.includes('block') ||
+        isBagProduct(p) ||
+        pTitle.includes('baguette') ||
+        pColors.some((c) => ['black', 'rose gold', 'silver', 'gold'].includes(c))
+      );
+    }
+
+    // Collection 14: Date Night (Romantic 2.5" wedges, sleek block heels, black, rose gold & clutches)
+    if (normalizedTitle === 'date night') {
+      return (
+        pCollection.includes('low wedge') ||
+        pCollection.includes('block') ||
+        isBagProduct(p) ||
+        pColors.some((c) => ['black', 'rose gold', 'champagne', 'pewter'].includes(c))
+      );
+    }
+
+    // ==========================================
+    // 4. GENERAL CATEGORIES & EDITORIAL
+    // ==========================================
+
+    // Collections overview
     if (normalizedTitle === 'collections') {
       return true;
     }
@@ -178,17 +388,13 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
       );
     }
 
-    // Heels & Wedges general
-    if (normalizedTitle.includes('heel') || normalizedTitle.includes('wedge')) {
-      return (
-        pCat.includes('heel') ||
-        pCat.includes('shoe') ||
-        pCollection.includes('wedge') ||
-        pCollection.includes('block') ||
-        pTitle.includes('wedge') ||
-        pTitle.includes('heel') ||
-        pTitle.includes('pump')
-      );
+    // Just In / New Arrivals
+    if (
+      normalizedTitle.includes('latest') ||
+      normalizedTitle.includes('new arrival') ||
+      normalizedTitle.includes('just in')
+    ) {
+      return p.isNewArrival || Boolean(p.badge?.includes('NEW'));
     }
 
     // Bridal Wedges
@@ -203,164 +409,6 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
       );
     }
 
-    // Occasion Collection
-    if (normalizedTitle.includes('occasion')) {
-      return (
-        pTitle.includes('crystal') ||
-        pTitle.includes('bridal') ||
-        pTitle.includes('embellished') ||
-        pOccasionsMatch(p, 'wedding') ||
-        pOccasionsMatch(p, 'prom') ||
-        pOccasionsMatch(p, 'cocktail') ||
-        pOccasionsMatch(p, 'festive')
-      );
-    }
-
-    // 1. Resort '26 / Resort Edit
-    if (normalizedTitle.includes('resort')) {
-      return (
-        pCollection.includes('wedge') ||
-        pCat.includes('shoe') ||
-        pColors.some((c) => ['gold', 'champagne', 'rose gold', 'pewter', 'silver', 'camel', 'taupe', 'bronze'].includes(c)) ||
-        pTitle.includes('wedge') ||
-        pTitle.includes('flat')
-      );
-    }
-
-    // 2. The Navy Edit
-    if (normalizedTitle.includes('navy') || normalizedTitle.includes('ink')) {
-      return (
-        pColors.some((c) => c.includes('navy') || c.includes('ink') || c.includes('blue')) ||
-        pTitle.includes('ink') ||
-        pTitle.includes('navy') ||
-        pTitle.includes('blue')
-      );
-    }
-
-    // 3. Soft Neutrals
-    if (normalizedTitle.includes('neutral')) {
-      return (
-        pColors.some((c) => ['taupe', 'camel', 'blush', 'cork', 'champagne', 'gold', 'grey', 'gray'].some((n) => c.includes(n))) ||
-        pTitle.includes('taupe') ||
-        pTitle.includes('camel') ||
-        pTitle.includes('skin') ||
-        pTitle.includes('cork')
-      );
-    }
-
-    // 4. Kaftans / Resort Slip-on Pairings
-    if (normalizedTitle.includes('kaftan')) {
-      return (
-        pTitle.includes('tassel') ||
-        pTitle.includes('skin') ||
-        pTitle.includes('classic') ||
-        pCollection.includes('flat') ||
-        pCollection.includes('low wedge')
-      );
-    }
-
-    // 5. Beach-to-Table Dresses / Dresses
-    if (normalizedTitle.includes('dress')) {
-      return (
-        pCollection.includes('high wedge') ||
-        pCollection.includes('higher wedge') ||
-        pCollection.includes('block') ||
-        pTitle.includes('high k wedge') ||
-        pTitle.includes('block heel')
-      );
-    }
-
-    // 6. Katie Couric Collection / Celebrity Edit
-    if (normalizedTitle.includes('katie') || normalizedTitle.includes('celebrity')) {
-      return (
-        Boolean(p.badge?.includes('WORN')) ||
-        pSubtitle.includes('worn by') ||
-        pSubtitle.includes('madhuri') ||
-        pSubtitle.includes('kareena') ||
-        pSubtitle.includes('alia') ||
-        p.isBestSeller
-      );
-    }
-
-    // 7. What to Pack for Vacation
-    if (normalizedTitle.includes('pack') || normalizedTitle.includes('vacation')) {
-      return (
-        pCollection.includes('flat') ||
-        pCollection.includes('low wedge') ||
-        pCat.includes('bag') ||
-        pTitle.includes('flat') ||
-        pTitle.includes('cork') ||
-        pTitle.includes('potli')
-      );
-    }
-
-    // 8. Eyelets / Embroidered & Zardozi
-    if (normalizedTitle.includes('eyelet')) {
-      return (
-        pTitle.includes('border') ||
-        pTitle.includes('tassel') ||
-        pTitle.includes('braid') ||
-        pTitle.includes('multi') ||
-        pCat.includes('bag')
-      );
-    }
-
-    // 9. Occasion / Bridal / Crystal
-    if (normalizedTitle.includes('occasion')) {
-      return (
-        pTitle.includes('crystal') ||
-        pTitle.includes('bridal') ||
-        pTitle.includes('embellished') ||
-        pOccasionsMatch(p, 'wedding') ||
-        pOccasionsMatch(p, 'festive')
-      );
-    }
-
-    // 10. Labor Day Style Guide
-    if (normalizedTitle.includes('labor day')) {
-      return (
-        pColors.some((c) => ['antique gold', 'pewter', 'slate', 'chocolate', 'black', 'maroon'].some((n) => c.includes(n))) ||
-        pTitle.includes('antique') ||
-        pTitle.includes('pewter') ||
-        pTitle.includes('black')
-      );
-    }
-
-    // 11. Just In / New Arrivals
-    if (normalizedTitle.includes('just in') || normalizedTitle.includes('new arrival')) {
-      return p.isNewArrival;
-    }
-
-    // 12. Best Sellers
-    if (normalizedTitle.includes('best seller')) {
-      return p.isBestSeller;
-    }
-
-    // 13. Separates / Everyday Classics
-    if (normalizedTitle.includes('separate')) {
-      return pCollection.includes('flat') || pCollection.includes('low wedge') || pTitle.includes('flat');
-    }
-
-    // 14. Accessories / Bags & Potlis
-    if (normalizedTitle.includes('accessori') || normalizedTitle.includes('bag')) {
-      return pCat.includes('bag') || pTitle.includes('potli') || pTitle.includes('clutch') || pTitle.includes('tote');
-    }
-
-    // 15. Mommy & Me
-    if (normalizedTitle.includes('mommy')) {
-      return pTitle.includes('bridal') || pTitle.includes('classic') || pTitle.includes('crystal');
-    }
-
-    // 16. Men's
-    if (normalizedTitle.includes("men")) {
-      return pTitle.includes('flat') || pColors.some((c) => ['black', 'taupe', 'camel', 'navy', 'ink'].includes(c));
-    }
-
-    // 17. Sale
-    if (normalizedTitle.includes('sale')) {
-      return Boolean(p.originalPriceUSD && p.originalPriceUSD > p.priceUSD) || Boolean(p.badge?.includes('SALE') || p.badge?.includes('OFF'));
-    }
-
     // Direct text search across title, category, collection, materials
     return (
       pCat.includes(normalizedTitle) ||
@@ -373,6 +421,77 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
   function pOccasionsMatch(p: Product, occ: string): boolean {
     return Array.isArray(p.occasions) && p.occasions.includes(occ as any);
   }
+
+  const getCategorySubtitle = (title: string): string => {
+    const norm = title.toLowerCase().trim();
+    if (norm === 'flats' || norm.includes('kolhapuri')) {
+      return 'Handcrafted artisanal Kolhapuri flats & slides • Pure comfort on everyday feet';
+    }
+    if (norm.includes('2.5') || norm.includes('low wedge')) {
+      return 'Signature 2.5" low wedges with dual-density memory foam for effortless all-day wear';
+    }
+    if (norm.includes('3.5') || norm.includes('high wedge')) {
+      return 'Sculptural 3.5" high wedges pairing classic elevation with balanced comfort';
+    }
+    if (norm.includes('4.25') || norm.includes('higher wedge')) {
+      return 'Statement 4.25" higher wedges engineered for celebratory height and stability';
+    }
+    if (norm.includes('block')) {
+      return 'Handcrafted stable block heels offering contemporary structure and timeless poise';
+    }
+    if (norm === 'shoes' || norm === 'footwear') {
+      return 'Exquisite handcrafted Indian footwear • Wedges, block heels, and Kolhapuri flats';
+    }
+    if (norm === 'bags' || norm.includes('bag') || norm.includes('potli')) {
+      return 'Intricately embroidered border clutches, potlis, and handcrafted luxury evening bags';
+    }
+    if (norm === 'bride on her feet') {
+      return 'Made for the long day, the dance floor and everything after — from the aisle to the after party.';
+    }
+    if (norm === 'mother of the bride') {
+      return 'All the glam, with comfort for the long hours';
+    }
+    if (norm === 'the bridesmaid edit') {
+      return 'Made to complement the bride, without holding you back from the dance floor.';
+    }
+    if (norm === 'the destination bride') {
+      return 'Glamour that travels — from the ceremony to cocktails by the sea.';
+    }
+    if (norm === 'the sangeet ceremony' || norm.includes('sangeet')) {
+      return 'Color and dance a match made in heaven.';
+    }
+    if (norm === 'something blue') {
+      return 'A little blue, a lot of personality — your something blue, with a twist';
+    }
+    if (norm === 'prom night') {
+      return 'The shoes that make the entrance — and keep you dancing all night';
+    }
+    if (norm === 'quinceañera glam' || norm.includes('quinceanera') || norm.includes('quinceañera')) {
+      return 'For her big moment, with the glamour to match every dance.';
+    }
+    if (norm === 'cruise ready') {
+      return 'From daytime exploring to sunset cocktails — one wardrobe, every occasion';
+    }
+    if (norm === 'the holiday edit') {
+      return 'Lightweight in your baggage and versatile glam on your feet';
+    }
+    if (norm === 'garden party') {
+      return 'Glam on the lawns , Height without the stumble.';
+    }
+    if (norm === 'red carpet ready') {
+      return 'Make the entrance. Own the moment. Stay out late.';
+    }
+    if (norm === 'christmas brunch') {
+      return 'Sparkle in comfort indoors,  as hostess or guest.';
+    }
+    if (norm === "girls' night out" || norm.includes('girls')) {
+      return 'Made for the plans that start with “just one drink” and end much later';
+    }
+    if (norm === 'date night') {
+      return 'A little extra glamour, wherever the night takes you.';
+    }
+    return 'Handcrafted luxury footwear & accessories • Exclusively priced in USD';
+  };
 
   // Fallback to all if matching filtered empty
   const baseList = matchingProducts.length > 0 ? matchingProducts : products;
@@ -459,13 +578,36 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
     <section id="category-products-section" className="w-full bg-white py-6 sm:py-10 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* Navigation Breadcrumb / Back Action */}
+        <div className="flex items-center gap-3 mb-4">
+          {onBackToCollections && (
+            <button
+              id="back-to-collections-directory-btn"
+              onClick={onBackToCollections}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-900 rounded-full text-xs font-bold uppercase tracking-[0.14em] transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to Collections</span>
+            </button>
+          )}
+          {onBackToHome && (
+            <button
+              id="back-to-home-btn"
+              onClick={onBackToHome}
+              className="inline-flex items-center gap-1 text-xs uppercase font-bold tracking-[0.14em] text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
+            >
+              <span>Home</span>
+            </button>
+          )}
+        </div>
+
         {/* Centered Collection Title matching the screenshot */}
         <div className="text-center my-6 sm:my-10 space-y-2">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-stone-950 font-bold tracking-tight">
             {categoryTitle}
           </h1>
           <p className="text-sm sm:text-base text-stone-700 font-semibold max-w-2xl mx-auto">
-            Handcrafted luxury footwear &amp; accessories • Exclusively priced in USD
+            {getCategorySubtitle(categoryTitle)}
           </p>
         </div>
 
@@ -531,15 +673,6 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 sm:gap-x-6 gap-y-10 sm:gap-y-12">
             {displayProducts.map((product) => {
-              const hasOriginalPrice =
-                Boolean(product.originalPriceUSD && product.originalPriceUSD > product.priceUSD) ||
-                Boolean(activeCampaign) ||
-                Boolean(product.badge?.includes('SALE') || product.badge?.includes('OFF'));
-              const originalPrice = product.originalPriceUSD || Math.round(product.priceUSD * 1.6);
-              const discountPercent = hasOriginalPrice
-                ? Math.round(((originalPrice - product.priceUSD) / originalPrice) * 100) || 59
-                : 0;
-
               const displayTitle = formatStoffaDisplayTitle(product);
 
               return (
@@ -565,13 +698,6 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
                         className="w-full h-full object-cover object-center absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                       />
                     )}
-
-                    {/* Teal Sale Badge matching screenshot (e.g. 59% off, 60% off) */}
-                    {hasOriginalPrice && (
-                       <div className="absolute top-2.5 left-2.5 bg-[#249ea0] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-2.5 py-1 shadow-sm">
-                        {discountPercent}% off
-                      </div>
-                    )}
                   </div>
 
                   {/* Product Metadata formatted with bigger and darker fonts */}
@@ -586,16 +712,6 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
                       <span className="text-stone-950 font-extrabold tracking-tight">
                         {formatPrice(product.priceUSD)}
                       </span>
-                      {hasOriginalPrice ? (
-                        <>
-                          <span className="text-stone-400 line-through text-xs sm:text-sm font-semibold">
-                            {formatPrice(originalPrice)}
-                          </span>
-                          <span className="text-rose-700 text-xs sm:text-sm font-extrabold tracking-wider bg-rose-50 px-1.5 py-0.5 rounded">
-                            FINAL SALE
-                          </span>
-                        </>
-                      ) : null}
                     </div>
                   </div>
                 </div>

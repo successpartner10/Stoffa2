@@ -47,7 +47,7 @@ export const ProductModal: React.FC = () => {
   const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
 
   // Normalize angles array
-  const angles =
+  const rawAngles =
     product.angles && product.angles.length > 0
       ? product.angles
       : product.images.map((url, i) => ({
@@ -56,6 +56,20 @@ export const ProductModal: React.FC = () => {
           tag: i === 0 ? 'Front' : i === 1 ? 'Detail' : 'Side',
           isAiImage: false,
         }));
+
+  const angles = rawAngles.filter(
+    (a) =>
+      !a.url.includes('Madhuri') &&
+      !a.url.includes('Karina') &&
+      !a.url.includes('Kareena') &&
+      !a.url.includes('Alia') &&
+      !a.url.includes('RASHMIKA') &&
+      !a.url.includes('SHREYA') &&
+      !a.url.includes('SONALI') &&
+      !a.url.includes('KARISHMA') &&
+      !a.url.includes('Genelia') &&
+      !a.url.includes('BHAVANA')
+  );
 
   const activeAngle = angles[selectedAngleIndex] || angles[0];
 
@@ -211,21 +225,11 @@ export const ProductModal: React.FC = () => {
                 {product.subtitle}
               </p>
 
-              {/* Price & Savings Pill */}
+              {/* Price */}
               <div className="flex items-baseline gap-3 mt-3 pt-3 border-t border-sky-100">
                 <span className="text-2xl font-bold font-mono text-slate-900">
                   {formatPrice(product.priceUSD)}
                 </span>
-                {isSale && originalPriceUSD && (
-                  <>
-                    <span className="text-sm font-mono text-slate-400 line-through">
-                      {formatPrice(originalPriceUSD)}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold">
-                      SAVE {Math.round(((originalPriceUSD - product.priceUSD) / originalPriceUSD) * 100)}%
-                    </span>
-                  </>
-                )}
               </div>
 
               {/* Color Swatch Picker */}

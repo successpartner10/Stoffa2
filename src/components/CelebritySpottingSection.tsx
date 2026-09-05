@@ -37,13 +37,13 @@ export const CelebritySpottingSection: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-amber-800 font-bold mb-1.5">
             <Star className="w-3.5 h-3.5 text-amber-600 fill-amber-600" />
-            <span>As Seen On Icons &bull; stoffastyle.com</span>
+            <span>Editorial Muses &bull; High Fashion Styling</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif text-slate-900 font-medium tracking-tight">
-            Celebrity Spotting
+            Style Spotting
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-light mt-1">
-            Discover the iconic handcrafted Kolhapuri wedges & block heels chosen by India&apos;s leading tastemakers.
+            Discover iconic handcrafted Kolhapuri wedges &amp; metallic flats styled with contemporary haute couture.
           </p>
         </div>
 

@@ -2,6 +2,10 @@ import React from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
 import { STOFFA_BRAND_ASSETS } from '../data/stoffaMediaAssets';
+import galaModelImg from '../assets/images/gala_evening_model_1788635714917.jpg';
+import bridalModelImg from '../assets/images/bridal_elegance_model_1788635754691.jpg';
+import resortHolidayModelImg from '../assets/images/resort_holiday_model_1788635741638.jpg';
+import festiveBrunchModelImg from '../assets/images/festive_brunch_model_1788635728185.jpg';
 
 interface SymmetricalSectionsProps {
   onSelectCollection?: (collectionName: string) => void;
@@ -31,7 +35,7 @@ export const SymmetricalSections: React.FC<SymmetricalSectionsProps> = ({ onSele
       ctaText: 'SHOP HIGH WEDGES',
       filterTarget: 'Shoes',
       collectionName: 'High Wedges (3.5")',
-      imageUrl: STOFFA_BRAND_ASSETS.campaignHighWedges,
+      imageUrl: galaModelImg,
       badge: 'Stoffa Style Best Seller',
     },
     {
@@ -41,7 +45,7 @@ export const SymmetricalSections: React.FC<SymmetricalSectionsProps> = ({ onSele
       ctaText: 'EXPLORE BRIDAL EDIT',
       filterTarget: 'Bridal Wedges',
       collectionName: 'Bridal Wedges',
-      imageUrl: STOFFA_BRAND_ASSETS.campaignHighWedges,
+      imageUrl: bridalModelImg,
       badge: 'Bridal Couture',
     },
     {
@@ -51,7 +55,7 @@ export const SymmetricalSections: React.FC<SymmetricalSectionsProps> = ({ onSele
       ctaText: 'DISCOVER FLATS',
       filterTarget: 'Flats & Loafers',
       collectionName: 'Kolhapuri Flats',
-      imageUrl: STOFFA_BRAND_ASSETS.campaignFlats,
+      imageUrl: resortHolidayModelImg,
       badge: 'Handcrafted Braids',
     },
     {
@@ -61,7 +65,7 @@ export const SymmetricalSections: React.FC<SymmetricalSectionsProps> = ({ onSele
       ctaText: 'EXPLORE BRIDAL & BAGS',
       filterTarget: 'Bags',
       collectionName: 'Bags & Potlis',
-      imageUrl: STOFFA_BRAND_ASSETS.campaignBridalPotlis,
+      imageUrl: festiveBrunchModelImg,
       badge: 'Heirloom Handcraft',
     },
   ];
@@ -73,7 +77,7 @@ export const SymmetricalSections: React.FC<SymmetricalSectionsProps> = ({ onSele
         <div className="text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-semibold tracking-widest uppercase mb-2">
             <Sparkles className="w-3 h-3 text-amber-600" />
-            <span>Curated Collections &bull; stoffastyle.com</span>
+            <span>Curated Collections</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif text-slate-900 font-medium tracking-tight">
             The World of Stoffa Style

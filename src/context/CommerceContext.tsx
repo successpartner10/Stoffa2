@@ -171,18 +171,63 @@ const CommerceContext = createContext<CommerceContextType | undefined>(undefined
 export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // --- Persistent or Initialized State ---
   const [products, setProducts] = useState<Product[]>(() => {
+    const CURRENT_CATALOG_VERSION = 'accessoiree_pure_luxury_catalog_v6';
     const saved = localStorage.getItem('accessoiree_products_usd');
     const catalogSource = localStorage.getItem('accessoiree_catalog_source');
-    if (!saved || catalogSource !== 'accessoiree_inr_to_usd_v1') {
-      localStorage.setItem('accessoiree_catalog_source', 'accessoiree_inr_to_usd_v1');
-      localStorage.setItem('accessoiree_products_usd', JSON.stringify(STOFFA_STORE_PRODUCTS));
-      return STOFFA_STORE_PRODUCTS;
+
+    const cleanBaseProducts = STOFFA_STORE_PRODUCTS.map((p) => {
+      const cleanImgs = p.images.filter(
+        (img) =>
+          !img.includes('Madhuri') &&
+          !img.includes('Karina') &&
+          !img.includes('Kareena') &&
+          !img.includes('Alia') &&
+          !img.includes('RASHMIKA') &&
+          !img.includes('SHREYA') &&
+          !img.includes('SONALI') &&
+          !img.includes('KARISHMA') &&
+          !img.includes('Genelia') &&
+          !img.includes('BHAVANA')
+      );
+      return {
+        ...p,
+        originalPriceUSD: undefined,
+        images: cleanImgs.length > 0 ? cleanImgs : p.images,
+      };
+    });
+
+    if (!saved || catalogSource !== CURRENT_CATALOG_VERSION) {
+      localStorage.setItem('accessoiree_catalog_source', CURRENT_CATALOG_VERSION);
+      localStorage.setItem('accessoiree_products_usd', JSON.stringify(cleanBaseProducts));
+      return cleanBaseProducts;
     }
+
     try {
       const parsed: Product[] = JSON.parse(saved);
-      return parsed.length > 0 ? parsed : STOFFA_STORE_PRODUCTS;
+      const sanitized = parsed.map((p) => {
+        const matchingBase = cleanBaseProducts.find((bp) => bp.id === p.id);
+        const cleanImgs = (p.images || []).filter(
+          (img) =>
+            !img.includes('Madhuri') &&
+            !img.includes('Karina') &&
+            !img.includes('Kareena') &&
+            !img.includes('Alia') &&
+            !img.includes('RASHMIKA') &&
+            !img.includes('SHREYA') &&
+            !img.includes('SONALI') &&
+            !img.includes('KARISHMA') &&
+            !img.includes('Genelia') &&
+            !img.includes('BHAVANA')
+        );
+        return {
+          ...p,
+          originalPriceUSD: undefined,
+          images: cleanImgs.length > 0 ? cleanImgs : matchingBase ? matchingBase.images : p.images,
+        };
+      });
+      return sanitized.length > 0 ? sanitized : cleanBaseProducts;
     } catch {
-      return STOFFA_STORE_PRODUCTS;
+      return cleanBaseProducts;
     }
   });
 
@@ -191,7 +236,7 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     localStorage.setItem('accessoiree_products_usd', JSON.stringify(newProds));
   };
 
-  const [selectedCategory, setSelectedCategory] = useState<string>("Resort '26");
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedOccasion, setSelectedOccasion] = useState<string>('all');
   const [selectedProductModal, setSelectedProductModal] = useState<Product | null>(null);
 
