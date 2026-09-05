@@ -37,13 +37,13 @@ export const CartDrawer: React.FC = () => {
           <div className="p-5 border-b border-stone-200 flex items-center justify-between bg-white">
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5 text-stone-900" />
-              <h2 className="font-serif text-lg font-medium text-stone-900">
-                {t('shopping_bag')} ({cart.reduce((a, b) => a + b.quantity, 0)})
+              <h2 className="font-serif text-lg font-bold text-stone-950 uppercase tracking-wider">
+                {t('cart')} ({cart.reduce((a, b) => a + b.quantity, 0)})
               </h2>
             </div>
             <button
               onClick={() => setIsCartOpen(false)}
-              className="p-1.5 rounded-lg hover:bg-stone-100 text-stone-500 hover:text-stone-900 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-stone-100 text-stone-700 hover:text-stone-950 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -53,14 +53,14 @@ export const CartDrawer: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-5 space-y-4">
             {cart.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-3">
-                <ShoppingBag className="w-12 h-12 text-stone-300 stroke-1" />
-                <p className="text-stone-700 font-serif text-lg">{t('empty_bag')}</p>
-                <p className="text-xs text-stone-500 max-w-xs font-light">
+                <ShoppingBag className="w-12 h-12 text-stone-400 stroke-1" />
+                <p className="text-stone-950 font-serif text-xl font-bold">{t('cart_empty') || 'Your cart is empty'}</p>
+                <p className="text-xs text-stone-600 max-w-xs font-medium">
                   Explore our handcrafted footwear and Tuscan leather bags with 1-click quick buy.
                 </p>
                 <button
                   onClick={() => setIsCartOpen(false)}
-                  className="mt-2 px-6 py-2.5 rounded-full bg-stone-900 hover:bg-stone-800 text-xs text-white font-medium transition-colors shadow-xs"
+                  className="mt-2 px-6 py-2.5 rounded-full bg-stone-950 hover:bg-black text-xs text-white font-bold uppercase tracking-wider transition-colors shadow-xs cursor-pointer"
                 >
                   Return to Collection
                 </button>

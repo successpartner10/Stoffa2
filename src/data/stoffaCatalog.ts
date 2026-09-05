@@ -9,13 +9,15 @@ export const STOFFA_STORE_PRODUCTS: Product[] = STOFFA_STYLE_OFFICIAL_PRODUCTS;
 export const STOFFA_RAW_PRODUCTS = STOFFA_STYLE_OFFICIAL_PRODUCTS;
 
 export const STOFFA_CATALOG_CSV: string = (() => {
-  const headers = ['id', 'title', 'subtitle', 'category', 'priceUSD', 'rating', 'reviewCount', 'materials', 'sizes', 'description'];
+  const headers = ['id', 'title', 'subtitle', 'category', 'priceINR', 'priceUSD', 'originalPriceUSD', 'rating', 'reviewCount', 'materials', 'sizes', 'description'];
   const rows = STOFFA_STORE_PRODUCTS.map((p) => [
     `"${p.id}"`,
     `"${p.title.replace(/"/g, '""')}"`,
     `"${p.subtitle.replace(/"/g, '""')}"`,
     `"${p.category}"`,
+    p.priceINR || (p.priceUSD * 50),
     p.priceUSD,
+    p.originalPriceUSD || '',
     p.rating,
     p.reviewCount,
     `"${p.materials.replace(/"/g, '""')}"`,

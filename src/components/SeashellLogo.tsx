@@ -13,7 +13,7 @@ export const SeashellLogo: React.FC<SeashellLogoProps> = ({ className = 'w-8 h-8
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       style={size ? { width: size, height: size } : undefined}
-      aria-label="Walker & Wade Seashell Logo"
+      aria-label="Accessoiree Seashell Logo"
     >
       <defs>
         <linearGradient id="shellGradient" x1="10" y1="10" x2="90" y2="85" gradientUnits="userSpaceOnUse">

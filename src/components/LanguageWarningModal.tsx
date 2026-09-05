@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, ArrowRight, Check, Globe, X } from 'lucide-react';
+import { AlertTriangle, ArrowRight, Check, X } from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
 
 export const LanguageWarningModal: React.FC = () => {
@@ -20,36 +20,38 @@ export const LanguageWarningModal: React.FC = () => {
       >
         <button
           onClick={cancelLanguageChange}
-          className="absolute top-4 right-4 p-1.5 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
           aria-label="Close"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 border border-amber-200">
+        <div className="flex items-start gap-3.5">
+          <div className="w-11 h-11 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center shrink-0 border border-amber-300">
             <AlertTriangle className="w-6 h-6 text-amber-700" />
           </div>
           <div className="flex-1">
             <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 mb-1">
-              Language Change Notice
+              Translation Disclaimer
             </span>
             <h3 className="font-serif text-lg font-semibold text-stone-900">
-              Confirm Locale Switch
+              Machine Generated Translation
             </h3>
-            <p className="text-xs text-stone-600 mt-1 leading-relaxed">
-              Switching storefront language will adapt editorial descriptions, size nomenclature, and occasion taxonomy.
-            </p>
           </div>
         </div>
 
-        {/* Comparison card */}
-        <div className="my-5 p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex items-center justify-between text-xs">
+        {/* Prominent required disclaimer quote */}
+        <div className="my-4 p-3.5 rounded-xl bg-amber-50/90 border border-amber-200 text-amber-950 text-xs leading-relaxed font-medium">
+          Please proceed knowing that language is machine generated and may not be accurate and may have unintended errors.
+        </div>
+
+        {/* Comparison card with native words */}
+        <div className="my-4 p-3.5 rounded-xl bg-stone-50 border border-stone-200 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             <span className="text-xl">{activeLanguage.flag}</span>
             <div>
               <div className="text-[10px] text-stone-400 uppercase font-mono">Current</div>
-              <div className="font-semibold text-stone-800">{activeLanguage.name}</div>
+              <div className="font-semibold text-stone-800">{activeLanguage.nativeName || activeLanguage.name}</div>
             </div>
           </div>
 
@@ -58,30 +60,30 @@ export const LanguageWarningModal: React.FC = () => {
           <div className="flex items-center gap-2">
             <span className="text-xl">{pendingLanguage.flag}</span>
             <div>
-              <div className="text-[10px] text-amber-700 uppercase font-mono font-bold">Target</div>
-              <div className="font-semibold text-stone-900">{pendingLanguage.name}</div>
+              <div className="text-[10px] text-amber-800 uppercase font-mono font-bold">Switching To</div>
+              <div className="font-semibold text-stone-900">{pendingLanguage.nativeName || pendingLanguage.name}</div>
             </div>
           </div>
         </div>
 
         <p className="text-[11px] text-stone-500 font-light leading-normal mb-5">
-          Please acknowledge to proceed. Your shopping bag and active filters will be preserved.
+          Product titles, descriptions, and checkout terms will be rendered in {pendingLanguage.nativeName || pendingLanguage.name}. Your active shopping cart and currency will remain intact.
         </p>
 
         <div className="flex items-center justify-end gap-2.5">
           <button
             onClick={cancelLanguageChange}
-            className="px-4 py-2 rounded-lg border border-stone-300 text-xs font-medium text-stone-700 hover:bg-stone-100 transition-colors"
+            className="px-4 py-2.5 rounded-lg border border-stone-300 text-xs font-medium text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
           >
-            Keep {activeLanguage.name}
+            Cancel
           </button>
           <button
             id="confirm-language-switch-btn"
             onClick={confirmLanguageChange}
-            className="px-4 py-2 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-colors"
+            className="px-4 py-2.5 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer"
           >
             <Check className="w-3.5 h-3.5" />
-            <span>Acknowledge & Switch</span>
+            <span>Proceed &amp; Switch</span>
           </button>
         </div>
       </div>

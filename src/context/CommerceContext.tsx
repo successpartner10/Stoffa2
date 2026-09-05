@@ -91,6 +91,12 @@ interface CommerceContextType {
   confirmLanguageChange: () => void;
   cancelLanguageChange: () => void;
 
+  // Language & Currency Dialog Modals
+  isLanguageModalOpen: boolean;
+  setIsLanguageModalOpen: (open: boolean) => void;
+  isCurrencyModalOpen: boolean;
+  setIsCurrencyModalOpen: (open: boolean) => void;
+
   // Quota limits handling
   quotaAlert: { message: string; retryAction?: () => void } | null;
   triggerQuotaAlert: (msg?: string, retryAction?: () => void) => void;
@@ -150,6 +156,14 @@ interface CommerceContextType {
   setViewMode: (mode: 'storefront' | 'admin' | 'affiliate_portal') => void;
   adminTab: 'campaigns' | 'affiliates' | 'payouts' | 'i18n_currencies' | 'analytics' | 'catalog_cms';
   setAdminTab: (tab: 'campaigns' | 'affiliates' | 'payouts' | 'i18n_currencies' | 'analytics' | 'catalog_cms') => void;
+
+  // Admin Auth (Fixed for sulaniyashpal@gmail.com)
+  adminUser: string | null;
+  isAdminLoggedIn: boolean;
+  loginAdmin: (email: string) => { success: boolean; error?: string };
+  logoutAdmin: () => void;
+  isAdminLoginModalOpen: boolean;
+  setIsAdminLoginModalOpen: (open: boolean) => void;
 }
 
 const CommerceContext = createContext<CommerceContextType | undefined>(undefined);
@@ -157,24 +171,16 @@ const CommerceContext = createContext<CommerceContextType | undefined>(undefined
 export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // --- Persistent or Initialized State ---
   const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem('etoile_products');
-    const catalogSource = localStorage.getItem('etoile_catalog_source');
-    if (!saved || catalogSource !== 'stoffastyle_official_images_v4') {
-      localStorage.setItem('etoile_catalog_source', 'stoffastyle_official_images_v4');
-      localStorage.setItem('etoile_products', JSON.stringify(STOFFA_STORE_PRODUCTS));
+    const saved = localStorage.getItem('accessoiree_products_usd');
+    const catalogSource = localStorage.getItem('accessoiree_catalog_source');
+    if (!saved || catalogSource !== 'accessoiree_inr_to_usd_v1') {
+      localStorage.setItem('accessoiree_catalog_source', 'accessoiree_inr_to_usd_v1');
+      localStorage.setItem('accessoiree_products_usd', JSON.stringify(STOFFA_STORE_PRODUCTS));
       return STOFFA_STORE_PRODUCTS;
     }
     try {
       const parsed: Product[] = JSON.parse(saved);
-      const refreshed = parsed.map((p) => {
-        const angles = getProductAngles(p.id, p.category, p.images);
-        return {
-          ...p,
-          angles,
-          images: angles.map((a) => a.url),
-        };
-      });
-      return refreshed.length > 0 ? refreshed : STOFFA_STORE_PRODUCTS;
+      return parsed.length > 0 ? parsed : STOFFA_STORE_PRODUCTS;
     } catch {
       return STOFFA_STORE_PRODUCTS;
     }
@@ -182,7 +188,7 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const saveProducts = (newProds: Product[]) => {
     setProducts(newProds);
-    localStorage.setItem('etoile_products', JSON.stringify(newProds));
+    localStorage.setItem('accessoiree_products_usd', JSON.stringify(newProds));
   };
 
   const [selectedCategory, setSelectedCategory] = useState<string>("Resort '26");
@@ -297,37 +303,35 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setSortBy('featured');
   };
 
+  // Language & Currency Dialog Modals
+  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
+  const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false);
+
   // Currencies state
   const [currencies, setCurrencies] = useState<Currency[]>(() => {
-    const saved = localStorage.getItem('etoile_currencies');
-    return saved ? JSON.parse(saved) : INITIAL_CURRENCIES;
+    const saved = localStorage.getItem('etoile_currencies_v3');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
+    }
+    return INITIAL_CURRENCIES;
   });
   const [activeCurrencyCode, setActiveCurrencyCode] = useState<string>(() => {
-    return localStorage.getItem('etoile_active_currency') || 'CAD'; // Defaulting to CAD as user noted cad, USD
+    return localStorage.getItem('etoile_active_currency') || 'USD';
   });
 
   // Languages state
   const [languages, setLanguages] = useState<Language[]>(() => {
-    const saved = localStorage.getItem('etoile_languages');
-    if (!saved) return INITIAL_LANGUAGES;
-    try {
-      const parsed: Language[] = JSON.parse(saved);
-      const map = new Map(parsed.map((p) => [p.code, p]));
-      // Merge: preserve isEnabled from saved, but use latest updated metadata (e.g. name: 'Français', 'Español', continent, continentOrder)
-      const merged = INITIAL_LANGUAGES.map((initL) => {
-        const existing = map.get(initL.code);
-        return existing
-          ? {
-              ...initL,
-              isEnabled: existing.isEnabled !== undefined ? existing.isEnabled : initL.isEnabled,
-            }
-          : initL;
-      });
-      const extra = parsed.filter((p) => !INITIAL_LANGUAGES.some((initL) => initL.code === p.code));
-      return [...merged, ...extra];
-    } catch {
-      return INITIAL_LANGUAGES;
+    const saved = localStorage.getItem('etoile_languages_v3');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch {}
     }
+    return INITIAL_LANGUAGES;
   });
   const [activeLanguageCode, setActiveLanguageCode] = useState<string>(() => {
     return localStorage.getItem('etoile_active_language') || 'en';
@@ -373,17 +377,44 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Views
+  // Views & Admin Auth
+  const FIXED_ADMIN_EMAIL = 'sulaniyashpal@gmail.com';
+  const [adminUser, setAdminUser] = useState<string | null>(() => {
+    return localStorage.getItem('accessoiree_admin_user');
+  });
+  const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useState(false);
+
+  const isAdminLoggedIn = adminUser?.trim().toLowerCase() === FIXED_ADMIN_EMAIL.toLowerCase();
+
+  const loginAdmin = (email: string) => {
+    const cleaned = email.trim().toLowerCase();
+    if (cleaned === FIXED_ADMIN_EMAIL.toLowerCase()) {
+      setAdminUser(FIXED_ADMIN_EMAIL);
+      localStorage.setItem('accessoiree_admin_user', FIXED_ADMIN_EMAIL);
+      return { success: true };
+    }
+    return {
+      success: false,
+      error: 'Access denied. The catalog and admin controls are strictly reserved for sulaniyashpal@gmail.com.',
+    };
+  };
+
+  const logoutAdmin = () => {
+    setAdminUser(null);
+    localStorage.removeItem('accessoiree_admin_user');
+    setViewMode('storefront');
+  };
+
   const [viewMode, setViewMode] = useState<'storefront' | 'admin' | 'affiliate_portal'>('storefront');
-  const [adminTab, setAdminTab] = useState<'campaigns' | 'affiliates' | 'payouts' | 'i18n_currencies' | 'analytics'>('campaigns');
+  const [adminTab, setAdminTab] = useState<'campaigns' | 'affiliates' | 'payouts' | 'i18n_currencies' | 'analytics' | 'catalog_cms'>('campaigns');
 
   // Sync to localStorage
   useEffect(() => {
-    localStorage.setItem('etoile_currencies', JSON.stringify(currencies));
+    localStorage.setItem('etoile_currencies_v3', JSON.stringify(currencies));
   }, [currencies]);
 
   useEffect(() => {
-    localStorage.setItem('etoile_languages', JSON.stringify(languages));
+    localStorage.setItem('etoile_languages_v3', JSON.stringify(languages));
   }, [languages]);
 
   useEffect(() => {
@@ -444,17 +475,10 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setCurrencies((prev) => [...prev, { ...found, isEnabled: true }]);
   };
 
-  // Price formatting
+  // Price formatting - Always strictly in USD ($)
   const formatPrice = (amountUSD: number) => {
-    const converted = amountUSD * activeCurrency.rate;
-    // For Japanese Yen or Korean Won, no decimals
-    if (activeCurrency.code === 'JPY' || activeCurrency.code === 'KRW') {
-      return `${activeCurrency.symbol}${Math.round(converted).toLocaleString()}`;
-    }
-    return `${activeCurrency.symbol}${converted.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+    if (isNaN(amountUSD) || amountUSD === null || amountUSD === undefined) return '$0';
+    return `$${Math.round(amountUSD).toLocaleString()}`;
   };
 
   // Active language object
@@ -868,18 +892,17 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // CSV Catalog Management
   const exportCatalogCSV = (): string => {
-    const headers = ['id', 'title', 'subtitle', 'category', 'priceUSD', 'rating', 'reviewCount', 'materials', 'sizes', 'description'];
+    const headers = ['id', 'title', 'category', 'price_inr', 'price_usd', 'original_price_usd', 'sizes', 'materials', 'description'];
     const rows = products.map((p) => [
       `"${p.id}"`,
       `"${p.title.replace(/"/g, '""')}"`,
-      `"${p.subtitle.replace(/"/g, '""')}"`,
       `"${p.category}"`,
+      p.priceINR || p.priceUSD * 50,
       p.priceUSD,
-      p.rating,
-      p.reviewCount,
-      `"${p.materials.replace(/"/g, '""')}"`,
-      `"${p.sizes.join(';')}"`,
-      `"${p.description.replace(/"/g, '""')}"`,
+      p.originalPriceUSD || '',
+      `"${p.sizes ? p.sizes.join(';') : ''}"`,
+      `"${p.materials ? p.materials.replace(/"/g, '""') : ''}"`,
+      `"${p.description ? p.description.replace(/"/g, '""') : ''}"`,
     ]);
     return [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
   };
@@ -915,74 +938,132 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return result;
       };
 
-      const rawHeaders = parseCSVLine(lines[0]).map((h) => h.toLowerCase());
-      const idIdx = rawHeaders.indexOf('id');
-      const titleIdx = rawHeaders.indexOf('title');
-      const priceIdx = rawHeaders.indexOf('priceusd') !== -1 ? rawHeaders.indexOf('priceusd') : rawHeaders.indexOf('price');
-      const catIdx = rawHeaders.indexOf('category');
+      const cleanHeaders = parseCSVLine(lines[0]).map((h) => h.toLowerCase().replace(/[\s_-]/g, ''));
+      const idIdx = cleanHeaders.findIndex((h) => h === 'id' || h === 'productid' || h === 'sku');
+      const titleIdx = cleanHeaders.findIndex((h) => h === 'title' || h === 'name' || h === 'productname');
+      const inrIdx = cleanHeaders.findIndex((h) => h === 'priceinr' || h === 'inr' || h === 'inrprice');
+      const usdIdx = cleanHeaders.findIndex((h) => h === 'priceusd' || h === 'usd' || h === 'price' || h === 'usdprice');
+      const catIdx = cleanHeaders.findIndex((h) => h === 'category' || h === 'type');
+      const origPriceIdx = cleanHeaders.findIndex((h) => h === 'originalpriceusd' || h === 'originalprice' || h === 'compareatprice' || h === 'compareprice');
+      const subtitleIdx = cleanHeaders.findIndex((h) => h === 'subtitle');
+      const materialsIdx = cleanHeaders.findIndex((h) => h === 'materials');
+      const sizesIdx = cleanHeaders.findIndex((h) => h === 'sizes');
+      const descIdx = cleanHeaders.findIndex((h) => h === 'description');
 
-      if (titleIdx === -1 || priceIdx === -1) {
-        return { success: false, count: 0, error: 'CSV is missing required headers: "title" and "priceUSD" (or "price").' };
+      if (titleIdx === -1 && idIdx === -1) {
+        return { success: false, count: 0, error: 'CSV must contain at least an "id" or "title" column.' };
+      }
+      if (inrIdx === -1 && usdIdx === -1) {
+        return { success: false, count: 0, error: 'CSV must contain "price_inr" or "price_usd" (or "price") column.' };
       }
 
-      const imported: Product[] = [];
+      const updatedCatalog = [...products];
+      let importedCount = 0;
 
       for (let i = 1; i < lines.length; i++) {
         if (!lines[i].trim()) continue;
         const cols = parseCSVLine(lines[i]);
-        const title = cols[titleIdx];
-        if (!title) continue;
+        const rowId = idIdx !== -1 ? cols[idIdx] : '';
+        const rowTitle = titleIdx !== -1 ? cols[titleIdx] : '';
 
-        const rawPrice = parseFloat(cols[priceIdx]);
-        const priceUSD = isNaN(rawPrice) || rawPrice <= 0 ? 350 : Math.round(rawPrice * 100) / 100;
-        const category = catIdx !== -1 && cols[catIdx] ? cols[catIdx] : 'Shoes';
-        const id = idIdx !== -1 && cols[idIdx] ? cols[idIdx] : `csv_${Date.now()}_${i}`;
-        const subtitleIdx = rawHeaders.indexOf('subtitle');
-        const subtitle = subtitleIdx !== -1 && cols[subtitleIdx] ? cols[subtitleIdx] : `${category} crafted in Tuscan leather`;
-        const materialsIdx = rawHeaders.indexOf('materials');
-        const materials = materialsIdx !== -1 && cols[materialsIdx] ? cols[materialsIdx] : 'Full-grain Italian calfskin, hand-turned leather sole.';
-        const sizesIdx = rawHeaders.indexOf('sizes');
-        const sizes = sizesIdx !== -1 && cols[sizesIdx] ? cols[sizesIdx].split(';').map((s) => s.trim()).filter(Boolean) : ['EU 36', 'EU 37', 'EU 38', 'EU 39', 'EU 40', 'EU 41'];
-        const descIdx = rawHeaders.indexOf('description');
-        const description = descIdx !== -1 && cols[descIdx] ? cols[descIdx] : `${title}. Designed for effortless modern elegance and lasting comfort.`;
+        if (!rowId && !rowTitle) continue;
 
-        const existing = products.find((p) => p.id === id || p.title.toLowerCase() === title.toLowerCase());
-        const baseImages = existing?.images || [];
+        let priceUSD = 80;
+        let priceINR = 4000;
 
-        const angles = getProductAngles(id, category, baseImages);
+        if (inrIdx !== -1 && cols[inrIdx]) {
+          const parsedINR = parseFloat(cols[inrIdx].replace(/[^0-9.]/g, ''));
+          if (!isNaN(parsedINR) && parsedINR > 0) {
+            priceINR = parsedINR;
+            // Formula from user: 3000 INR = 60 USD, 5000 INR = 100 USD, 4500 INR = 90 USD (INR / 50)
+            priceUSD = Math.round(parsedINR / 50);
+          }
+        } else if (usdIdx !== -1 && cols[usdIdx]) {
+          const parsedUSD = parseFloat(cols[usdIdx].replace(/[^0-9.]/g, ''));
+          if (!isNaN(parsedUSD) && parsedUSD > 0) {
+            priceUSD = Math.round(parsedUSD);
+            priceINR = Math.round(priceUSD * 50);
+          }
+        }
 
-        const newProd: Product = {
-          id,
-          title,
-          subtitle,
-          category,
-          occasions: existing?.occasions || ['all', 'cocktail', 'date_night'],
-          occasionNote: existing?.occasionNote || 'Versatile day-to-evening styling',
-          priceUSD,
-          images: angles.map((a) => a.url),
-          angles,
-          sizes: sizes.length > 0 ? sizes : ['EU 36', 'EU 37', 'EU 38', 'EU 39', 'EU 40', 'EU 41'],
-          colors: existing?.colors || [
-            { name: 'Nero Black', hex: '#1C1B1B' },
-            { name: 'Espresso Tuscan Brown', hex: '#3B2F2F' },
-          ],
-          inventory: existing?.inventory || { 'EU 36': 4, 'EU 37': 5, 'EU 38': 6, 'EU 39': 3, 'EU 40': 2, 'EU 41': 1 },
-          description,
-          materials,
-          rating: existing?.rating || 4.9,
-          reviewCount: existing?.reviewCount || 18,
-          isNewArrival: true,
-        };
+        let originalPriceUSD: number | undefined = undefined;
+        if (origPriceIdx !== -1 && cols[origPriceIdx]) {
+          const orig = parseFloat(cols[origPriceIdx].replace(/[^0-9.]/g, ''));
+          if (!isNaN(orig) && orig > 0) {
+            originalPriceUSD = orig > 1000 ? Math.round(orig / 50) : Math.round(orig);
+          }
+        }
 
-        imported.push(newProd);
+        const category = catIdx !== -1 && cols[catIdx] ? cols[catIdx] : 'Heels';
+        const finalId = rowId || `stoffa_custom_${Date.now()}_${i}`;
+        const finalTitle = rowTitle || `Accessoiree Luxury Footwear ${i}`;
+        const subtitle = subtitleIdx !== -1 && cols[subtitleIdx] ? cols[subtitleIdx] : `${category} handcrafted in artisanal ateliers`;
+        const materials = materialsIdx !== -1 && cols[materialsIdx] ? cols[materialsIdx] : 'Artisanal leather & cushioned memory footbed';
+        const sizes = sizesIdx !== -1 && cols[sizesIdx]
+          ? cols[sizesIdx].split(';').map((s) => s.trim()).filter(Boolean)
+          : ['EU 36', 'EU 37', 'EU 38', 'EU 39', 'EU 40', 'EU 41'];
+        const description = descIdx !== -1 && cols[descIdx] ? cols[descIdx] : `${finalTitle}. Handcrafted with precision and timeless elegance.`;
+
+        // Check if existing product by ID or title
+        const existingIdx = updatedCatalog.findIndex(
+          (p) => (rowId && p.id === rowId) || (rowTitle && p.title.toLowerCase() === rowTitle.toLowerCase())
+        );
+
+        if (existingIdx !== -1) {
+          updatedCatalog[existingIdx] = {
+            ...updatedCatalog[existingIdx],
+            title: finalTitle,
+            priceUSD,
+            priceINR,
+            ...(originalPriceUSD ? { originalPriceUSD } : {}),
+            ...(cols[catIdx] ? { category } : {}),
+            ...(cols[materialsIdx] ? { materials } : {}),
+            ...(cols[descIdx] ? { description } : {}),
+            ...(cols[sizesIdx] ? { sizes } : {}),
+          };
+          importedCount++;
+        } else {
+          const angles = getProductAngles(finalId, category, []);
+          const newProd: Product = {
+            id: finalId,
+            title: finalTitle,
+            subtitle,
+            category,
+            occasions: ['all', 'cocktail', 'date_night'],
+            occasionNote: 'Versatile day-to-evening styling',
+            priceUSD,
+            priceINR,
+            originalPriceUSD,
+            images: angles.map((a) => a.url),
+            angles,
+            sizes,
+            colors: [
+              { name: 'Nero Black', hex: '#1C1B1B' },
+              { name: 'Gold Specchio', hex: '#D4AF37' },
+            ],
+            inventory: { 'EU 36': 4, 'EU 37': 5, 'EU 38': 6, 'EU 39': 3, 'EU 40': 2, 'EU 41': 1 },
+            description,
+            materials,
+            rating: 4.9,
+            reviewCount: 18,
+            isNewArrival: true,
+          };
+          updatedCatalog.push(newProd);
+          importedCount++;
+        }
       }
 
-      if (imported.length === 0) {
+      if (importedCount === 0) {
         return { success: false, count: 0, error: 'No valid products could be parsed from the CSV.' };
       }
 
-      saveProducts(imported);
-      return { success: true, count: imported.length };
+      saveProducts(updatedCatalog);
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+      return { success: true, count: importedCount };
     } catch (err: any) {
       return { success: false, count: 0, error: err?.message || 'Error parsing CSV file.' };
     }
@@ -1009,12 +1090,9 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return { success: true };
   };
 
-  // Language Change Confirmation
+  // Language Change
   const requestLanguageChange = (code: string) => {
-    const target = languages.find((l) => l.code === code);
-    if (!target) return;
-    if (target.code === activeLanguage.code) return;
-    setPendingLanguage(target);
+    setLanguage(code);
   };
 
   const confirmLanguageChange = () => {
@@ -1107,6 +1185,10 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         requestLanguageChange,
         confirmLanguageChange,
         cancelLanguageChange,
+        isLanguageModalOpen,
+        setIsLanguageModalOpen,
+        isCurrencyModalOpen,
+        setIsCurrencyModalOpen,
         quotaAlert,
         triggerQuotaAlert,
         dismissQuotaAlert,
@@ -1151,6 +1233,12 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setViewMode,
         adminTab,
         setAdminTab,
+        adminUser,
+        isAdminLoggedIn,
+        loginAdmin,
+        logoutAdmin,
+        isAdminLoginModalOpen,
+        setIsAdminLoginModalOpen,
       }}
     >
       {children}

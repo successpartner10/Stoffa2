@@ -14,8 +14,9 @@ export const Hero: React.FC = () => {
     }
   };
 
-  const handleExploreCelebrity = () => {
-    const el = document.getElementById('celebrity-spotting-rail') || document.getElementById('category-products-section');
+  const handleExploreReadyToShip = () => {
+    setSelectedCategory('Ready to Ship');
+    const el = document.getElementById('category-products-section') || document.getElementById('collection-grid');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -76,11 +77,11 @@ export const Hero: React.FC = () => {
 
             <button
               id="hero-explore-sale-btn"
-              onClick={handleExploreCelebrity}
+              onClick={handleExploreReadyToShip}
               className="px-8 py-3.5 rounded-full bg-white/20 hover:bg-white/30 text-white border border-white/40 backdrop-blur-md font-semibold text-xs tracking-widest uppercase transition-all shadow-md flex items-center gap-2 cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-amber-300" />
-              <span>CELEBRITY SPOTTING</span>
+              <span>READY TO SHIP</span>
             </button>
           </div>
 
@@ -95,8 +96,8 @@ export const Hero: React.FC = () => {
               <span>Dual-Density Memory Foam</span>
             </div>
             <div className="flex items-center gap-1.5 bg-slate-950/60 backdrop-blur-xs px-3 py-1 rounded-full border border-white/20">
-              <span className="font-bold text-amber-200">{activeCurrency.code}</span>
-              <span>Global Currency Enabled</span>
+              <span className="font-bold text-amber-200">USD</span>
+              <span>All Store Prices In USD</span>
             </div>
           </div>
         </div>

@@ -68,7 +68,153 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
     const pColors = p.colors.map((c) => c.name.toLowerCase());
     const pSubtitle = (p.subtitle || '').toLowerCase();
 
-    if (normalizedTitle === 'all') return true;
+    if (normalizedTitle === 'all' || normalizedTitle === 'home') return true;
+
+    // 1. Low wedges - 2.5 inch (from handwritten note)
+    if (
+      normalizedTitle.includes('2.5') ||
+      normalizedTitle.includes('low wedge') ||
+      normalizedTitle === 'low wedges - 2.5 inch'
+    ) {
+      return (
+        pCollection.includes('low wedge') ||
+        pTitle.includes('2.5') ||
+        pTitle.includes('low') ||
+        pCollection.includes('low')
+      );
+    }
+
+    // 3. Higher wedge - 4.25 inch (check BEFORE high wedges to avoid collisions)
+    if (
+      normalizedTitle.includes('4.25') ||
+      normalizedTitle.includes('higher wedge') ||
+      normalizedTitle === 'higher wedge - 4.25 inch'
+    ) {
+      return (
+        pCollection.includes('higher wedge') ||
+        pTitle.includes('4.25') ||
+        pTitle.includes('higher')
+      );
+    }
+
+    // 2. High wedges - 3.5 inch (from handwritten note)
+    if (
+      normalizedTitle.includes('3.5') ||
+      normalizedTitle.includes('high wedge') ||
+      normalizedTitle === 'high wedges - 3.5 inch'
+    ) {
+      return (
+        (pCollection.includes('high wedge') ||
+          pTitle.includes('3.5') ||
+          pTitle.includes('high k') ||
+          pTitle.includes('classic high')) &&
+        !pCollection.includes('higher') &&
+        !pTitle.includes('higher') &&
+        !pTitle.includes('4.25')
+      );
+    }
+
+    // 4. Block Heels (from handwritten note)
+    if (normalizedTitle.includes('block') || normalizedTitle === 'block heels') {
+      return pCollection.includes('block') || pTitle.includes('block');
+    }
+
+    // 5. Flats (from handwritten note)
+    if (
+      normalizedTitle.includes('flat') ||
+      normalizedTitle.includes('kolhapuri') ||
+      normalizedTitle === 'flats'
+    ) {
+      return (
+        pCollection.includes('flat') ||
+        pCat.includes('flat') ||
+        pTitle.includes('flat') ||
+        pTitle.includes('kolhapuri')
+      );
+    }
+
+    // Shoes (All Footwear)
+    if (normalizedTitle === 'shoes' || normalizedTitle === 'footwear') {
+      return !pCat.includes('bag') && !pTitle.includes('bag') && !pTitle.includes('potli');
+    }
+
+    // Bags & Handcrafted Totes
+    if (normalizedTitle.includes('bag') || normalizedTitle.includes('tote') || normalizedTitle.includes('potli')) {
+      return (
+        pCat.includes('bag') ||
+        pCat.includes('accessories') ||
+        pTitle.includes('bag') ||
+        pTitle.includes('potli') ||
+        pTitle.includes('clutch') ||
+        pTitle.includes('tote')
+      );
+    }
+
+    // Just In / Latest Arrivals
+    if (
+      normalizedTitle.includes('latest') ||
+      normalizedTitle.includes('new arrival') ||
+      normalizedTitle.includes('just in')
+    ) {
+      return p.isNewArrival || Boolean(p.badge?.includes('NEW'));
+    }
+
+    // Collections
+    if (normalizedTitle === 'collections') {
+      return true;
+    }
+
+    // Ready to Ship
+    if (normalizedTitle.includes('ready to ship') || normalizedTitle.includes('ready')) {
+      return p.inventory ? Object.values(p.inventory).some((qty) => Number(qty) > 0) : true;
+    }
+
+    // Sale
+    if (normalizedTitle.includes('sale')) {
+      return (
+        Boolean(p.originalPriceUSD && p.originalPriceUSD > p.priceUSD) ||
+        Boolean(p.badge?.includes('SALE') || p.badge?.includes('OFF')) ||
+        p.priceUSD <= 80
+      );
+    }
+
+    // Heels & Wedges general
+    if (normalizedTitle.includes('heel') || normalizedTitle.includes('wedge')) {
+      return (
+        pCat.includes('heel') ||
+        pCat.includes('shoe') ||
+        pCollection.includes('wedge') ||
+        pCollection.includes('block') ||
+        pTitle.includes('wedge') ||
+        pTitle.includes('heel') ||
+        pTitle.includes('pump')
+      );
+    }
+
+    // Bridal Wedges
+    if (normalizedTitle.includes('bridal')) {
+      return (
+        pTitle.includes('crystal') ||
+        pTitle.includes('bridal') ||
+        pTitle.includes('champagne') ||
+        pTitle.includes('gold') ||
+        pTitle.includes('rose gold') ||
+        pTitle.includes('silver')
+      );
+    }
+
+    // Occasion Collection
+    if (normalizedTitle.includes('occasion')) {
+      return (
+        pTitle.includes('crystal') ||
+        pTitle.includes('bridal') ||
+        pTitle.includes('embellished') ||
+        pOccasionsMatch(p, 'wedding') ||
+        pOccasionsMatch(p, 'prom') ||
+        pOccasionsMatch(p, 'cocktail') ||
+        pOccasionsMatch(p, 'festive')
+      );
+    }
 
     // 1. Resort '26 / Resort Edit
     if (normalizedTitle.includes('resort')) {
@@ -314,35 +460,35 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Centered Collection Title matching the screenshot */}
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-slate-800 text-center font-normal tracking-wide my-4 sm:my-8">
-          {categoryTitle}
-        </h1>
+        <div className="text-center my-6 sm:my-10 space-y-2">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-stone-950 font-bold tracking-tight">
+            {categoryTitle}
+          </h1>
+          <p className="text-sm sm:text-base text-stone-700 font-semibold max-w-2xl mx-auto">
+            Handcrafted luxury footwear &amp; accessories • Exclusively priced in USD
+          </p>
+        </div>
 
-        {/* Filter and Sort Row (Filter > on left, Featured ⌄ on right) */}
-        <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-8">
-          {/* Left: Filter Toggle */}
-          <button
-            id="category-filter-toggle-btn"
-            onClick={() => setIsFilterDrawerOpen(!isFilterDrawerOpen)}
-            className="flex items-center gap-1.5 text-xs text-slate-700 hover:text-slate-950 font-medium transition-colors cursor-pointer"
-          >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-slate-600" />
-            <span>Filter {activeFiltersCount > 0 ? `(${activeFiltersCount})` : '>'}</span>
-          </button>
+        {/* Collection Status and Sort Bar (Filter removed completely as requested) */}
+        <div className="flex items-center justify-between border-b-2 border-stone-200 pb-4 mb-8">
+          {/* Left: Total Pieces Count */}
+          <div className="text-sm sm:text-base font-bold uppercase tracking-[0.14em] text-stone-900">
+            <span>{displayProducts.length} Exclusive Styles</span>
+          </div>
 
           {/* Right: Featured Sort Menu */}
           <div className="relative">
             <button
               id="category-sort-btn"
               onClick={() => setIsSortMenuOpen(!isSortMenuOpen)}
-              className="flex items-center gap-1 text-xs text-slate-700 hover:text-slate-950 font-medium transition-colors cursor-pointer"
+              className="flex items-center gap-2 text-sm sm:text-base text-stone-950 hover:text-black font-bold transition-colors cursor-pointer"
             >
               <span>{getSortLabel(sortBy)}</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+              <ChevronDown className="w-4 h-4 text-stone-900" />
             </button>
 
             {isSortMenuOpen && (
-              <div className="absolute end-0 top-full mt-1.5 w-44 bg-white border border-slate-200 shadow-lg py-1.5 z-40 animate-in fade-in">
+              <div className="absolute end-0 top-full mt-2 w-52 bg-white border-2 border-stone-300 shadow-xl py-2 z-40 rounded-xl">
                 {[
                   { value: 'featured', label: 'Featured' },
                   { value: 'best-selling', label: 'Best Selling' },
@@ -356,10 +502,10 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
                       setSortBy(opt.value as any);
                       setIsSortMenuOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-2 text-xs transition-colors block cursor-pointer ${
+                    className={`w-full text-left px-4 py-2.5 text-sm font-bold transition-colors block cursor-pointer ${
                       sortBy === opt.value
-                        ? 'bg-slate-50 font-semibold text-[#0d3b46]'
-                        : 'text-slate-700 hover:bg-slate-50 hover:text-slate-950'
+                        ? 'bg-stone-100 text-stone-950 font-extrabold'
+                        : 'text-stone-800 hover:bg-stone-50 hover:text-stone-950'
                     }`}
                   >
                     {opt.label}
@@ -369,134 +515,6 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
             )}
           </div>
         </div>
-
-        {/* Filter Drawer / Expandable Options */}
-        {isFilterDrawerOpen && (
-          <div className="mb-8 p-5 rounded-xl bg-[#faf9f6] border border-slate-200/80 shadow-2xs space-y-4 animate-in fade-in duration-200">
-            <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
-              <span className="text-xs uppercase tracking-wider font-semibold text-slate-800">
-                Refine {categoryTitle} ({displayProducts.length} pieces)
-              </span>
-              <button
-                onClick={resetAllFilters}
-                className="text-xs text-slate-600 hover:text-slate-950 underline cursor-pointer"
-              >
-                Reset All Filters
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-xs">
-              {/* Heel Height */}
-              <div>
-                <span className="text-slate-500 uppercase tracking-wider block mb-2 font-medium text-[10px]">
-                  Silhouette / Height
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {[
-                    { id: 'all', label: 'All Heights' },
-                    { id: 'high-wedge', label: 'High Wedge (3.5")' },
-                    { id: 'higher-wedge', label: 'Higher Wedge (4.25")' },
-                    { id: 'low-wedge', label: 'Low Wedge (2.25")' },
-                    { id: 'flats', label: 'Flats' },
-                    { id: 'block-heel', label: 'Block Heels' },
-                    { id: 'bags', label: 'Potlis & Bags' },
-                  ].map((h) => (
-                    <button
-                      key={h.id}
-                      onClick={() => setSelectedHeelFilter(h.id)}
-                      className={`px-2.5 py-1 rounded-md text-[11px] transition-all cursor-pointer border ${
-                        selectedHeelFilter === h.id
-                          ? 'bg-[#0d3b46] text-white border-[#0d3b46] font-medium'
-                          : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                      }`}
-                    >
-                      {h.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Color Filter */}
-              <div>
-                <span className="text-slate-500 uppercase tracking-wider block mb-2 font-medium text-[10px]">
-                  Color Shade
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {['all', 'gold', 'champagne', 'rose gold', 'silver', 'pewter', 'black', 'taupe', 'navy', 'camel', 'maroon'].map((clr) => (
-                    <button
-                      key={clr}
-                      onClick={() => setSelectedColorFilter(clr)}
-                      className={`px-2.5 py-1 rounded-md text-[11px] capitalize transition-all cursor-pointer border ${
-                        selectedColorFilter === clr
-                          ? 'bg-[#0d3b46] text-white border-[#0d3b46] font-medium'
-                          : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                      }`}
-                    >
-                      {clr}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Size Filter */}
-              <div>
-                <span className="text-slate-500 uppercase tracking-wider block mb-2 font-medium text-[10px]">
-                  Shoe Size
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {[
-                    { id: 'all', label: 'All Sizes' },
-                    { id: '36 (US 5.5)', label: '36 (5.5)' },
-                    { id: '37 (US 6.5)', label: '37 (6.5)' },
-                    { id: '38 (US 7.5)', label: '38 (7.5)' },
-                    { id: '39 (US 8.5)', label: '39 (8.5)' },
-                    { id: '40 (US 9.5)', label: '40 (9.5)' },
-                    { id: '41 (US 10.5)', label: '41 (10.5)' },
-                  ].map((sz) => (
-                    <button
-                      key={sz.id}
-                      onClick={() => setSelectedSizeFilter(sz.id)}
-                      className={`px-2.5 py-1 rounded-md text-[11px] transition-all cursor-pointer border ${
-                        selectedSizeFilter === sz.id
-                          ? 'bg-[#0d3b46] text-white border-[#0d3b46] font-medium'
-                          : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                      }`}
-                    >
-                      {sz.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Price Filter */}
-              <div>
-                <span className="text-slate-500 uppercase tracking-wider block mb-2 font-medium text-[10px]">
-                  Price
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {[
-                    { id: 'all', label: 'All' },
-                    { id: 'under-50', label: 'Under $50' },
-                    { id: '50-75', label: '$50 - $75' },
-                    { id: 'over-75', label: 'Over $75' },
-                  ].map((pr) => (
-                    <button
-                      key={pr.id}
-                      onClick={() => setSelectedPriceFilter(pr.id)}
-                      className={`px-2.5 py-1 rounded-md text-[11px] transition-all cursor-pointer border ${
-                        selectedPriceFilter === pr.id
-                          ? 'bg-[#0d3b46] text-white border-[#0d3b46] font-medium'
-                          : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                      }`}
-                    >
-                      {pr.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Symmetrical 4-Column Product Grid (Matches Screenshot: 4 items per row, edge balanced) */}
         {displayProducts.length === 0 ? (
@@ -550,30 +568,30 @@ export const CategoryCollectionSection: React.FC<CategoryCollectionSectionProps>
 
                     {/* Teal Sale Badge matching screenshot (e.g. 59% off, 60% off) */}
                     {hasOriginalPrice && (
-                      <div className="absolute top-2.5 left-2.5 bg-[#249ea0] text-white text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 shadow-xs">
+                       <div className="absolute top-2.5 left-2.5 bg-[#249ea0] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-2.5 py-1 shadow-sm">
                         {discountPercent}% off
                       </div>
                     )}
                   </div>
 
-                  {/* Product Metadata formatted as in screenshot */}
-                  <div className="pt-2.5 pb-1">
+                  {/* Product Metadata formatted with bigger and darker fonts */}
+                  <div className="pt-3.5 pb-2">
                     {/* Title in Uppercase tracking format: e.g. CLASSIC HIGH K WEDGE / INK */}
-                    <div className="text-[11px] sm:text-xs text-slate-800 tracking-[0.06em] uppercase font-normal line-clamp-1">
+                    <div className="text-sm sm:text-base md:text-lg text-stone-950 tracking-[0.06em] uppercase font-bold line-clamp-1 group-hover:text-amber-950 transition-colors">
                       {displayTitle.mainTitle} {displayTitle.colorTitle ? `/ ${displayTitle.colorTitle}` : ''}
                     </div>
 
-                    {/* Price line matching screenshot */}
-                    <div className="flex items-center flex-wrap gap-1.5 text-xs sm:text-sm mt-0.5">
-                      <span className="text-slate-900 font-normal">
+                    {/* Price line with bigger and darker fonts */}
+                    <div className="flex items-center flex-wrap gap-2 text-base sm:text-lg md:text-xl mt-1.5">
+                      <span className="text-stone-950 font-extrabold tracking-tight">
                         {formatPrice(product.priceUSD)}
                       </span>
                       {hasOriginalPrice ? (
                         <>
-                          <span className="text-slate-400 line-through text-xs font-normal">
+                          <span className="text-stone-400 line-through text-xs sm:text-sm font-semibold">
                             {formatPrice(originalPrice)}
                           </span>
-                          <span className="text-[#b91c1c] text-[10px] sm:text-[11px] font-bold tracking-wider">
+                          <span className="text-rose-700 text-xs sm:text-sm font-extrabold tracking-wider bg-rose-50 px-1.5 py-0.5 rounded">
                             FINAL SALE
                           </span>
                         </>

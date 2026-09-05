@@ -87,6 +87,7 @@ export interface Product {
   occasions: string[];
   occasionNote?: string;
   priceUSD: number;
+  priceINR?: number;
   originalPriceUSD?: number;
   salePriceUSD?: number;
   badge?: string;

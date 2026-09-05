@@ -32,15 +32,15 @@ export const EdgeToEdgeNewArrivals: React.FC = () => {
       {/* Edge-to-Edge Container Header */}
       <div className="w-full px-4 sm:px-8 lg:px-12 flex items-end justify-between mb-6">
         <div>
-          <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-amber-800 font-bold mb-1">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            <span>Latest Drops &bull; stoffastyle.com</span>
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-800 font-bold mb-1.5">
+            <Sparkles className="w-4 h-4 text-amber-600" />
+            <span>Latest Drops &bull; Accessoiree</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-serif text-slate-900 font-medium tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-slate-900 font-medium tracking-tight">
             New Arrivals
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 font-light mt-0.5">
-            Scroll right to preview our latest handcrafted Kolhapuri wedges, braided flats, and bridal edits.
+          <p className="text-sm sm:text-base text-slate-600 font-light mt-1">
+            Scroll right to preview our latest handcrafted heels, luxury bags, and bridal occasion edits.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export const EdgeToEdgeNewArrivals: React.FC = () => {
 
                 {/* Badge */}
                 <div className="absolute top-3 start-3">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-900 text-white shadow-xs">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-900 text-white shadow-xs">
                     {product.badge || 'NEW ARRIVAL'}
                   </span>
                 </div>
@@ -102,7 +102,7 @@ export const EdgeToEdgeNewArrivals: React.FC = () => {
                 <div className="absolute bottom-3 inset-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <button
                     onClick={(e) => handleQuickAdd(e, product)}
-                    className={`w-full py-2.5 rounded-xl font-medium text-xs tracking-wider uppercase flex items-center justify-center gap-1.5 shadow-md transition-all ${
+                    className={`w-full py-3 rounded-xl font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2 shadow-md transition-all ${
                       isAdded
                         ? 'bg-emerald-600 text-white'
                         : 'bg-sky-900 hover:bg-sky-800 text-white'
@@ -110,12 +110,12 @@ export const EdgeToEdgeNewArrivals: React.FC = () => {
                   >
                     {isAdded ? (
                       <>
-                        <Check className="w-3.5 h-3.5 text-white" />
+                        <Check className="w-4 h-4 text-white" />
                         <span>Added to Cart</span>
                       </>
                     ) : (
                       <>
-                        <ShoppingBag className="w-3.5 h-3.5" />
+                        <ShoppingBag className="w-4 h-4" />
                         <span>Quick Add</span>
                       </>
                     )}
@@ -124,39 +124,39 @@ export const EdgeToEdgeNewArrivals: React.FC = () => {
               </div>
 
               {/* Product Details */}
-              <div className="p-4 flex-1 flex flex-col justify-between space-y-2">
+              <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-sky-800 font-semibold block mb-0.5">
+                  <span className="text-xs uppercase font-mono tracking-wider text-sky-900 font-bold block mb-1">
                     {product.category}
                   </span>
-                  <h3 className="font-serif text-base text-slate-900 font-medium group-hover:text-sky-800 transition-colors line-clamp-1">
+                  <h3 className="font-serif text-lg sm:text-xl text-slate-900 font-semibold group-hover:text-sky-800 transition-colors line-clamp-1">
                     {product.title}
                   </h3>
-                  <p className="text-xs text-slate-500 line-clamp-1 font-light mt-0.5">
+                  <p className="text-sm text-slate-600 line-clamp-1 font-light mt-0.5">
                     {product.subtitle}
                   </p>
                 </div>
 
                 {/* Color Dots and Price */}
-                <div className="flex items-center justify-between pt-2 border-t border-sky-50">
+                <div className="flex items-center justify-between pt-2.5 border-t border-sky-100">
                   <div className="flex items-center gap-1.5">
                     {product.colors.slice(0, 3).map((c) => (
                       <span
                         key={c.name}
                         title={c.name}
-                        className="w-3 h-3 rounded-full border border-slate-300 shadow-2xs"
+                        className="w-3.5 h-3.5 rounded-full border border-slate-300 shadow-2xs"
                         style={{ backgroundColor: c.hex }}
                       />
                     ))}
                     {product.colors.length > 3 && (
-                      <span className="text-[9px] text-slate-400 font-mono">
+                      <span className="text-xs text-slate-500 font-mono">
                         +{product.colors.length - 3}
                       </span>
                     )}
                   </div>
 
                   <div className="text-right">
-                    <span className="font-mono text-sm font-semibold text-slate-900">
+                    <span className="font-mono text-base sm:text-lg font-bold text-slate-900">
                       {formatPrice(product.priceUSD)}
                     </span>
                   </div>

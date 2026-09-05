@@ -1,6 +1,6 @@
 {
-  "name": "E-Commerce Campaign & Affiliate Engine",
-  "description": "High-performance e-commerce platform with custom social campaign tracking, integrated affiliate marketing, advanced analytics, and automated payouts.",
+  "name": "Accessoiree - Handcrafted Luxury Footwear & Wedges",
+  "description": "Handcrafted women's luxury wedges, block heels, flats, and artisanal bags exclusively priced in USD.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

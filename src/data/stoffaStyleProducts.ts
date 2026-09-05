@@ -16,7 +16,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 48,
+    "priceUSD": 80,
     "originalPriceUSD": 60,
     "badge": "BRIDAL EDIT",
     "images": [
@@ -106,7 +106,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 24,
     "isNewArrival": true,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4000
   },
   {
     "id": "stoffa_7533698777247",
@@ -123,7 +124,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "NEW ARRIVAL",
     "images": [
@@ -227,7 +228,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 27,
     "isNewArrival": true,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534162935967",
@@ -244,7 +246,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "WORN BY MADHURI DIXIT",
     "images": [
@@ -355,7 +357,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 30,
     "isNewArrival": true,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534164181151",
@@ -372,7 +375,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "NEW ARRIVAL",
     "images": [
@@ -476,7 +479,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 33,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534773993631",
@@ -493,7 +497,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "NEW ARRIVAL",
     "images": [
@@ -597,7 +601,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 36,
     "isNewArrival": true,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534774714527",
@@ -614,7 +619,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "NEW ARRIVAL",
     "images": [
@@ -718,7 +723,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 39,
     "isNewArrival": true,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534773862559",
@@ -735,7 +741,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "WORN BY KAREENA KAPOOR",
     "images": [
@@ -846,7 +852,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 42,
     "isNewArrival": true,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534774354079",
@@ -863,7 +870,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "NEW ARRIVAL",
     "images": [
@@ -967,7 +974,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 45,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534774681759",
@@ -984,7 +992,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_115_A_c73e14bc-8a1a-4e38-a3be-0c808347476d.jpg?v=1663997191",
@@ -1087,7 +1095,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 48,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534776582303",
@@ -1104,7 +1113,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 48,
+    "priceUSD": 80,
     "originalPriceUSD": 60,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_122_A_1fd915f8-c2fa-4ec1-8370-27fabd7c893f.jpg?v=1663997974",
@@ -1207,7 +1216,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 51,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4000
   },
   {
     "id": "stoffa_7534776615071",
@@ -1224,7 +1234,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_103_A_5438ce74-ada6-4fe5-a666-9114979d1af4.jpg?v=1663998038",
@@ -1327,7 +1337,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 54,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534780973215",
@@ -1344,7 +1355,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_124_A_4330318e-91e5-4483-97d2-57594bce190e.jpg?v=1663999269",
@@ -1447,7 +1458,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 57,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_9038468546719",
@@ -1464,7 +1476,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STO563TAN_3.jpg?v=1690399976",
@@ -1532,7 +1544,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 60,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_9038468481183",
@@ -1549,7 +1562,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STO115COPPER_3.jpg?v=1690399899",
@@ -1617,7 +1630,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 63,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534782808223",
@@ -1634,7 +1648,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_120_A_10f50ca9-1c81-408e-bcc4-2d4d4c49dcbb.jpg?v=1663999704",
@@ -1737,7 +1751,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 66,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7534782644383",
@@ -1754,7 +1769,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_107_A_022412bc-ccd1-48fb-8dae-1634d7af2135.jpg?v=1663999780",
@@ -1857,7 +1872,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 69,
     "isNewArrival": true,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_10911727059103",
@@ -1874,8 +1890,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 23,
-    "originalPriceUSD": 29,
+    "priceUSD": 39,
+    "originalPriceUSD": 84,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STS644MAROON_3_d1f4cc6c-fa37-4326-adf9-5c6f9bf645f4.jpg?v=1775909709",
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STS644MAROON_1_ba901db5-e7a0-41e2-bff1-7364b4976d03.jpg?v=1775909709",
@@ -1977,7 +1993,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 72,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 1950
   },
   {
     "id": "stoffa_10903029678239",
@@ -1994,7 +2011,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STH690_2_ebe59d19-e3ef-4437-a4a4-1c7836bfa3df.jpg?v=1775905244",
@@ -2055,7 +2072,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 75,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_10903029645471",
@@ -2072,7 +2090,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 51,
+    "priceUSD": 84,
     "originalPriceUSD": 64,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STH_903_1.jpg?v=1775905290",
@@ -2133,7 +2151,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 78,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4200
   },
   {
     "id": "stoffa_10903025615007",
@@ -2150,7 +2169,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 25,
+    "priceUSD": 42,
     "originalPriceUSD": 31,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/ST21WHITE_3.jpg?v=1775834465",
@@ -2218,7 +2237,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 81,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 2100
   },
   {
     "id": "stoffa_10627954999455",
@@ -2235,7 +2255,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 65,
+    "priceUSD": 108,
     "originalPriceUSD": 81,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STH594_A_Front_62e68a1d-01c5-44fd-9f55-34f7c0cc1550.png?v=1738144083",
@@ -2338,7 +2358,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 84,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 5400
   },
   {
     "id": "stoffa_10627927376031",
@@ -2355,7 +2376,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 65,
+    "priceUSD": 108,
     "originalPriceUSD": 81,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STH594_E.png?v=1738144083",
@@ -2458,7 +2479,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 87,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 5400
   },
   {
     "id": "stoffa_10627927277727",
@@ -2475,7 +2497,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 65,
+    "priceUSD": 108,
     "originalPriceUSD": 81,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STH594_D_1.png?v=1738496766",
@@ -2578,7 +2600,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 90,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 5400
   },
   {
     "id": "stoffa_10625484030111",
@@ -2595,7 +2618,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 65,
+    "priceUSD": 108,
     "originalPriceUSD": 81,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STH594_B_Front.png?v=1761316063",
@@ -2698,7 +2721,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 93,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 5400
   },
   {
     "id": "stoffa_10575809970335",
@@ -2715,7 +2739,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 55,
+    "priceUSD": 92,
     "originalPriceUSD": 69,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB191CGOLD_5.jpg?v=1783919180",
@@ -2818,7 +2842,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 96,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4600
   },
   {
     "id": "stoffa_10575690924191",
@@ -2835,7 +2860,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 55,
+    "priceUSD": 92,
     "originalPriceUSD": 69,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB191CSILVER_5.jpg?v=1741342090",
@@ -2938,7 +2963,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 99,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4600
   },
   {
     "id": "stoffa_10575645606047",
@@ -2955,7 +2981,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STS639LIGHTGOLD_5.jpg?v=1734790777",
@@ -3058,7 +3084,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 102,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_10575641542815",
@@ -3075,7 +3102,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STS639PEWTER_9.jpg?v=1734790777",
@@ -3178,7 +3205,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 105,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_10574497480863",
@@ -3195,7 +3223,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 54,
+    "priceUSD": 90,
     "originalPriceUSD": 68,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB171DLIGHTGOLD_5.jpg?v=1734790444",
@@ -3263,7 +3291,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 108,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4500
   },
   {
     "id": "stoffa_10575604940959",
@@ -3280,7 +3309,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STS639GOLD_5.jpg?v=1734790777",
@@ -3383,7 +3412,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 111,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_10575398469791",
@@ -3400,7 +3430,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 58,
+    "priceUSD": 96,
     "originalPriceUSD": 73,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB191SILVER_5.jpg?v=1735650930",
@@ -3503,7 +3533,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 114,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4800
   },
   {
     "id": "stoffa_10574498037919",
@@ -3520,7 +3551,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 58,
+    "priceUSD": 96,
     "originalPriceUSD": 73,
     "badge": "BEST SELLER",
     "images": [
@@ -3624,7 +3655,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 117,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4800
   },
   {
     "id": "stoffa_10574497317023",
@@ -3641,7 +3673,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB171CLIGHTGOLD_5.jpg?v=1783953591",
@@ -3709,7 +3741,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 120,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_10574497153183",
@@ -3726,7 +3759,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 61,
+    "priceUSD": 102,
     "originalPriceUSD": 76,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB171LIGHTGOLD_5.jpg?v=1734785113",
@@ -3794,7 +3827,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 123,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 5100
   },
   {
     "id": "stoffa_10575248130207",
@@ -3811,7 +3845,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/stb179crosegold_5.jpg?v=1734784845",
@@ -3914,7 +3948,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 126,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_10574497087647",
@@ -3931,7 +3966,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB179CLIGHTGOLD_5.jpg?v=1734784845",
@@ -4034,7 +4069,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 129,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_10574496923807",
@@ -4051,7 +4087,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 61,
+    "priceUSD": 102,
     "originalPriceUSD": 76,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB179LIGHTGOLD_5.jpg?v=1734784498",
@@ -4154,7 +4190,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 132,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 5100
   },
   {
     "id": "stoffa_10575230927007",
@@ -4171,7 +4208,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 61,
+    "priceUSD": 102,
     "originalPriceUSD": 76,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STB179ROSEGOLD_5.jpg?v=1734784498",
@@ -4274,7 +4311,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 135,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 5100
   },
   {
     "id": "stoffa_10574497874079",
@@ -4291,7 +4329,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 63,
+    "priceUSD": 104,
     "originalPriceUSD": 79,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STO673SILVERGOLD_1.jpg?v=1734784128",
@@ -4359,7 +4397,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 138,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 5200
   },
   {
     "id": "stoffa_9258915692703",
@@ -4376,7 +4415,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "BEST SELLER",
     "images": [
@@ -4480,7 +4519,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 141,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_9258875879583",
@@ -4497,7 +4537,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STO687SILVER_2.jpg?v=1775836479",
@@ -4600,7 +4640,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 144,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_9038468350111",
@@ -4617,7 +4658,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/IMG_8652.jpg?v=1690628973",
@@ -4685,7 +4726,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 147,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_9038468284575",
@@ -4702,7 +4744,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "BEST SELLER",
     "images": [
@@ -4771,7 +4813,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 150,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_9038468317343",
@@ -4788,7 +4831,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/Screenshot2023-08-08at6.07.50PM.png?v=1741342256",
@@ -4856,7 +4899,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 153,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_9038468513951",
@@ -4873,7 +4917,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/files/STO115_C_BUSCUIT_3.jpg?v=1741342505",
@@ -4941,7 +4985,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 156,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7602573869215",
@@ -4958,7 +5003,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 51,
+    "priceUSD": 84,
     "originalPriceUSD": 64,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/sto657G_9.jpg?v=1671904573",
@@ -5061,7 +5106,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 159,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4200
   },
   {
     "id": "stoffa_7534774780063",
@@ -5078,7 +5124,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_101_A_ff473752-9afb-4fae-9df8-21dc53de360a.jpg?v=1663996674",
@@ -5181,7 +5227,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 162,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7536643145887",
@@ -5198,7 +5245,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_D_115_A.jpg?v=1664242381",
@@ -5301,7 +5348,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 165,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7536611164319",
@@ -5318,7 +5366,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO115DCAMEL_3_4849c82b-c58d-4a99-a96c-08341b35855e.jpg?v=1664240983",
@@ -5421,7 +5469,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 168,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7536609689759",
@@ -5438,7 +5487,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO115DCAMEL_22_328f7be1-11a1-41e8-a1e6-6a7b27a695b6.jpg?v=1664237470",
@@ -5541,7 +5590,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 171,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7536608739487",
@@ -5558,7 +5608,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO115DCAMEL_18_89330ce4-dfe7-41bc-9524-be2a892ff429.jpg?v=1664237363",
@@ -5661,7 +5711,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 24,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7536607527071",
@@ -5678,7 +5729,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/1M0A8753.jpg?v=1664282751",
@@ -5781,7 +5832,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 27,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7535440527519",
@@ -5798,7 +5850,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 48,
+    "priceUSD": 80,
     "originalPriceUSD": 60,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO645TAUPE_1_0d47a2b0-1b9f-4095-812d-3eb1400f5172.jpg?v=1664172553",
@@ -5901,7 +5953,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 30,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4000
   },
   {
     "id": "stoffa_7535440429215",
@@ -5918,7 +5971,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 48,
+    "priceUSD": 80,
     "originalPriceUSD": 60,
     "badge": "BEST SELLER",
     "images": [
@@ -6022,7 +6075,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 33,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4000
   },
   {
     "id": "stoffa_7535435612319",
@@ -6039,7 +6093,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_D_124_A_e66535c5-057c-4532-90b5-e6593d8c6791.jpg?v=1664118494",
@@ -6142,7 +6196,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 36,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7535435350175",
@@ -6159,7 +6214,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_D_123_A_a27a0b9d-a4d4-44c5-9537-66aa37f56cd9.jpg?v=1664118352",
@@ -6262,7 +6317,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 39,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7535434727583",
@@ -6279,7 +6335,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_D_103_A_db82b2b9-bd3e-4f97-8c8a-ea9148184f09.jpg?v=1664117892",
@@ -6382,7 +6438,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 42,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7535363784863",
@@ -6399,7 +6456,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "badge": "BEST SELLER",
     "images": [
@@ -6503,7 +6560,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 45,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7535357231263",
@@ -6520,7 +6578,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_C_107_A_2d3f30b0-b488-4951-912e-4086050da9fb.jpg?v=1664104773",
@@ -6623,7 +6681,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 48,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535356313759",
@@ -6640,7 +6699,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_C_101_A_5cc18373-f09f-4fd7-bb2c-3e2c1ef02f3a.jpg?v=1664104252",
@@ -6743,7 +6802,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 51,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535356084383",
@@ -6760,7 +6820,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_C_103_A_84e91069-ab91-4203-aee8-67d4acb1df9f.jpg?v=1664103997",
@@ -6863,7 +6923,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 54,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535353757855",
@@ -6880,7 +6941,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_C_107_A_a235f9c7-6f6b-4f9d-9c0f-cc04a8169341.jpg?v=1664102382",
@@ -6983,7 +7044,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 57,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535334916255",
@@ -7000,7 +7062,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_C_109_A_2f57fd31-cf3e-45af-820d-b81be4c65652.jpg?v=1664363546",
@@ -7103,7 +7165,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 60,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535333605535",
@@ -7120,7 +7183,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_C_115_A_932ca87a-4259-45c4-be96-8b38ff6fa409.jpg?v=1664097031",
@@ -7223,7 +7286,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 63,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535332393119",
@@ -7240,7 +7304,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_C_102_A_aac83f29-31cb-4ec6-8261-e93c873a7f39.jpg?v=1664096794",
@@ -7343,7 +7407,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 66,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535330721951",
@@ -7360,7 +7425,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_C_114_A_0aa552a5-3157-443c-a14b-94a9fcf538c6.jpg?v=1664096323",
@@ -7463,7 +7528,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 69,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535329378463",
@@ -7480,7 +7546,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_C_120_A_20873474-3839-4ecd-8519-1ef63a2d6d2b.jpg?v=1664102295",
@@ -7583,7 +7649,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 72,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535324168351",
@@ -7600,7 +7667,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_C_113_A_394c892d-cb3e-4a7d-beb0-09ff4fd2c428.jpg?v=1664096038",
@@ -7703,7 +7770,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 75,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535323971743",
@@ -7720,7 +7788,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_C_118_A_b71c654b-1f2e-4957-901f-6fcc364f58bf.jpg?v=1664094466",
@@ -7823,7 +7891,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 78,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7535323087007",
@@ -7840,7 +7909,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "badge": "BEST SELLER",
     "images": [
@@ -7944,7 +8013,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 81,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7534876229791",
@@ -7961,7 +8031,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB170_C_MATTESILVER_1774bf98-3d48-49dc-bed4-5e3e8b035254.jpg?v=1664012663",
@@ -8064,7 +8134,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 84,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7534815379615",
@@ -8081,7 +8152,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 53,
+    "priceUSD": 88,
     "originalPriceUSD": 66,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB168CANTIQUE_1.jpg?v=1664489910",
@@ -8149,7 +8220,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 87,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4400
   },
   {
     "id": "stoffa_7534812299423",
@@ -8166,7 +8238,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 63,
+    "priceUSD": 104,
     "originalPriceUSD": 79,
     "badge": "BEST SELLER",
     "images": [
@@ -8270,7 +8342,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 90,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 5200
   },
   {
     "id": "stoffa_7534770061471",
@@ -8287,7 +8360,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 55,
+    "priceUSD": 92,
     "originalPriceUSD": 69,
     "badge": "BEST SELLER",
     "images": [
@@ -8391,7 +8464,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 93,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4600
   },
   {
     "id": "stoffa_7534764195999",
@@ -8408,7 +8482,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_E_101_A_e4a23634-d81e-4c90-8f90-b7f6cad76535.jpg?v=1663991425",
@@ -8511,7 +8585,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 96,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7534763704479",
@@ -8528,7 +8603,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_E_102_A_0c22a07a-6eaa-4552-9f36-c6d20543e1fd.jpg?v=1663991290",
@@ -8631,7 +8706,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 99,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7534762754207",
@@ -8648,7 +8724,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_E_107_A_33c3a60f-c048-45d9-ad88-8044fa0a5b1b.jpg?v=1663990747",
@@ -8751,7 +8827,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 102,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7534165393567",
@@ -8768,7 +8845,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 51,
+    "priceUSD": 84,
     "originalPriceUSD": 64,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO626PVCCORK.jpg?v=1663985681",
@@ -8829,7 +8906,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 105,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4200
   },
   {
     "id": "stoffa_7534017773727",
@@ -8846,7 +8924,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 55,
+    "priceUSD": 92,
     "originalPriceUSD": 69,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB_141_110_A.jpg?v=1663977192",
@@ -8949,7 +9027,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 108,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4600
   },
   {
     "id": "stoffa_7534007845023",
@@ -8966,7 +9045,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 48,
+    "priceUSD": 80,
     "originalPriceUSD": 60,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO645SILVER_6.jpg?v=1664172389",
@@ -9069,7 +9148,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 111,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4000
   },
   {
     "id": "stoffa_7533982122143",
@@ -9086,7 +9166,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_D_117_A.jpg?v=1664117680",
@@ -9189,7 +9269,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 114,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7533978976415",
@@ -9206,7 +9287,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 61,
+    "priceUSD": 102,
     "originalPriceUSD": 76,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB170MATTESILVER_1.jpg?v=1664012047",
@@ -9309,7 +9390,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 117,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 5100
   },
   {
     "id": "stoffa_7533975175327",
@@ -9326,7 +9408,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 61,
+    "priceUSD": 102,
     "originalPriceUSD": 76,
     "badge": "BEST SELLER",
     "images": [
@@ -9430,7 +9512,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 120,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 5100
   },
   {
     "id": "stoffa_7533965803679",
@@ -9447,7 +9530,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 47,
+    "priceUSD": 78,
     "originalPriceUSD": 59,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO115DCAMEL_8.jpg?v=1664236209",
@@ -9550,7 +9633,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 123,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 3900
   },
   {
     "id": "stoffa_7533691994271",
@@ -9567,7 +9651,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB168ANTIQUE_1.jpg?v=1664406758",
@@ -9635,7 +9719,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 126,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7533691568287",
@@ -9652,7 +9737,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_616_110_A.jpg?v=1741401990",
@@ -9755,7 +9840,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 129,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7490695659679",
@@ -9772,7 +9858,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_E_120_A_4d920fd4-598d-4ecb-9cbc-2e6aec2f54e5.jpg?v=1663990425",
@@ -9875,7 +9961,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 132,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7489579122847",
@@ -9892,7 +9979,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB_141_D_110_A_aada20a2-1329-4ba8-aefd-f8087f9919f4.jpg?v=1664011695",
@@ -9995,7 +10082,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 135,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_7489577975967",
@@ -10012,7 +10100,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 48,
+    "priceUSD": 80,
     "originalPriceUSD": 60,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STS_557_101_A_23249c9c-f248-466a-a8c4-8ef081bd56ff.jpg?v=1660911895",
@@ -10115,7 +10203,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 138,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4000
   },
   {
     "id": "stoffa_7480171528351",
@@ -10132,7 +10221,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_E_114_A_c2fa5842-e8bb-44b1-95ce-e6dcd696a440.jpg?v=1660363974",
@@ -10235,7 +10324,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 141,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7480171266207",
@@ -10252,7 +10342,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "badge": "BEST SELLER",
     "images": [
@@ -10356,7 +10446,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 144,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7480171135135",
@@ -10373,7 +10464,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_E_111_A_fd8b19c8-acd9-4228-8870-174c6a900864.jpg?v=1660363729",
@@ -10476,7 +10567,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 147,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_7480155766943",
@@ -10493,7 +10585,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB_141_C_110_A_0d2228aa-5087-45fe-93a9-98e09b7d25f1.jpg?v=1741342408",
@@ -10596,7 +10688,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 150,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_7463037304991",
@@ -10613,7 +10706,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 59,
+    "priceUSD": 98,
     "originalPriceUSD": 74,
     "badge": "BEST SELLER",
     "images": [
@@ -10717,7 +10810,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 153,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4900
   },
   {
     "id": "stoffa_7462799343775",
@@ -10734,7 +10828,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 59,
+    "priceUSD": 98,
     "originalPriceUSD": 74,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_A_110_A_b661131c-eb0a-4827-a6e4-c4898727bf05.jpg?v=1659004120",
@@ -10837,7 +10931,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 156,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4900
   },
   {
     "id": "stoffa_7462795968671",
@@ -10854,7 +10949,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 59,
+    "priceUSD": 98,
     "originalPriceUSD": 74,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_A_114_A_4ea201ce-ca7d-404c-9da0-245cae0c76e7.jpg?v=1659004235",
@@ -10957,7 +11052,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 159,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4900
   },
   {
     "id": "stoffa_6959134572703",
@@ -10974,7 +11070,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 48,
+    "priceUSD": 80,
     "originalPriceUSD": 60,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STS_557_102_A.jpg?v=1626789900",
@@ -11077,7 +11173,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 162,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4000
   },
   {
     "id": "stoffa_6914364965023",
@@ -11094,7 +11191,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB_166_C_106_A.jpg?v=1625433717",
@@ -11155,7 +11252,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 165,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_6914364571807",
@@ -11172,7 +11270,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 55,
+    "priceUSD": 92,
     "originalPriceUSD": 69,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB_166_106_A.jpg?v=1625433707",
@@ -11233,7 +11331,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.94,
     "reviewCount": 168,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4600
   },
   {
     "id": "stoffa_6914363916447",
@@ -11250,7 +11349,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 49,
+    "priceUSD": 82,
     "originalPriceUSD": 61,
     "badge": "BEST SELLER",
     "images": [
@@ -11354,7 +11453,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.95,
     "reviewCount": 171,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4100
   },
   {
     "id": "stoffa_6914363588767",
@@ -11371,7 +11471,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 52,
+    "priceUSD": 86,
     "originalPriceUSD": 65,
     "badge": "BEST SELLER",
     "images": [
@@ -11475,7 +11575,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.96,
     "reviewCount": 24,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4300
   },
   {
     "id": "stoffa_6717341696159",
@@ -11492,7 +11593,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_616_106_A.jpg?v=1625391860",
@@ -11595,7 +11696,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.97,
     "reviewCount": 27,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_6717341630623",
@@ -11612,7 +11714,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 59,
+    "priceUSD": 98,
     "originalPriceUSD": 74,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO115AGOLD_2_28164ce5-f686-425c-b30b-e6bf5b781f39.jpg?v=1664284316",
@@ -11715,7 +11817,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.98,
     "reviewCount": 30,
     "isNewArrival": false,
-    "isBestSeller": true
+    "isBestSeller": true,
+    "priceINR": 4900
   },
   {
     "id": "stoffa_6717341532319",
@@ -11732,7 +11835,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 63,
+    "priceUSD": 104,
     "originalPriceUSD": 79,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STB_141_A_110_A_240785e9-baac-4f26-94c7-a2f930af7c82.jpg?v=1659004286",
@@ -11835,7 +11938,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.99,
     "reviewCount": 33,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 5200
   },
   {
     "id": "stoffa_6911470534815",
@@ -11852,7 +11956,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_563_E_115_A_9f00d068-4328-4587-b102-f3023027ba63.jpg?v=1625370506",
@@ -11955,7 +12059,8 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.92,
     "reviewCount": 36,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4700
   },
   {
     "id": "stoffa_6911469093023",
@@ -11972,7 +12077,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
       "evening"
     ],
     "occasionNote": "Destination weddings, sangeet soirées, cocktail receptions, and resort luxury",
-    "priceUSD": 57,
+    "priceUSD": 94,
     "originalPriceUSD": 71,
     "images": [
       "https://cdn.shopify.com/s/files/1/0438/2221/9423/products/STO_115_E_110_A_057bd791-2940-4589-9d40-df665d9070e2.jpg?v=1625370486",
@@ -12075,6 +12180,7 @@ export const STOFFA_STYLE_OFFICIAL_PRODUCTS: Product[] = [
     "rating": 4.93,
     "reviewCount": 39,
     "isNewArrival": false,
-    "isBestSeller": false
+    "isBestSeller": false,
+    "priceINR": 4700
   }
 ];

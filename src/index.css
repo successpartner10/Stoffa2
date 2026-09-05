@@ -15,9 +15,23 @@
 html,
 body {
   font-family: 'Raleway', -apple-system, BlinkMacSystemFont, sans-serif !important;
-  background-color: #faf9f6;
-  color: #1a1a19;
+  font-size: 17px;
+  background-color: #ffffff;
+  color: #09090b;
+  font-weight: 500;
   letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure text elements default to darker, crisper tones */
+h1, h2, h3, h4, h5, h6 {
+  color: #09090b;
+  font-weight: 700;
+}
+
+p, span, li, a {
+  color: inherit;
 }
 
 button,

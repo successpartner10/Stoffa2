@@ -28,11 +28,11 @@ export const Breadcrumbs: React.FC = () => {
             className="hover:text-stone-900 flex items-center gap-1 transition-colors"
           >
             <Home className="w-3.5 h-3.5 text-stone-400" />
-            <span>Atelier Étoile</span>
+            <span>Accessoiree</span>
           </button>
           <ChevronRight className="w-3 h-3 text-stone-300" />
           <span className="text-stone-900 font-semibold uppercase tracking-wider">
-            {viewMode === 'admin' ? t('admin_mode') : t('affiliate_portal')}
+            {viewMode === 'admin' ? 'Merchant Admin' : 'Portal'}
           </span>
         </div>
       </div>
@@ -42,7 +42,6 @@ export const Breadcrumbs: React.FC = () => {
   const hasActiveFilters =
     selectedCategory !== 'All' ||
     selectedOccasion !== 'all' ||
-    Boolean(searchTerm) ||
     selectedSizeFilter !== 'all' ||
     Boolean(selectedProductModal);
 
@@ -65,7 +64,7 @@ export const Breadcrumbs: React.FC = () => {
             className="hover:text-stone-900 flex items-center gap-1 transition-colors text-stone-600"
           >
             <Home className="w-3.5 h-3.5 text-stone-400" />
-            <span className="font-medium">Atelier</span>
+            <span className="font-medium">Accessoiree</span>
           </button>
 
           <ChevronRight className="w-3 h-3 text-stone-300 shrink-0" />
