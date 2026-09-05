@@ -1,11 +1,4 @@
-import aiShoesDenimCu from '../assets/images/ai_shoes_denim_cu_1788534933587.jpg';
-import aiShoesDressFull from '../assets/images/ai_shoes_dress_full_1788534946483.jpg';
-import aiBagArmCu from '../assets/images/ai_bag_arm_cu_1788534958494.jpg';
-import aiBagStreetFull from '../assets/images/ai_bag_street_full_1788534970450.jpg';
-import aiShoesLegsDress from '../assets/images/ai_shoes_legs_dress_1788534991212.jpg';
-import coutureHeroLookbook from '../assets/images/couture_hero_lookbook_1788542745021.jpg';
-import coutureShoesBag from '../assets/images/couture_shoes_bag_1788542759452.jpg';
-import coutureRunwayStreet from '../assets/images/couture_runway_street_1788542775853.jpg';
+// Authentic Stöffa product & on-model assets
 import stoffaSuedeSlipper from '../assets/images/stoffa_suede_slipper_1788542974814.jpg';
 import stoffaFoldoverTote from '../assets/images/stoffa_foldover_tote_1788542991697.jpg';
 import stoffaBaboucheOnModel from '../assets/images/stoffa_babouche_onmodel_1788543438556.jpg';
@@ -17,17 +10,19 @@ import stoffaChelseaBoot from '../assets/images/stoffa_chelsea_boot_178854396031
 import stoffaPennyLoafer from '../assets/images/stoffa_penny_loafer_1788543975250.jpg';
 import stoffaPointedSlingback from '../assets/images/stoffa_pointed_slingback_1788543995844.jpg';
 import stoffaSuedeMule from '../assets/images/stoffa_suede_mule_1788544009514.jpg';
+
+// American models wearing Stöffa strictly
+import stoffaAmericanHero from '../assets/images/stoffa_american_hero_1788621031900.jpg';
+import stoffaAmericanModel from '../assets/images/stoffa_american_model_1788621044824.jpg';
+import stoffaAmericanStory from '../assets/images/stoffa_american_story_1788621055646.jpg';
+import stoffaAmericanFootwear from '../assets/images/stoffa_american_footwear_1788621069738.jpg';
+import stoffaUsModelTote from '../assets/images/stoffa_us_model_tote_1788621090372.jpg';
+import stoffaUsModelHeels from '../assets/images/stoffa_us_model_heels_1788621100977.jpg';
+import stoffaUsModelBanner from '../assets/images/stoffa_us_model_banner_1788621112967.jpg';
+
 import { ProductAngle } from '../types';
 
 export const AI_MEDIA_ASSETS = {
-  shoesDenimCu: aiShoesDenimCu,
-  shoesDressFull: aiShoesDressFull,
-  shoesLegsDress: aiShoesLegsDress,
-  bagArmCu: aiBagArmCu,
-  bagStreetFull: aiBagStreetFull,
-  coutureHeroLookbook,
-  coutureShoesBag,
-  coutureRunwayStreet,
   stoffaSuedeSlipper,
   stoffaFoldoverTote,
   stoffaBaboucheOnModel,
@@ -39,55 +34,63 @@ export const AI_MEDIA_ASSETS = {
   stoffaPennyLoafer,
   stoffaPointedSlingback,
   stoffaSuedeMule,
-};
-
-// Convert image URL to 4x upscale Retina HD
-const toRetinaHd = (url: string) => {
-  if (!url) return url;
-  if (url.includes('images.unsplash.com')) {
-    return (
-      url
-        .replace(/w=\d+/, 'w=1600')
-        .replace(/q=\d+/, 'q=90') + '&dpr=2'
-    );
-  }
-  return url;
+  stoffaAmericanHero,
+  stoffaAmericanModel,
+  stoffaAmericanStory,
+  stoffaAmericanFootwear,
+  stoffaUsModelTote,
+  stoffaUsModelHeels,
+  stoffaUsModelBanner,
 };
 
 /**
- * Returns a tailored set of 4-5 curated angles where ALL models wear/carry
- * the exact product displayed:
- * - Babouche slipper product -> model wears the brown suede babouche slipper.
- * - Foldover tote product -> model carries the cognac foldover nappa carryall tote.
- * - Pleated boot product -> model wears the pleated elastic-gore Chelsea boot.
- * - Slingback kitten heel -> model wears the pointed kitten slingback.
- * - Weekender duffel -> model carries the water-repellent suede weekender.
- * - Penny loafer -> model wears the deconstructed suede penny loafer.
- * - Crossbody bag -> model wears the structured box calfskin crossbody.
+ * Returns a tailored set of curated angles where ONLY authentic Stöffa product shots
+ * and AI American models wearing Stöffa strictly are used.
  */
 export function getProductAngles(
   id: string,
   category: string,
   baseImages: string[]
 ): ProductAngle[] {
-  const highResBase = (baseImages || []).filter(Boolean).map(toRetinaHd);
+  const validBase = (baseImages || []).filter(
+    (u) => typeof u === 'string' && u.length > 0 && !u.includes('unsplash.com') && !u.includes('placeholder')
+  );
 
-  // Return strictly authentic Stöffa product imagery
-  if (highResBase.length > 0) {
-    return highResBase.map((imgUrl, i) => ({
-      url: imgUrl,
-      label: `Stöffa Perspective ${i + 1}`,
-      tag: i === 0 ? 'Front' : i === 1 ? 'Profile' : i === 2 ? 'Pair' : `Angle ${i + 1}`,
-      shotType: (i === 0 ? 'hero' : i === 1 ? 'side' : 'detail') as 'hero' | 'side' | 'detail',
-    }));
+  // If the product is sourced from stoffastyle.com with authentic studio shots
+  if (validBase.length > 0 && validBase.some((u) => u.includes('stoffastyle.com') || u.includes('cdn.shopify.com'))) {
+    return validBase.map((url, i) => {
+      const u = url.toUpperCase();
+      if (u.includes('ALIA') || u.includes('KARINA') || u.includes('MADHURI') || u.includes('RASHMIKA') || u.includes('SHREYA') || u.includes('SONALI') || u.includes('KARISHMA') || u.includes('GENELIA') || u.includes('BHAVANA')) {
+        return { url, label: 'Celebrity Spotting: Stoffa Style', tag: 'Celebrity Style', shotType: 'hero' };
+      }
+      if (u.includes('_A.') || u.includes('_A_') || u.includes('_FRONT')) {
+        return { url, label: 'Front Angle Perspective', tag: 'Hero Front', shotType: 'hero' };
+      }
+      if (u.includes('_L.') || u.includes('_L_') || u.includes('_SIDE')) {
+        return { url, label: 'Architectural Profile', tag: 'Side Silhouette', shotType: 'side' };
+      }
+      if (u.includes('_P.') || u.includes('_P_') || u.includes('_DETAIL')) {
+        return { url, label: 'Metallic Braid & Footbed Detail', tag: 'Close-up Detail', shotType: 'detail' };
+      }
+      if (u.includes('_B.') || u.includes('_B_') || u.includes('_BACK')) {
+        return { url, label: 'Heel & Arch Silhouette', tag: 'Back View', shotType: 'side' };
+      }
+      if (u.includes('_T.') || u.includes('_T_') || u.includes('_TOE')) {
+        return { url, label: 'Toe Loop Craftsmanship', tag: 'Toe Detail', shotType: 'detail' };
+      }
+      if (u.includes('_R.') || u.includes('_R_')) {
+        return { url, label: 'Right Profile Silhouette', tag: 'Right Profile', shotType: 'side' };
+      }
+      return { url, label: `Artisanal Studio Angle ${i + 1}`, tag: 'Studio Shot', shotType: 'hero' };
+    });
   }
 
   // 1. The Stöffa Suede Slip-On Babouche
-  if (id === 'stoffa_01') {
+  if (id === 'stoffa_01' || id === 'ww_10') {
     return [
       {
         url: stoffaSuedeSlipper,
-        label: 'Studio Hero: Suede Babouche',
+        label: 'Studio Hero: Stöffa Suede Babouche',
         tag: 'Front Perspective',
         shotType: 'hero',
       },
@@ -98,76 +101,70 @@ export function getProductAngles(
         shotType: 'side',
       },
       {
-        url: 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Tuscan Split Suede & Hand-Turned Sole',
-        tag: 'Craft Close-Up',
-        shotType: 'detail',
-      },
-      {
-        url: stoffaBaboucheOnModel,
-        label: 'On-Model: Wearing Suede Babouche Slipper',
+        url: stoffaAmericanFootwear,
+        label: 'American Model: Wearing Stöffa Suede Babouche',
         tag: '✨ On-Model',
         isAiImage: true,
-        aiDescription: 'High-fashion editorial: Model wearing the chocolate brown suede Stöffa babouche slipper with relaxed cropped ivory linen trousers',
+        aiDescription: 'Close-up: American model wearing chocolate brown suede Stöffa babouche slipper with cropped ivory linen trousers',
         shotType: 'ai_cu',
       },
       {
         url: stoffaBaboucheOnModel,
         label: 'On-Model: Florentine Courtyard Walk',
-        tag: '✨ On-Model Lookbook',
+        tag: 'On-Model Lookbook',
+        shotType: 'side',
+      },
+      {
+        url: stoffaAmericanStory,
+        label: 'American Model: Coastal Terrace Lifestyle',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Full runway silhouette: Model walking on Tuscan stone courtyard terrace wearing the handcrafted Stöffa suede babouche',
+        aiDescription: 'Full silhouette: American model walking on seaside terrace wearing Stöffa relaxed tailoring and suede babouches',
         shotType: 'ai_full',
       },
     ];
   }
 
   // 2. The Stöffa Soft Foldover Nappa Carryall Tote
-  if (id === 'stoffa_02') {
+  if (id === 'stoffa_02' || id === 'ww_08') {
     return [
       {
         url: stoffaFoldoverTote,
-        label: 'Studio Hero: Foldover Nappa Tote',
+        label: 'Studio Hero: Stöffa Foldover Nappa Tote',
         tag: 'Front View',
         shotType: 'hero',
       },
       {
-        url: highResBase[1] || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Profile & Modular Foldover Collar',
-        tag: 'Side Angle',
-        shotType: 'side',
-      },
-      {
-        url: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Tubular Handle & Washed Lamb Nappa Detail',
-        tag: 'Close-Up',
-        shotType: 'detail',
-      },
-      {
-        url: stoffaToteOnModel,
-        label: 'On-Model: Soft Foldover Nappa Tote',
-        tag: '✨ On-Model',
+        url: stoffaUsModelTote,
+        label: 'American Model: Carrying Foldover Nappa Tote',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Editorial lookbook: Model carrying the cognac soft foldover lamb nappa tote over shoulder with fluid sand linen trench',
+        aiDescription: 'Editorial street style: American model in Manhattan carrying the cognac Stöffa foldover tote over shoulder',
         shotType: 'ai_cu',
       },
       {
         url: stoffaToteOnModel,
-        label: 'On-Model: Colonnade Promenade Look',
-        tag: '✨ On-Model Lookbook',
+        label: 'On-Model: Soft Foldover Nappa Tote',
+        tag: 'On-Model',
+        shotType: 'side',
+      },
+      {
+        url: stoffaAmericanModel,
+        label: 'American Model: Draped Stöffa Linen & Carryall',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Street style: Model holding the folded nappa carryall tote in historic Florence',
+        aiDescription: 'Full runway silhouette: American model wearing Stöffa draped tailoring and carrying the soft leather carryall tote',
         shotType: 'ai_full',
       },
     ];
   }
 
   // 3. The Stöffa Pleated Elastic-Gore Boot
-  if (id === 'stoffa_03') {
+  if (id === 'stoffa_03' || id === 'stoffa_09') {
     return [
       {
         url: stoffaChelseaBoot,
-        label: 'Studio Hero: Pleated Chelsea Boot',
+        label: 'Studio Hero: Stöffa Pleated Chelsea Boot',
         tag: 'Front Perspective',
         shotType: 'hero',
       },
@@ -178,23 +175,17 @@ export function getProductAngles(
         shotType: 'side',
       },
       {
-        url: 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'French Calf Nubuck & Blake-Rapid Welt',
-        tag: 'Craft Close-Up',
-        shotType: 'detail',
-      },
-      {
-        url: stoffaBootOnModel,
-        label: 'On-Model: Wearing Pleated Chelsea Boot',
-        tag: '✨ On-Model',
+        url: stoffaAmericanFootwear,
+        label: 'American Model: Wearing Stöffa Chelsea Boot',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Editorial street style: Model wearing the rich walnut Stöffa pleated Chelsea boot on Milan cobblestones',
+        aiDescription: 'Close-up: American model wearing Stöffa handcrafted boots with tailored trousers',
         shotType: 'ai_cu',
       },
       {
-        url: stoffaBootOnModel,
-        label: 'On-Model: Tailored Winter Lookbook',
-        tag: '✨ On-Model Lookbook',
+        url: stoffaAmericanHero,
+        label: 'American Model: Tailored Winter Lookbook',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
         aiDescription: 'Full silhouette: Model wearing the Stöffa architectural boot with cropped charcoal wool trousers',
         shotType: 'ai_full',
@@ -202,92 +193,80 @@ export function getProductAngles(
     ];
   }
 
-  // 4. The Stöffa Sculptural Pointed Slingback
-  if (id === 'stoffa_04') {
+  // 4. The Stöffa Sculptural Pointed Slingback & Heels
+  if (id === 'stoffa_04' || id === 'ww_09' || id === 'stoffa_12' || id === 'stoffa_14') {
     return [
       {
         url: stoffaPointedSlingback,
-        label: 'Studio Hero: Pointed Slingback',
+        label: 'Studio Hero: Stöffa Pointed Slingback',
         tag: 'Front Perspective',
         shotType: 'hero',
       },
       {
-        url: aiShoesDenimCu,
-        label: '50mm Kitten Heel Contour Profile',
+        url: stoffaUsModelHeels,
+        label: 'American Model: Wearing Pointed Sculpted Heels',
+        tag: '✨ American Model in Stöffa',
+        isAiImage: true,
+        aiDescription: 'American model wearing Stöffa sculptural kitten slingback heels with tailored silk dress',
+        shotType: 'ai_cu',
+      },
+      {
+        url: stoffaSuedeMule,
+        label: 'Architectural Heel Contour Profile',
         tag: 'Side Heel Contour',
         shotType: 'side',
       },
       {
-        url: 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Washed Nappa Footbed & Turned Sole',
-        tag: 'Craft Close-Up',
-        shotType: 'detail',
-      },
-      {
-        url: aiShoesDenimCu,
-        label: 'On-Model: Pointed Slingback with Raw Denim',
-        tag: '✨ On-Model',
+        url: stoffaAmericanModel,
+        label: 'American Model: Stöffa Evening Edit',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Model wearing the signature pointed kitten slingbacks with cropped raw-hem denim',
-        shotType: 'ai_cu',
-      },
-      {
-        url: aiShoesLegsDress,
-        label: 'On-Model: Evening Slip Dress Pairing',
-        tag: '✨ On-Model Lookbook',
-        isAiImage: true,
-        aiDescription: 'Model wearing the sculptured pointed slingbacks with ivory silk slip dress',
-        shotType: 'ai_mid',
+        aiDescription: 'Full editorial: American model in Stöffa resort tailoring and elegant heels',
+        shotType: 'ai_full',
       },
     ];
   }
 
   // 5. The Stöffa Water-Repellent Suede Weekender Duffel
-  if (id === 'stoffa_05') {
+  if (id === 'stoffa_05' || id === 'ww_07') {
     return [
       {
-        url: highResBase[0] || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Studio Hero: Suede Weekender Duffel',
+        url: stoffaFoldoverTote,
+        label: 'Studio Hero: Stöffa Suede Weekender Duffel',
         tag: 'Front View',
         shotType: 'hero',
       },
       {
-        url: highResBase[1] || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1600&q=90&dpr=2',
+        url: stoffaWeekenderOnModel,
         label: 'Bridle Leather Harness Straps Profile',
         tag: 'Side Angle',
         shotType: 'side',
       },
       {
-        url: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Hydrophobic Split Suede & Excella Zipper',
-        tag: 'Craft Close-Up',
-        shotType: 'detail',
-      },
-      {
-        url: stoffaWeekenderOnModel,
-        label: 'On-Model: Carrying Suede Weekender Duffel',
-        tag: '✨ On-Model',
+        url: stoffaUsModelTote,
+        label: 'American Model: Travel & Transit Look',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Travel editorial: Model carrying the bitter chocolate suede weekender duffel bag outside Italian villa',
+        aiDescription: 'American model in tailored outerwear carrying Stöffa travel bag',
         shotType: 'ai_cu',
       },
       {
-        url: stoffaWeekenderOnModel,
-        label: 'On-Model: Luxury Jet-Setting Look',
-        tag: '✨ On-Model Lookbook',
+        url: stoffaAmericanHero,
+        label: 'American Model: Weekend Jet-Setting Lookbook',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Full travel look: Model styled in cream cashmere coat holding the Stöffa suede duffel',
+        aiDescription: 'Full travel look: American model styled in Stöffa suede overshirt and luxury luggage',
         shotType: 'ai_full',
       },
     ];
   }
 
   // 6. The Stöffa Deconstructed Hand-Turned Penny Loafer
-  if (id === 'stoffa_06') {
+  if (id === 'stoffa_06' || id === 'stoffa_16') {
     return [
       {
         url: stoffaPennyLoafer,
-        label: 'Studio Hero: Penny Loafer',
+        label: 'Studio Hero: Stöffa Penny Loafer',
         tag: 'Front Perspective',
         shotType: 'hero',
       },
@@ -298,114 +277,108 @@ export function getProductAngles(
         shotType: 'side',
       },
       {
-        url: 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Santa Croce Reverse Suede & Island Sole',
-        tag: 'Craft Close-Up',
-        shotType: 'detail',
-      },
-      {
-        url: stoffaLoaferOnModel,
-        label: 'On-Model: Wearing Deconstructed Suede Loafer',
-        tag: '✨ On-Model',
+        url: stoffaAmericanFootwear,
+        label: 'American Model: Wearing Stöffa Loafer',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Editorial gallery look: Model wearing the dark taupe Stöffa unlined penny loafers with sand trousers',
+        aiDescription: 'Close-up: American model wearing Stöffa deconstructed suede loafers with pleated ecru trousers',
         shotType: 'ai_cu',
       },
       {
-        url: stoffaLoaferOnModel,
-        label: 'On-Model: Modernist Tailoring Lookbook',
-        tag: '✨ On-Model Lookbook',
+        url: stoffaAmericanHero,
+        label: 'American Model: Modernist Tailoring Lookbook',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Full lookbook: Relaxed architectural silhouette wearing Stöffa hand-turned suede loafers',
+        aiDescription: 'Full lookbook: American model in Stöffa suede overshirt and hand-turned loafers',
         shotType: 'ai_full',
       },
     ];
   }
 
-  // 7. The Stöffa Structured Box Calfskin Crossbody
-  if (id === 'stoffa_07') {
-    return [
-      {
-        url: highResBase[0] || 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Studio Hero: Box Calfskin Crossbody',
-        tag: 'Front View',
-        shotType: 'hero',
-      },
-      {
-        url: highResBase[1] || 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Rectilinear Geometry & Depth',
-        tag: 'Side Angle',
-        shotType: 'side',
-      },
-      {
-        url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Concealed Lock & Lacquered Edges',
-        tag: 'Hardware Detail',
-        shotType: 'detail',
-      },
-      {
-        url: aiBagArmCu,
-        label: 'On-Model: Box Crossbody on Arm',
-        tag: '✨ On-Model',
-        isAiImage: true,
-        aiDescription: 'Close-up: Model holding the structured vegetable-tanned box calfskin bag with tailored charcoal blazer',
-        shotType: 'ai_cu',
-      },
-      {
-        url: aiBagStreetFull,
-        label: 'On-Model: Street Style Crossbody',
-        tag: '✨ On-Model Lookbook',
-        isAiImage: true,
-        aiDescription: 'Full length: Model wearing the box calfskin crossbody over shoulder in historic center',
-        shotType: 'ai_full',
-      },
-    ];
-  }
-
+  // 7. Bags & Totes General
   const isBag =
     category.toLowerCase().includes('bag') ||
-    category.toLowerCase().includes('tote');
+    category.toLowerCase().includes('tote') ||
+    category.toLowerCase().includes('accessories');
 
   if (isBag) {
     return [
       {
-        url: highResBase[0] || stoffaFoldoverTote,
-        label: 'Studio Hero',
+        url: validBase[0] || stoffaFoldoverTote,
+        label: 'Studio Hero: Stöffa Handcrafted Carryall',
         tag: 'Front View',
         shotType: 'hero',
       },
       {
-        url: highResBase[1] || 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Profile & Depth',
-        tag: 'Side Angle',
-        shotType: 'side',
-      },
-      {
-        url: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        label: 'Hardware & Edge Detail',
-        tag: 'Close-Up',
-        shotType: 'detail',
-      },
-      {
-        url: stoffaToteOnModel,
-        label: 'On-Model: Carrying Draped Leather Carryall',
-        tag: '✨ On-Model',
+        url: stoffaUsModelTote,
+        label: 'American Model: Carrying Stöffa Leather Bag',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Fashion editorial: Model carrying luxury Italian leather bag over shoulder with relaxed tailoring',
+        aiDescription: 'American model wearing Stöffa tailored coat and carrying leather carryall',
         shotType: 'ai_cu',
       },
       {
-        url: stoffaWeekenderOnModel,
-        label: 'On-Model: Transit & Travel Silhouette',
-        tag: '✨ On-Model Lookbook',
+        url: stoffaToteOnModel,
+        label: 'On-Model: Draped Leather Carryall',
+        tag: 'On-Model',
+        shotType: 'side',
+      },
+      {
+        url: stoffaAmericanModel,
+        label: 'American Model: Full Lookbook Editorial',
+        tag: '✨ American Model in Stöffa',
         isAiImage: true,
-        aiDescription: 'Travel lookbook: Model carrying Italian leather luggage bag in tailored outerwear',
+        aiDescription: 'Full runway silhouette: American model styled with Stöffa bag',
         shotType: 'ai_full',
       },
     ];
   }
 
-  // Footwear default
+  // 8. Resort, Dresses & Apparel
+  const isApparel =
+    category.toLowerCase().includes('dress') ||
+    category.toLowerCase().includes('resort') ||
+    category.toLowerCase().includes('separates') ||
+    category.toLowerCase().includes('mommy');
+
+  if (isApparel) {
+    return [
+      {
+        url: stoffaAmericanModel,
+        label: 'American Model: Wearing Stöffa Resort Silhouette',
+        tag: '✨ American Model in Stöffa',
+        isAiImage: true,
+        aiDescription: 'American model wearing Stöffa airy draped linen overshirt and relaxed trousers',
+        shotType: 'hero',
+      },
+      {
+        url: stoffaUsModelBanner,
+        label: 'American Models: Stöffa Seaside Promenade',
+        tag: '✨ American Model in Stöffa',
+        isAiImage: true,
+        aiDescription: 'American models wearing Stöffa vacation tailoring walking along sunny coastal boardwalk',
+        shotType: 'side',
+      },
+      {
+        url: stoffaAmericanStory,
+        label: 'American Model: Beach to Table Lifestyle',
+        tag: '✨ American Model in Stöffa',
+        isAiImage: true,
+        aiDescription: 'American model at seaside terrace in Stöffa effortless tailoring',
+        shotType: 'detail',
+      },
+      {
+        url: stoffaAmericanHero,
+        label: 'American Model: Stöffa Suede & Linen Ensemble',
+        tag: '✨ American Model in Stöffa',
+        isAiImage: true,
+        aiDescription: 'American model in Stöffa signature suede and relaxed trousers',
+        shotType: 'ai_full',
+      },
+    ];
+  }
+
+  // 9. Footwear Default (Boots, Loafers, Mules)
   const isBoot = category.toLowerCase().includes('boot');
   const isLoaferOrFlat =
     category.toLowerCase().includes('flat') ||
@@ -414,89 +387,43 @@ export function getProductAngles(
   const onModelCloseUp = isBoot
     ? stoffaBootOnModel
     : isLoaferOrFlat
-    ? stoffaLoaferOnModel
-    : aiShoesDenimCu;
+    ? stoffaAmericanFootwear
+    : stoffaUsModelHeels;
 
   const onModelFull = isBoot
     ? stoffaBootOnModel
     : isLoaferOrFlat
-    ? stoffaBaboucheOnModel
-    : aiShoesLegsDress;
-
-  // Multi-angle catalog images support
-  if (highResBase.length >= 3) {
-    const defaultLabels = [
-      { label: 'Studio Hero: Front View', tag: 'Front Angle', shotType: 'hero' as const },
-      { label: 'Architectural Profile', tag: 'Side Profile', shotType: 'side' as const },
-      { label: 'Pair Composition', tag: 'Pair View', shotType: 'detail' as const },
-      { label: 'Top Elevation & Arch', tag: 'Top Angle', shotType: 'detail' as const },
-      { label: 'Artisanal Craft & Texture', tag: 'Detail CU', shotType: 'detail' as const },
-    ];
-
-    const mappedAngles: ProductAngle[] = highResBase.slice(0, 5).map((imgUrl, i) => {
-      const def = defaultLabels[i] || {
-        label: `Artisanal Angle ${i + 1}`,
-        tag: `Angle ${i + 1}`,
-        shotType: 'detail' as const,
-      };
-      return {
-        url: imgUrl,
-        label: def.label,
-        tag: def.tag,
-        shotType: def.shotType,
-      };
-    });
-
-    mappedAngles.push({
-      url: onModelCloseUp,
-      label: 'On-Model: Editorial Lookbook',
-      tag: '✨ On-Model',
-      isAiImage: true,
-      aiDescription: 'Fashion editorial: Model styled wearing handcrafted footwear silhouette with tailored ensemble',
-      shotType: 'ai_cu',
-    });
-
-    return mappedAngles;
-  }
+    ? stoffaAmericanHero
+    : stoffaAmericanModel;
 
   return [
     {
-      url: highResBase[0] || stoffaSuedeSlipper,
-      label: 'Studio Hero',
+      url: validBase[0] || (isLoaferOrFlat ? stoffaPennyLoafer : stoffaSuedeMule),
+      label: 'Studio Hero: Stöffa Footwear',
       tag: 'Front Perspective',
       shotType: 'hero',
     },
     {
-      url: highResBase[1] || 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&w=1600&q=90&dpr=2',
-      label: 'Architectural Profile',
-      tag: 'Side Heel Contour',
-      shotType: 'side',
+      url: onModelCloseUp,
+      label: 'American Model: Wearing Stöffa Footwear',
+      tag: '✨ American Model in Stöffa',
+      isAiImage: true,
+      aiDescription: 'American model feet and legs styled wearing handcrafted Stöffa footwear with tailored trousers',
+      shotType: 'ai_cu',
     },
     {
-      url: highResBase[2] || 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=1600&q=90&dpr=2',
-      label: 'Tuscan Leather & Sole CU',
+      url: stoffaSuedeSlipper,
+      label: 'Tuscan Leather & Hand-Turned Sole',
       tag: 'Craft Close-Up',
       shotType: 'detail',
     },
     {
-      url: onModelCloseUp,
-      label: isBoot
-        ? 'On-Model: Wearing Architectural Boots'
-        : isLoaferOrFlat
-        ? 'On-Model: Wearing Hand-Turned Loafers'
-        : 'On-Model: Wearing Pointed Footwear',
-      tag: '✨ On-Model',
-      isAiImage: true,
-      aiDescription: 'Model feet and legs styled wearing the exact matching Italian footwear silhouette with tailored trousers',
-      shotType: 'ai_cu',
-    },
-    {
       url: onModelFull,
-      label: 'On-Model: Full Editorial Silhouette',
-      tag: '✨ On-Model Lookbook',
+      label: 'American Model: Full Editorial Silhouette',
+      tag: '✨ American Model in Stöffa',
       isAiImage: true,
-      aiDescription: 'Full runway silhouette: Model wearing matching handcrafted footwear with relaxed Italian linen and wool tailoring',
-      shotType: 'ai_mid',
+      aiDescription: 'Full runway silhouette: American model wearing Stöffa footwear with relaxed linen and wool tailoring',
+      shotType: 'ai_full',
     },
   ];
 }

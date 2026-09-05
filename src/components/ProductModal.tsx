@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import {
   Building2,
-  Camera,
   Check,
   ChevronLeft,
   ChevronRight,
   Columns2,
-  Copy,
+  Heart,
   RotateCcw,
+  Ruler,
   Share2,
+  ShieldCheck,
   ShoppingBag,
   Sparkles,
   Star,
@@ -16,56 +17,51 @@ import {
   X,
 } from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
-import { Product } from '../types';
+import { SeashellLogo } from './SeashellLogo';
 
-interface ProductModalContentProps {
-  product: Product;
-}
-
-const ProductModalContent: React.FC<ProductModalContentProps> = ({ product }) => {
+export const ProductModal: React.FC = () => {
   const {
-    products,
+    selectedProductModal,
     setSelectedProductModal,
     addToCart,
     formatPrice,
     activeCurrency,
     activeCampaign,
-    selectedOccasion,
-    setSelectedOccasion,
     shareProduct,
     addToComparison,
     setIsComparisonOpen,
     setIsB2BModalOpen,
     setB2BTargetProduct,
-    t,
   } = useCommerce();
 
-  const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || '38');
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  if (!selectedProductModal) return null;
+
+  const product = selectedProductModal;
+  const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || 'Standard');
+  const [selectedColor, setSelectedColor] = useState(product.colors[0] || { name: 'Natural', hex: '#E5E7EB' });
   const [selectedAngleIndex, setSelectedAngleIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
+  const [activeTab, setActiveTab] = useState<'description' | 'fabric' | 'shipping'>('description');
+  const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
 
   // Normalize angles array
-  const angles = product.angles && product.angles.length > 0
-    ? product.angles
-    : product.images.map((url, i) => ({
-        url,
-        label: i === 0 ? 'Studio Hero' : i === 1 ? 'Profile Angle' : 'Detail View',
-        tag: i === 0 ? 'Front' : i === 1 ? 'Side' : 'Detail',
-        isAiImage: i >= 3,
-      }));
+  const angles =
+    product.angles && product.angles.length > 0
+      ? product.angles
+      : product.images.map((url, i) => ({
+          url,
+          label: i === 0 ? 'Studio Hero' : i === 1 ? 'Detail Angle' : 'Side Profile',
+          tag: i === 0 ? 'Front' : i === 1 ? 'Detail' : 'Side',
+          isAiImage: false,
+        }));
 
   const activeAngle = angles[selectedAngleIndex] || angles[0];
-  const isShoes = !product.category.toLowerCase().includes('bag') && !product.category.toLowerCase().includes('tote');
 
   const discountRate = activeCampaign ? activeCampaign.discountPercent / 100 : 0;
-  const discountedPriceUSD = product.priceUSD * (1 - discountRate);
-
-  // Recommended products in same category or complementary silhouettes
-  const recommendedProducts = products
-    .filter((p) => p.id !== product.id)
-    .slice(0, 4);
+  const originalPriceUSD = product.originalPriceUSD || (product.badge?.includes('OFF') ? Math.round(product.priceUSD * 1.4) : undefined);
+  const isSale = originalPriceUSD !== undefined || discountRate > 0;
 
   const handleNextAngle = () => {
     setSelectedAngleIndex((prev) => (prev + 1) % angles.length);
@@ -76,437 +72,424 @@ const ProductModalContent: React.FC<ProductModalContentProps> = ({ product }) =>
   };
 
   const handleAdd = () => {
-    addToCart(product, selectedSize, selectedColor, 1);
+    addToCart(product, selectedSize, selectedColor, quantity);
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    setTimeout(() => setAdded(false), 2200);
   };
 
   const handleShare = async () => {
-    const url = shareProduct(product.id);
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(url);
-    }
+    const res = await shareProduct(product);
     setCopiedShare(true);
-    setTimeout(() => setCopiedShare(false), 2200);
-  };
-
-  const handleOpenB2B = () => {
-    setB2BTargetProduct(product);
-    setIsB2BModalOpen(true);
-  };
-
-  const handleOpenCompare = () => {
-    addToComparison(product);
-    setIsComparisonOpen(true);
+    setTimeout(() => setCopiedShare(false), 2000);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-stone-900/60 backdrop-blur-xs animate-in fade-in">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/70 backdrop-blur-xs animate-in fade-in"
+      onClick={() => setSelectedProductModal(null)}
+    >
       <div
-        className="relative w-full max-w-5xl max-h-[92vh] overflow-y-auto rounded-2xl bg-white border border-stone-200 shadow-2xl text-stone-900 p-6 md:p-8"
+        className="relative w-full max-w-5xl max-h-[94vh] overflow-y-auto rounded-3xl bg-white border border-sky-100 shadow-2xl text-slate-900 p-5 sm:p-7"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
-        <button
-          onClick={() => setSelectedProductModal(null)}
-          className="absolute top-4 right-4 p-2 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-900 transition-colors z-20"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        {/* Top Header Row: Breadcrumb & Close Button */}
+        <div className="flex items-center justify-between pb-3 mb-4 border-b border-sky-100">
+          <nav className="flex items-center gap-2 text-[11px] font-mono text-slate-500">
+            <span className="hover:text-sky-800 cursor-pointer" onClick={() => setSelectedProductModal(null)}>
+              Home
+            </span>
+            <span>/</span>
+            <span className="text-sky-800 font-semibold">{product.category}</span>
+            <span>/</span>
+            <span className="text-slate-800 truncate max-w-[200px] sm:max-w-[320px] font-medium">
+              {product.title}
+            </span>
+          </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Gallery: 1 Big Image + Angles */}
-          <div className="lg:col-span-7 space-y-3">
-            {/* 1 Big Product Image - 100% Pure Stöffa photo with no text or box overlay */}
-            <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 shadow-inner group">
-              <img
-                src={activeAngle.url}
-                alt={`${product.title} - ${activeAngle.label}`}
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-center transition-all duration-500"
-              />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleShare}
+              title="Share product"
+              className="p-2 rounded-full text-slate-500 hover:text-sky-900 hover:bg-sky-50 transition-colors"
+            >
+              <Share2 className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setSelectedProductModal(null)}
+              className="p-2 rounded-full text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Amazon & Wayfair Style Two-Column Layout: Fits at a glance */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          {/* Left Column: Vertical Thumbnails + Main View */}
+          <div className="lg:col-span-7 flex flex-col sm:flex-row gap-3 sm:gap-4">
+            {/* Vertical Thumbnail Strip (Amazon style) */}
+            <div className="order-2 sm:order-1 flex sm:flex-col gap-2 overflow-x-auto sm:overflow-y-auto max-h-[460px] no-scrollbar py-1">
+              {angles.map((angle, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedAngleIndex(idx)}
+                  className={`w-14 h-18 sm:w-16 sm:h-20 shrink-0 rounded-xl overflow-hidden border-2 transition-all p-0.5 bg-slate-50 cursor-pointer ${
+                    selectedAngleIndex === idx
+                      ? 'border-sky-800 ring-2 ring-sky-800/20 shadow-sm'
+                      : 'border-slate-200 hover:border-sky-400 opacity-80 hover:opacity-100'
+                  }`}
+                >
+                  <img
+                    src={angle.url}
+                    alt={angle.label}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </button>
+              ))}
             </div>
 
-            {/* Navigation & Angle Info - Cleanly placed BELOW the image */}
-            {angles.length > 1 && (
-              <div className="flex items-center justify-between px-3 py-2 bg-stone-50 rounded-xl border border-stone-200/80">
-                <button
-                  type="button"
-                  onClick={handlePrevAngle}
-                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-stone-200 text-stone-700 text-xs font-medium border border-stone-200 flex items-center gap-1 transition-colors shadow-2xs"
-                  title="Previous Angle"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <span>Previous</span>
-                </button>
+            {/* Main Stage Image with Zoom & Navigation */}
+            <div className="order-1 sm:order-2 flex-1 relative aspect-[3/4] sm:aspect-[4/5] rounded-2xl overflow-hidden bg-sky-50/60 border border-sky-100 group shadow-inner">
+              <img
+                src={activeAngle.url}
+                alt={product.title}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover object-center transition-all duration-300 group-hover:scale-103"
+              />
 
-                <div className="text-center">
-                  <div className="text-xs font-serif font-medium text-stone-900">
-                    {activeAngle.label}
-                  </div>
-                  <div className="text-[10px] font-mono text-stone-500">
-                    View {selectedAngleIndex + 1} of {angles.length}
-                  </div>
-                </div>
+              {/* Prev / Next Arrows */}
+              {angles.length > 1 && (
+                <>
+                  <button
+                    onClick={handlePrevAngle}
+                    className="absolute start-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md transition-all hover:scale-105"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={handleNextAngle}
+                    className="absolute end-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md transition-all hover:scale-105"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </>
+              )}
 
-                <button
-                  type="button"
-                  onClick={handleNextAngle}
-                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-stone-200 text-stone-700 text-xs font-medium border border-stone-200 flex items-center gap-1 transition-colors shadow-2xs"
-                  title="Next Angle"
-                >
-                  <span>Next</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-
-            {/* Authentic Stöffa Perspectives Thumbnail Row - Clean, no badges on images */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-mono uppercase tracking-widest text-stone-600 font-semibold flex items-center gap-1.5">
-                  <Camera className="w-3.5 h-3.5 text-stone-500" />
-                  <span>Atelier Perspectives</span>
+              {/* Top Badges */}
+              <div className="absolute top-3 start-3 flex items-center gap-1.5">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-sky-950 text-white shadow-xs">
+                  {product.badge || 'RESORT FAVOURITE'}
                 </span>
-                <span className="text-[11px] text-stone-500 font-mono">
-                  Select view to inspect
-                </span>
-              </div>
-
-              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3">
-                {angles.map((angle, idx) => {
-                  const isSelected = selectedAngleIndex === idx;
-                  return (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setSelectedAngleIndex(idx)}
-                      className={`group/thumb relative rounded-xl overflow-hidden border-2 transition-all p-0.5 text-left flex flex-col ${
-                        isSelected
-                          ? 'border-stone-900 ring-2 ring-stone-900/20 shadow-md bg-stone-50'
-                          : 'border-stone-200 hover:border-stone-400 opacity-75 hover:opacity-100 bg-white'
-                      }`}
-                    >
-                      <div className="aspect-[3/4] w-full rounded-lg overflow-hidden bg-stone-100 relative">
-                        <img
-                          src={angle.url}
-                          alt={angle.label}
-                          referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform"
-                        />
-                      </div>
-                      <div className="p-1 sm:p-1.5 flex flex-col">
-                        <span className="text-[10px] font-medium text-stone-800 line-clamp-1 leading-tight">
-                          {angle.tag || angle.label}
-                        </span>
-                        <span className="text-[9px] text-stone-400 uppercase tracking-tighter">
-                          View {idx + 1}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
+                {product.collection && (
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/90 text-sky-950 backdrop-blur-xs border border-sky-100 shadow-xs">
+                    {product.collection}
+                  </span>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Right Product Specs */}
-          <div className="lg:col-span-5 space-y-6">
+          {/* Right Column: Product Details & Buying Actions (Compact, Fits at a Glance) */}
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
             <div>
-              <div className="flex items-center justify-between text-xs text-stone-500 font-mono mb-1">
-                <span className="uppercase tracking-widest text-stone-900 font-semibold flex items-center gap-1.5">
-                  <span className="text-amber-900 font-bold bg-amber-100 px-2 py-0.5 rounded text-[10px]">
-                    {product.brand || 'Stöffa'}
-                  </span>
-                  <span>{product.category}</span>
+              {/* Brand & Category */}
+              <div className="flex items-center justify-between text-xs text-sky-800 font-mono mb-1">
+                <span className="uppercase font-bold tracking-wider">{product.category}</span>
+                <span className="flex items-center gap-1 text-amber-500 font-semibold">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span>{product.rating}</span>
+                  <span className="text-slate-400 text-[11px]">({product.reviewCount} reviews)</span>
                 </span>
-                <div className="flex items-center gap-1 text-amber-600 font-medium">
-                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  <span className="font-semibold">{product.rating}</span>
-                  <span className="text-stone-400 font-normal">({product.reviewCount} reviews)</span>
-                </div>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-serif text-stone-900 font-medium leading-tight">
+              {/* Title & Subtitle */}
+              <h2 className="text-2xl sm:text-3xl font-serif text-slate-900 font-semibold leading-tight">
                 {product.title}
               </h2>
-              <p className="text-xs sm:text-sm text-stone-500 font-light mt-1">
+              <p className="text-xs sm:text-sm text-slate-500 font-light mt-1">
                 {product.subtitle}
               </p>
-            </div>
 
-            {/* Price Box */}
-            <div className="p-4 rounded-xl bg-stone-50 border border-stone-200 flex items-baseline justify-between">
-              <div>
-                <div className="text-[11px] text-stone-500 uppercase tracking-wider font-mono">
-                  {activeCurrency.name} ({activeCurrency.code})
-                </div>
-                <div className="flex items-baseline gap-2 mt-0.5">
-                  {activeCampaign ? (
-                    <>
-                      <span className="text-2xl font-bold font-mono text-emerald-800">
-                        {formatPrice(discountedPriceUSD)}
-                      </span>
-                      <span className="text-sm font-mono text-stone-400 line-through">
-                        {formatPrice(product.priceUSD)}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-2xl font-bold font-mono text-stone-900">
-                      {formatPrice(product.priceUSD)}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {activeCampaign && (
-                <div className="text-right">
-                  <span className="px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-900 text-xs font-semibold border border-emerald-300">
-                    -{activeCampaign.discountPercent}% VIP Code
-                  </span>
-                  <div className="text-[10px] text-stone-500 mt-1">
-                    Via {activeCampaign.creatorName}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Color Swatches */}
-            <div>
-              <div className="flex items-center justify-between text-xs mb-2">
-                <span className="text-stone-500">Color:</span>
-                <span className="text-stone-900 font-medium">{selectedColor.name}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                {product.colors.map((c) => (
-                  <button
-                    key={c.name}
-                    onClick={() => setSelectedColor(c)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs transition-all ${
-                      selectedColor.name === c.name
-                        ? 'border-stone-900 bg-stone-100 text-stone-900 font-medium'
-                        : 'border-stone-200 bg-white text-stone-600 hover:text-stone-900'
-                    }`}
-                  >
-                    <span
-                      className="w-3.5 h-3.5 rounded-full border border-stone-300"
-                      style={{ backgroundColor: c.hex }}
-                    />
-                    <span>{c.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Size Selector */}
-            <div>
-              <div className="flex items-center justify-between text-xs mb-2">
-                <span className="text-stone-500">{t('select_size')}:</span>
-                <span className="text-stone-700 hover:underline cursor-pointer text-[11px] font-medium">
-                  Shoe & Bag Dimension Guide
+              {/* Price & Savings Pill */}
+              <div className="flex items-baseline gap-3 mt-3 pt-3 border-t border-sky-100">
+                <span className="text-2xl font-bold font-mono text-slate-900">
+                  {formatPrice(product.priceUSD)}
                 </span>
+                {isSale && originalPriceUSD && (
+                  <>
+                    <span className="text-sm font-mono text-slate-400 line-through">
+                      {formatPrice(originalPriceUSD)}
+                    </span>
+                    <span className="px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold">
+                      SAVE {Math.round(((originalPriceUSD - product.priceUSD) / originalPriceUSD) * 100)}%
+                    </span>
+                  </>
+                )}
               </div>
-              <div className="grid grid-cols-4 gap-2">
-                {product.sizes.map((sz) => {
-                  const stock = product.inventory[sz] || 4;
-                  return (
+
+              {/* Color Swatch Picker */}
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-xs mb-1.5">
+                  <span className="font-mono text-slate-700 font-medium">
+                    Color: <span className="font-bold text-sky-950">{selectedColor.name}</span>
+                  </span>
+                  <span className="text-[10px] text-slate-400">({product.colors.length} choices)</span>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {product.colors.map((clr) => (
+                    <button
+                      key={clr.name}
+                      onClick={() => setSelectedColor(clr)}
+                      className={`w-7 h-7 rounded-full border-2 transition-all p-0.5 flex items-center justify-center cursor-pointer ${
+                        selectedColor.name === clr.name
+                          ? 'border-sky-900 ring-2 ring-sky-900/30 scale-110'
+                          : 'border-slate-300 hover:border-sky-400'
+                      }`}
+                      title={clr.name}
+                    >
+                      <span
+                        className="w-full h-full rounded-full shadow-2xs"
+                        style={{ backgroundColor: clr.hex }}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Size Selector */}
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-xs mb-1.5">
+                  <span className="font-mono text-slate-700 font-medium">
+                    Size: <span className="font-bold text-sky-950">{selectedSize}</span>
+                  </span>
+                  <button
+                    onClick={() => setIsSizeChartOpen(true)}
+                    className="text-[11px] text-sky-800 hover:text-sky-950 font-semibold flex items-center gap-1 underline cursor-pointer"
+                  >
+                    <Ruler className="w-3 h-3" />
+                    <span>Size Guide</span>
+                  </button>
+                </div>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {product.sizes.map((sz) => (
                     <button
                       key={sz}
                       onClick={() => setSelectedSize(sz)}
-                      className={`py-2 px-1 rounded-lg text-xs font-mono text-center border transition-all ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-mono border transition-all cursor-pointer ${
                         selectedSize === sz
-                          ? 'border-stone-900 bg-stone-900 text-white font-bold shadow-xs'
-                          : 'border-stone-200 bg-stone-50 text-stone-700 hover:border-stone-300 hover:bg-stone-100'
+                          ? 'border-sky-900 bg-sky-900 text-white font-bold shadow-xs'
+                          : 'border-sky-200 bg-white text-slate-700 hover:border-sky-400'
                       }`}
                     >
-                      <div>{sz}</div>
-                      <div className="text-[9px] text-stone-400 font-normal">
-                        {stock <= 2 ? 'Low stock' : 'In stock'}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="space-y-2.5 pt-2">
-              <button
-                id="modal-add-to-bag-btn"
-                onClick={handleAdd}
-                className="w-full py-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2"
-              >
-                {added ? (
-                  <>
-                    <Check className="w-4 h-4 text-white" />
-                    <span>{t('added_to_bag')}</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>{t('add_to_bag')}</span>
-                  </>
-                )}
-              </button>
-
-              {/* Utility Row: Share, B2B, Compare */}
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  id="modal-share-btn"
-                  onClick={handleShare}
-                  className="py-2.5 px-2 rounded-lg border border-stone-300 hover:border-stone-400 bg-white text-stone-700 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
-                  title="Generate shareable product link"
-                >
-                  {copiedShare ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      <span className="text-emerald-700 font-semibold">Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Share2 className="w-3.5 h-3.5 text-stone-500" />
-                      <span>Share</span>
-                    </>
-                  )}
-                </button>
-
-                <button
-                  id="modal-compare-btn"
-                  onClick={handleOpenCompare}
-                  className="py-2.5 px-2 rounded-lg border border-stone-300 hover:border-stone-400 bg-white text-stone-700 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
-                  title="Compare specs with another piece"
-                >
-                  <Columns2 className="w-3.5 h-3.5 text-stone-500" />
-                  <span>Compare</span>
-                </button>
-
-                <button
-                  id="modal-b2b-btn"
-                  onClick={handleOpenB2B}
-                  className="py-2.5 px-2 rounded-lg border border-amber-300 hover:border-amber-400 bg-amber-50/80 text-amber-900 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
-                  title="Wholesale bulk purchasing"
-                >
-                  <Building2 className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Wholesale</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Item Details & Assurance */}
-            <div className="pt-4 border-t border-stone-200 space-y-3 text-xs text-stone-600">
-              {/* Occasion Suitability */}
-              {product.occasions && product.occasions.length > 0 && (
-                <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-mono uppercase tracking-widest text-stone-900 font-semibold">
-                      Curated For Events & Occasions
-                    </span>
-                    <span className="text-[10px] font-mono text-stone-400">Antler & Juun.J Edit</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {product.occasions.map((occId) => (
-                      <button
-                        key={occId}
-                        onClick={() => {
-                          setSelectedOccasion(occId);
-                          setSelectedProductModal(null);
-                        }}
-                        className={`px-2.5 py-1 rounded-md text-xs font-mono uppercase tracking-wider transition-colors ${
-                          selectedOccasion === occId
-                            ? 'bg-stone-900 text-white font-semibold'
-                            : 'bg-white hover:bg-stone-200 text-stone-700 border border-stone-300'
-                        }`}
-                        title="Click to view all pieces tailored for this occasion"
-                      >
-                        {t(`occ_${occId}`) || occId}
-                      </button>
-                    ))}
-                  </div>
-                  {product.occasionNote && (
-                    <p className="text-[11px] text-stone-600 italic font-light pt-1 border-t border-stone-200/60">
-                      &bull; {product.occasionNote}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              <div>
-                <strong className="text-stone-900 block mb-1">Craft Description</strong>
-                <p className="font-light leading-relaxed">{product.description}</p>
-              </div>
-
-              <div>
-                <strong className="text-stone-900 block mb-1">Materials & Provenance</strong>
-                <p className="font-light">{product.materials}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <div className="flex items-center gap-2 p-2.5 rounded-lg bg-stone-50 border border-stone-200">
-                  <Truck className="w-4 h-4 text-stone-900 shrink-0" />
-                  <span className="text-[11px]">Free Worldwide Express Delivery</span>
-                </div>
-                <div className="flex items-center gap-2 p-2.5 rounded-lg bg-stone-50 border border-stone-200">
-                  <RotateCcw className="w-4 h-4 text-stone-900 shrink-0" />
-                  <span className="text-[11px]">Complimentary 30-Day Returns</span>
-                </div>
-              </div>
-
-              {/* Recommended for You Section */}
-              <div className="pt-5 border-t border-stone-200">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-serif font-semibold text-stone-900">
-                    Recommended Complementary Pieces
-                  </span>
-                  <span className="text-[10px] text-stone-400 font-mono">Curated Pairings</span>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                  {recommendedProducts.map((rec) => (
-                    <button
-                      key={rec.id}
-                      onClick={() => {
-                        setSelectedProductModal(rec);
-                        setSelectedAngleIndex(0);
-                      }}
-                      className="text-left group/rec p-2 rounded-lg bg-stone-50 hover:bg-stone-100 border border-stone-200 transition-all flex flex-col justify-between"
-                    >
-                      <div className="aspect-square rounded overflow-hidden bg-white border border-stone-200/80 mb-1.5">
-                        <img
-                          src={rec.images[0]}
-                          alt={rec.title}
-                          referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover group-hover/rec:scale-105 transition-transform"
-                        />
-                      </div>
-                      <div>
-                        <div className="font-serif text-[11px] font-medium text-stone-900 line-clamp-1 group-hover/rec:text-stone-700">
-                          {rec.title}
-                        </div>
-                        <div className="font-mono text-[10px] text-stone-500 mt-0.5">
-                          {formatPrice(rec.priceUSD)}
-                        </div>
-                      </div>
+                      {sz}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              {/* Quantity & Buy Button Row */}
+              <div className="mt-5 space-y-2.5">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border border-sky-200 rounded-xl overflow-hidden bg-white shadow-2xs">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="px-3 py-2.5 text-slate-600 hover:bg-sky-50 text-sm font-bold"
+                    >
+                      -
+                    </button>
+                    <span className="px-3 font-mono text-xs font-bold text-slate-900">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="px-3 py-2.5 text-slate-600 hover:bg-sky-50 text-sm font-bold"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Primary Add to Cart Button (Harmonious Blue) */}
+                  <button
+                    id="modal-add-to-cart-btn"
+                    onClick={handleAdd}
+                    className={`flex-1 py-3.5 px-6 rounded-2xl font-semibold text-xs tracking-wider uppercase flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer ${
+                      added
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-sky-900 hover:bg-sky-800 text-white'
+                    }`}
+                  >
+                    {added ? (
+                      <>
+                        <Check className="w-4 h-4 text-white" />
+                        <span>Added to Cart!</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="w-4 h-4" />
+                        <span>ADD TO CART &bull; {formatPrice(product.priceUSD * quantity)}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Secondary Actions: Wholesale & Compare */}
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    onClick={() => {
+                      setB2BTargetProduct(product);
+                      setIsB2BModalOpen(true);
+                    }}
+                    className="flex-1 py-2 px-3 rounded-xl border border-sky-200 hover:bg-sky-50 text-sky-900 text-[11px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <Building2 className="w-3.5 h-3.5" />
+                    <span>Wholesale Inquiry</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      addToComparison(product);
+                      setIsComparisonOpen(true);
+                    }}
+                    className="flex-1 py-2 px-3 rounded-xl border border-sky-200 hover:bg-sky-50 text-sky-900 text-[11px] font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <Columns2 className="w-3.5 h-3.5" />
+                    <span>Compare Silhouette</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Wayfair / Amazon Style Trust Strip */}
+              <div className="mt-4 pt-3 border-t border-sky-100 grid grid-cols-2 gap-2 text-[11px] text-slate-600 font-mono">
+                <div className="flex items-center gap-1.5">
+                  <Truck className="w-3.5 h-3.5 text-sky-700" />
+                  <span>Free express delivery</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <RotateCcw className="w-3.5 h-3.5 text-sky-700" />
+                  <span>30-day effortless returns</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-sky-700" />
+                  <span>Guaranteed authentic</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <SeashellLogo size={14} />
+                  <span>Bali artisan heritage</span>
+                </div>
+              </div>
+
+              {/* Compact Accordion Tabs */}
+              <div className="mt-4 pt-3 border-t border-sky-100">
+                <div className="flex border-b border-sky-100">
+                  <button
+                    onClick={() => setActiveTab('description')}
+                    className={`pb-2 pe-4 text-xs font-semibold uppercase tracking-wider border-b-2 cursor-pointer transition-colors ${
+                      activeTab === 'description'
+                        ? 'border-sky-900 text-sky-950'
+                        : 'border-transparent text-slate-400 hover:text-slate-700'
+                    }`}
+                  >
+                    Description
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('fabric')}
+                    className={`pb-2 px-4 text-xs font-semibold uppercase tracking-wider border-b-2 cursor-pointer transition-colors ${
+                      activeTab === 'fabric'
+                        ? 'border-sky-900 text-sky-950'
+                        : 'border-transparent text-slate-400 hover:text-slate-700'
+                    }`}
+                  >
+                    Details & Care
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('shipping')}
+                    className={`pb-2 ps-4 text-xs font-semibold uppercase tracking-wider border-b-2 cursor-pointer transition-colors ${
+                      activeTab === 'shipping'
+                        ? 'border-sky-900 text-sky-950'
+                        : 'border-transparent text-slate-400 hover:text-slate-700'
+                    }`}
+                  >
+                    Shipping & Returns
+                  </button>
+                </div>
+
+                <div className="pt-2 text-xs text-slate-600 font-light leading-relaxed">
+                  {activeTab === 'description' && (
+                    <p>{product.description}</p>
+                  )}
+                  {activeTab === 'fabric' && (
+                    <div className="space-y-1">
+                      <p><span className="font-semibold text-slate-800">Materials:</span> {product.materials}</p>
+                      <p><span className="font-semibold text-slate-800">Care:</span> Hand wash cold or dry clean for best longevity. Hang to dry in shade.</p>
+                      <p><span className="font-semibold text-slate-800">Origin:</span> Ethically handcrafted with Bali artisans.</p>
+                    </div>
+                  )}
+                  {activeTab === 'shipping' && (
+                    <div className="space-y-1">
+                      <p>Complimentary DHL / Air Express shipping on orders over $150.</p>
+                      <p>Pre-paid domestic returns within 30 days of delivery.</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Size Chart Modal Helper */}
+        {isSizeChartOpen && (
+          <div
+            className="fixed inset-0 z-60 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4"
+            onClick={() => setIsSizeChartOpen(false)}
+          >
+            <div
+              className="bg-white rounded-2xl max-w-lg w-full p-6 relative shadow-2xl border border-sky-100"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-sky-100">
+                <h3 className="font-serif text-lg text-slate-900 font-semibold">
+                  {product.category.includes('Shoe') || product.category.includes('Heel') ? 'Footwear Size Chart' : 'Resort Dress Size Guide'}
+                </h3>
+                <button
+                  onClick={() => setIsSizeChartOpen(false)}
+                  className="p-1 rounded-full text-slate-400 hover:text-slate-700"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="mt-4 overflow-x-auto text-xs font-mono">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-sky-100 text-sky-900 font-bold">
+                      <th className="py-2 pe-3">Size</th>
+                      <th className="py-2 px-3">Bust / Length</th>
+                      <th className="py-2 px-3">Waist</th>
+                      <th className="py-2 ps-3">Fit Advice</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-sky-50 text-slate-600">
+                    <tr><td className="py-2 pe-3 font-bold">XXS / 0</td><td className="py-2 px-3">30-32&quot;</td><td className="py-2 px-3">24-25&quot;</td><td className="py-2 ps-3">True to size</td></tr>
+                    <tr><td className="py-2 pe-3 font-bold">XS / 2-4</td><td className="py-2 px-3">32-34&quot;</td><td className="py-2 px-3">26-27&quot;</td><td className="py-2 ps-3">Relaxed drape</td></tr>
+                    <tr><td className="py-2 pe-3 font-bold">S / 4-6</td><td className="py-2 px-3">34-36&quot;</td><td className="py-2 px-3">28-29&quot;</td><td className="py-2 ps-3">Standard fit</td></tr>
+                    <tr><td className="py-2 pe-3 font-bold">M / 8-10</td><td className="py-2 px-3">36-38&quot;</td><td className="py-2 px-3">30-32&quot;</td><td className="py-2 ps-3">Comfortable</td></tr>
+                    <tr><td className="py-2 pe-3 font-bold">L / 12-14</td><td className="py-2 px-3">39-41&quot;</td><td className="py-2 px-3">33-35&quot;</td><td className="py-2 ps-3">Flowing silhouette</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-sky-100 flex justify-end">
+                <button
+                  onClick={() => setIsSizeChartOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-sky-900 text-white text-xs font-semibold uppercase tracking-wider"
+                >
+                  Got It
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
-  );
-};
-
-export const ProductModal: React.FC = () => {
-  const { selectedProductModal } = useCommerce();
-
-  if (!selectedProductModal) return null;
-
-  return (
-    <ProductModalContent
-      key={selectedProductModal.id}
-      product={selectedProductModal}
-    />
   );
 };

@@ -40,8 +40,6 @@ interface CommerceContextType {
   setSelectedProductModal: (prod: Product | null) => void;
 
   // Search, Sorting & Size Filters
-  brandFilter: string;
-  setBrandFilter: (brand: string) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   sortBy: SortOption;
@@ -161,28 +159,22 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [products, setProducts] = useState<Product[]>(() => {
     const saved = localStorage.getItem('etoile_products');
     const catalogSource = localStorage.getItem('etoile_catalog_source');
-    if (!saved || catalogSource !== 'stoffa_v7_no_text_box_overlay') {
-      localStorage.setItem('etoile_catalog_source', 'stoffa_v7_no_text_box_overlay');
+    if (!saved || catalogSource !== 'stoffastyle_official_images_v4') {
+      localStorage.setItem('etoile_catalog_source', 'stoffastyle_official_images_v4');
       localStorage.setItem('etoile_products', JSON.stringify(STOFFA_STORE_PRODUCTS));
       return STOFFA_STORE_PRODUCTS;
     }
     try {
       const parsed: Product[] = JSON.parse(saved);
-      // Ensure products contain ONLY authentic Stöffa products
-      const isPureStoffa =
-        parsed.length > 0 &&
-        parsed.every(
-          (p) =>
-            p.brand === 'Stöffa' &&
-            !p.id.startsWith('stoffa_bag_') &&
-            !p.id.startsWith('prod_')
-        );
-      if (!isPureStoffa || parsed.length < 15) {
-        localStorage.setItem('etoile_catalog_source', 'stoffa_v7_no_text_box_overlay');
-        localStorage.setItem('etoile_products', JSON.stringify(STOFFA_STORE_PRODUCTS));
-        return STOFFA_STORE_PRODUCTS;
-      }
-      return parsed;
+      const refreshed = parsed.map((p) => {
+        const angles = getProductAngles(p.id, p.category, p.images);
+        return {
+          ...p,
+          angles,
+          images: angles.map((a) => a.url),
+        };
+      });
+      return refreshed.length > 0 ? refreshed : STOFFA_STORE_PRODUCTS;
     } catch {
       return STOFFA_STORE_PRODUCTS;
     }
@@ -193,12 +185,11 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     localStorage.setItem('etoile_products', JSON.stringify(newProds));
   };
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>("Resort '26");
   const [selectedOccasion, setSelectedOccasion] = useState<string>('all');
   const [selectedProductModal, setSelectedProductModal] = useState<Product | null>(null);
 
   // Search, Sorting & Size Filters
-  const [brandFilter, setBrandFilter] = useState<string>('Stöffa');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [selectedSizeFilter, setSelectedSizeFilter] = useState<string>('all');
@@ -304,7 +295,6 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setSearchTerm('');
     setSelectedSizeFilter('all');
     setSortBy('featured');
-    setBrandFilter('Stöffa');
   };
 
   // Currencies state
@@ -457,8 +447,8 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Price formatting
   const formatPrice = (amountUSD: number) => {
     const converted = amountUSD * activeCurrency.rate;
-    // For Japanese Yen, Korean Won, or Indian Rupee, format cleanly without decimals
-    if (activeCurrency.code === 'JPY' || activeCurrency.code === 'KRW' || activeCurrency.code === 'INR') {
+    // For Japanese Yen or Korean Won, no decimals
+    if (activeCurrency.code === 'JPY' || activeCurrency.code === 'KRW') {
       return `${activeCurrency.symbol}${Math.round(converted).toLocaleString()}`;
     }
     return `${activeCurrency.symbol}${converted.toLocaleString(undefined, {
@@ -955,18 +945,9 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const sizes = sizesIdx !== -1 && cols[sizesIdx] ? cols[sizesIdx].split(';').map((s) => s.trim()).filter(Boolean) : ['EU 36', 'EU 37', 'EU 38', 'EU 39', 'EU 40', 'EU 41'];
         const descIdx = rawHeaders.indexOf('description');
         const description = descIdx !== -1 && cols[descIdx] ? cols[descIdx] : `${title}. Designed for effortless modern elegance and lasting comfort.`;
-        const imagesIdx = rawHeaders.indexOf('images');
-        const csvImages = imagesIdx !== -1 && cols[imagesIdx] ? cols[imagesIdx].split(';').map((s) => s.trim()).filter(Boolean) : [];
-        const colorsIdx = rawHeaders.indexOf('colors');
-        const csvColors = colorsIdx !== -1 && cols[colorsIdx]
-          ? cols[colorsIdx].split(';').map((c) => ({ name: c.trim(), hex: '#1C1B1B' }))
-          : null;
 
         const existing = products.find((p) => p.id === id || p.title.toLowerCase() === title.toLowerCase());
-        const baseImages = csvImages.length > 0 ? csvImages : existing?.images || [
-          'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1600&q=90&dpr=2',
-          'https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&w=1600&q=90&dpr=2',
-        ];
+        const baseImages = existing?.images || [];
 
         const angles = getProductAngles(id, category, baseImages);
 
@@ -981,7 +962,7 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           images: angles.map((a) => a.url),
           angles,
           sizes: sizes.length > 0 ? sizes : ['EU 36', 'EU 37', 'EU 38', 'EU 39', 'EU 40', 'EU 41'],
-          colors: csvColors && csvColors.length > 0 ? csvColors : existing?.colors || [
+          colors: existing?.colors || [
             { name: 'Nero Black', hex: '#1C1B1B' },
             { name: 'Espresso Tuscan Brown', hex: '#3B2F2F' },
           ],
@@ -1009,7 +990,7 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const importStoffaCatalog = (): { success: boolean; count: number } => {
     saveProducts(STOFFA_STORE_PRODUCTS);
-    localStorage.setItem('etoile_catalog_source', 'stoffa_v5_pure_only');
+    localStorage.setItem('etoile_catalog_source', 'stoffa_v3');
     setStorytellingText(STOFFA_BRAND_STORY);
     confetti({
       particleCount: 90,
@@ -1088,8 +1069,6 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         clearFilters,
         selectedProductModal,
         setSelectedProductModal,
-        brandFilter,
-        setBrandFilter,
         searchTerm,
         setSearchTerm,
         sortBy,

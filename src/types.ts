@@ -68,10 +68,28 @@ export interface Product {
   title: string;
   subtitle: string;
   brand?: string;
-  category: 'Shoes' | 'Bags' | 'Heels' | 'Boots' | 'Flats & Loafers' | 'Totes' | 'Shoulder Bags' | 'Sandals & Mules' | string;
+  category:
+    | 'Shoes'
+    | 'Bags'
+    | 'Heels'
+    | 'Boots'
+    | 'Flats & Loafers'
+    | 'Totes'
+    | 'Shoulder Bags'
+    | 'Sandals & Mules'
+    | 'Dresses'
+    | 'Resort'
+    | 'Mommy & Me'
+    | 'Separates'
+    | 'Accessories'
+    | string;
+  collection?: string;
   occasions: string[];
   occasionNote?: string;
   priceUSD: number;
+  originalPriceUSD?: number;
+  salePriceUSD?: number;
+  badge?: string;
   images: string[];
   angles?: ProductAngle[];
   sizes: string[];
