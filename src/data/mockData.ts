@@ -98,9 +98,10 @@ export const OCCASIONS_LIST: Occasion[] = [
 
 export const INITIAL_CURRENCIES: Currency[] = [
   { code: 'USD', symbol: '$', name: 'US Dollar', rate: 1.0, flag: '🇺🇸', isEnabled: true, isDefault: true },
-  { code: 'CAD', symbol: 'CA$', name: 'Canadian Dollar', rate: 1.36, flag: '🇨🇦', isEnabled: true },
+  { code: 'INR', symbol: '₹', name: 'Indian Rupee', rate: 85.0, flag: '🇮🇳', isEnabled: true },
   { code: 'EUR', symbol: '€', name: 'Euro', rate: 0.92, flag: '🇪🇺', isEnabled: true },
   { code: 'GBP', symbol: '£', name: 'British Pound', rate: 0.78, flag: '🇬🇧', isEnabled: true },
+  { code: 'CAD', symbol: 'CA$', name: 'Canadian Dollar', rate: 1.36, flag: '🇨🇦', isEnabled: true },
   { code: 'AUD', symbol: 'A$', name: 'Australian Dollar', rate: 1.52, flag: '🇦🇺', isEnabled: true },
   { code: 'JPY', symbol: '¥', name: 'Japanese Yen', rate: 154.0, flag: '🇯🇵', isEnabled: false },
 ];

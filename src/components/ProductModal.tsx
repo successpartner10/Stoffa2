@@ -16,11 +16,15 @@ import {
   X,
 } from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
+import { Product } from '../types';
 
-export const ProductModal: React.FC = () => {
+interface ProductModalContentProps {
+  product: Product;
+}
+
+const ProductModalContent: React.FC<ProductModalContentProps> = ({ product }) => {
   const {
     products,
-    selectedProductModal,
     setSelectedProductModal,
     addToCart,
     formatPrice,
@@ -36,10 +40,7 @@ export const ProductModal: React.FC = () => {
     t,
   } = useCommerce();
 
-  if (!selectedProductModal) return null;
-
-  const product = selectedProductModal;
-  const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0]);
+  const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || '38');
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedAngleIndex, setSelectedAngleIndex] = useState(0);
   const [added, setAdded] = useState(false);
@@ -114,9 +115,9 @@ export const ProductModal: React.FC = () => {
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Gallery: 1 Big Image + 3-4 More Angles */}
-          <div className="lg:col-span-7 space-y-4">
-            {/* 1 Big Product Image */}
+          {/* Left Gallery: 1 Big Image + Angles */}
+          <div className="lg:col-span-7 space-y-3">
+            {/* 1 Big Product Image - 100% Pure Stöffa photo with no text or box overlay */}
             <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 shadow-inner group">
               <img
                 src={activeAngle.url}
@@ -124,82 +125,55 @@ export const ProductModal: React.FC = () => {
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-center transition-all duration-500"
               />
-
-              {/* Prev / Next Angle Arrow Buttons */}
-              {angles.length > 1 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={handlePrevAngle}
-                    className="absolute start-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white text-stone-800 shadow-md transition-transform hover:scale-110 z-10"
-                    title="Previous Angle"
-                  >
-                    <ChevronLeft className="w-5 h-5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleNextAngle}
-                    className="absolute end-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 hover:bg-white text-stone-800 shadow-md transition-transform hover:scale-110 z-10"
-                    title="Next Angle"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                </>
-              )}
-
-              {/* Top Pill: Current Angle & Index */}
-              <div className="absolute top-4 start-4 flex items-center gap-2 z-10">
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide backdrop-blur-md shadow-sm flex items-center gap-1.5 ${
-                    activeAngle.isAiImage
-                      ? 'bg-amber-900/90 text-amber-100 border border-amber-500/50'
-                      : 'bg-stone-900/80 text-white border border-stone-700/50'
-                  }`}
-                >
-                  {activeAngle.isAiImage && <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />}
-                  <span>{activeAngle.label}</span>
-                </span>
-                <span className="px-2.5 py-1 rounded-full text-xs font-mono bg-white/85 text-stone-700 backdrop-blur-md border border-stone-200 shadow-xs">
-                  {selectedAngleIndex + 1} / {angles.length}
-                </span>
-              </div>
-
-              {/* Bottom AI Lookbook Editorial Description */}
-              {activeAngle.isAiImage && (
-                <div className="absolute bottom-4 start-4 end-4 z-10">
-                  <div className="p-3 rounded-xl bg-stone-900/90 backdrop-blur-md text-white border border-amber-600/40 shadow-xl">
-                    <div className="flex items-center gap-2 text-xs font-bold text-amber-300 mb-1">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>
-                        {isShoes
-                          ? 'AI On-Model Fit: American Women Legs & Feet'
-                          : 'AI On-Model Fit: Arm & Bag Styling'}
-                      </span>
-                    </div>
-                    <p className="text-xs text-stone-200 font-light leading-relaxed">
-                      {activeAngle.aiDescription ||
-                        (isShoes
-                          ? 'Styled on American women legs and feet with cropped raw-hem denim jeans and tailored dress.'
-                          : 'Styled on American women arm with structured silhouette and tailored wool blazer.')}
-                    </p>
-                  </div>
-                </div>
-              )}
             </div>
 
-            {/* 3 or 4 More Angles Thumbnail Row */}
+            {/* Navigation & Angle Info - Cleanly placed BELOW the image */}
+            {angles.length > 1 && (
+              <div className="flex items-center justify-between px-3 py-2 bg-stone-50 rounded-xl border border-stone-200/80">
+                <button
+                  type="button"
+                  onClick={handlePrevAngle}
+                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-stone-200 text-stone-700 text-xs font-medium border border-stone-200 flex items-center gap-1 transition-colors shadow-2xs"
+                  title="Previous Angle"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Previous</span>
+                </button>
+
+                <div className="text-center">
+                  <div className="text-xs font-serif font-medium text-stone-900">
+                    {activeAngle.label}
+                  </div>
+                  <div className="text-[10px] font-mono text-stone-500">
+                    View {selectedAngleIndex + 1} of {angles.length}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleNextAngle}
+                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-stone-200 text-stone-700 text-xs font-medium border border-stone-200 flex items-center gap-1 transition-colors shadow-2xs"
+                  title="Next Angle"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            {/* Authentic Stöffa Perspectives Thumbnail Row - Clean, no badges on images */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-mono uppercase tracking-widest text-stone-600 font-semibold flex items-center gap-1.5">
                   <Camera className="w-3.5 h-3.5 text-stone-500" />
-                  <span>360° Angles & AI Editorial Shots</span>
+                  <span>Atelier Perspectives</span>
                 </span>
                 <span className="text-[11px] text-stone-500 font-mono">
-                  Click any angle to inspect
+                  Select view to inspect
                 </span>
               </div>
 
-              <div className="grid grid-cols-5 gap-2 sm:gap-3">
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3">
                 {angles.map((angle, idx) => {
                   const isSelected = selectedAngleIndex === idx;
                   return (
@@ -220,63 +194,18 @@ export const ProductModal: React.FC = () => {
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform"
                         />
-                        {angle.isAiImage && (
-                          <span className="absolute top-1 right-1 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-600 text-white shadow-xs">
-                            AI
-                          </span>
-                        )}
                       </div>
                       <div className="p-1 sm:p-1.5 flex flex-col">
                         <span className="text-[10px] font-medium text-stone-800 line-clamp-1 leading-tight">
                           {angle.tag || angle.label}
                         </span>
                         <span className="text-[9px] text-stone-400 uppercase tracking-tighter">
-                          {angle.isAiImage ? 'On-Model' : `Angle ${idx + 1}`}
+                          View {idx + 1}
                         </span>
                       </div>
                     </button>
                   );
                 })}
-              </div>
-            </div>
-
-            {/* AI On-Model Quick Select Card */}
-            <div className="p-4 rounded-xl bg-amber-50/60 border border-amber-200/80">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-950">
-                  <Sparkles className="w-4 h-4 text-amber-600" />
-                  <span>AI On-Model Fit Guide</span>
-                </div>
-                <span className="text-[10px] text-amber-800 uppercase tracking-wider font-mono">
-                  {isShoes ? 'Worn On-Model • 1:1 Match' : 'Worn & Carried • 1:1 Match'}
-                </span>
-              </div>
-              <p className="text-xs text-amber-900/90 font-light mb-3">
-                {product.brand === 'Stöffa' || product.title.includes('Stöffa')
-                  ? `AI lookbook models wear this exact ${product.title.replace('The Stöffa ', '')} styled with relaxed Italian tailoring and Florentine craftsmanship.`
-                  : isShoes
-                  ? 'Inspect how this footwear fits on-model across cropped raw-hem jeans and evening dresses in both close-up (CU) and full-length perspective.'
-                  : 'Inspect proportion and drop on-model with tailored outerwear and full-length street silhouettes.'}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {angles
-                  .map((angle, idx) => ({ angle, idx }))
-                  .filter(({ angle }) => angle.isAiImage)
-                  .map(({ angle, idx }) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setSelectedAngleIndex(idx)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
-                        selectedAngleIndex === idx
-                          ? 'bg-amber-800 text-white shadow-xs'
-                          : 'bg-white hover:bg-amber-100 text-amber-900 border border-amber-300'
-                      }`}
-                    >
-                      <Sparkles className="w-3 h-3 text-amber-500" />
-                      <span>{angle.label}</span>
-                    </button>
-                  ))}
               </div>
             </div>
           </div>
@@ -285,7 +214,12 @@ export const ProductModal: React.FC = () => {
           <div className="lg:col-span-5 space-y-6">
             <div>
               <div className="flex items-center justify-between text-xs text-stone-500 font-mono mb-1">
-                <span className="uppercase tracking-widest text-stone-900 font-semibold">{product.category}</span>
+                <span className="uppercase tracking-widest text-stone-900 font-semibold flex items-center gap-1.5">
+                  <span className="text-amber-900 font-bold bg-amber-100 px-2 py-0.5 rounded text-[10px]">
+                    {product.brand || 'Stöffa'}
+                  </span>
+                  <span>{product.category}</span>
+                </span>
                 <div className="flex items-center gap-1 text-amber-600 font-medium">
                   <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                   <span className="font-semibold">{product.rating}</span>
@@ -561,5 +495,18 @@ export const ProductModal: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+export const ProductModal: React.FC = () => {
+  const { selectedProductModal } = useCommerce();
+
+  if (!selectedProductModal) return null;
+
+  return (
+    <ProductModalContent
+      key={selectedProductModal.id}
+      product={selectedProductModal}
+    />
   );
 };

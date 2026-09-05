@@ -38,6 +38,7 @@ export const Navbar: React.FC = () => {
     activateCampaignBySlug,
     viewMode,
     setViewMode,
+    setSelectedCategory,
     searchTerm,
     setSearchTerm,
     setIsB2BModalOpen,
@@ -406,14 +407,17 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center gap-8">
           <button
             id="brand-logo-btn"
-            onClick={() => setViewMode('storefront')}
+            onClick={() => {
+              setViewMode('storefront');
+              setSelectedCategory('All');
+            }}
             className="text-left group"
           >
             <span className="block font-serif text-2xl tracking-widest text-stone-900 group-hover:text-stone-700 transition-colors uppercase font-bold">
-              ÉTOILE
+              STÖFFA
             </span>
             <span className="block text-[9px] uppercase tracking-[0.35em] text-stone-500 font-mono font-medium">
-              Florentine Shoes & Tuscan Leather Bags
+              Artisanal Handcrafted Footwear
             </span>
           </button>
 
@@ -431,40 +435,31 @@ export const Navbar: React.FC = () => {
                 <span>Occasions (13)</span>
               </button>
               <button
-                onClick={() => setViewMode('storefront')}
+                onClick={() => {
+                  setViewMode('storefront');
+                  setSelectedCategory('All');
+                }}
                 className="text-stone-900 font-semibold hover:text-black transition-colors"
               >
                 {t('all_categories')}
               </button>
               <button
-                onClick={() => setViewMode('storefront')}
-                className="hover:text-stone-900 transition-colors"
-              >
-                {t('category_shoes')}
-              </button>
-              <button
-                onClick={() => setViewMode('storefront')}
-                className="hover:text-stone-900 transition-colors"
-              >
-                {t('category_bags')}
-              </button>
-              <button
-                onClick={() => setViewMode('storefront')}
+                onClick={() => {
+                  setViewMode('storefront');
+                  setSelectedCategory('Heels');
+                }}
                 className="hover:text-stone-900 transition-colors"
               >
                 {t('category_heels')}
               </button>
               <button
-                onClick={() => setViewMode('storefront')}
+                onClick={() => {
+                  setViewMode('storefront');
+                  setSelectedCategory('Flats & Loafers');
+                }}
                 className="hover:text-stone-900 transition-colors"
               >
-                {t('category_boots')}
-              </button>
-              <button
-                onClick={() => setViewMode('storefront')}
-                className="hover:text-stone-900 transition-colors"
-              >
-                {t('category_totes')}
+                {t('category_flats')}
               </button>
             </nav>
           )}

@@ -38,6 +38,8 @@ const StorefrontContent: React.FC = () => {
     setSelectedCategory,
     selectedOccasion,
     setSelectedOccasion,
+    brandFilter,
+    setBrandFilter,
     searchTerm,
     setSearchTerm,
     sortBy,
@@ -56,41 +58,34 @@ const StorefrontContent: React.FC = () => {
   const categories = [
     'All',
     'Shoes',
-    'Bags',
     'Heels',
-    'Boots',
     'Flats & Loafers',
-    'Totes',
-    'Shoulder Bags',
   ];
 
-  const sizeOptions = ['all', '36', '37', '38', '39', '40', '41', '42', 'One Size'];
+  const sizeOptions = ['all', '36', '37', '38', '39', '40', '41'];
 
   const getCategoryLabel = (cat: string) => {
     switch (cat) {
       case 'All':
-        return t('all_categories');
+        return t('all_categories') || 'All Footwear';
       case 'Shoes':
-        return t('category_shoes');
-      case 'Bags':
-        return t('category_bags');
+        return t('category_shoes') || 'All Shoes';
       case 'Heels':
-        return t('category_heels');
-      case 'Boots':
-        return t('category_boots');
+        return t('category_heels') || 'Wedges & Heels';
       case 'Flats & Loafers':
-        return t('category_flats');
-      case 'Totes':
-      case 'Shoulder Bags':
-        return t('category_totes');
+        return t('category_flats') || 'Kolhapuri Flats';
       default:
         return cat;
     }
   };
 
-  // 1. Filter by Category
+  // 0. Filter by Brand (Stöffa Only)
   let filteredProducts = products;
+  if (brandFilter && brandFilter !== 'all') {
+    filteredProducts = filteredProducts.filter((p) => p.brand === brandFilter);
+  }
 
+  // 1. Filter by Category
   if (selectedCategory !== 'All') {
     if (selectedCategory === 'Shoes') {
       filteredProducts = filteredProducts.filter(
@@ -99,13 +94,6 @@ const StorefrontContent: React.FC = () => {
           p.category === 'Heels' ||
           p.category === 'Boots' ||
           p.category === 'Flats & Loafers'
-      );
-    } else if (selectedCategory === 'Bags') {
-      filteredProducts = filteredProducts.filter(
-        (p) =>
-          p.category === 'Bags' ||
-          p.category === 'Totes' ||
-          p.category === 'Shoulder Bags'
       );
     } else {
       filteredProducts = filteredProducts.filter((p) => p.category === selectedCategory);
@@ -161,7 +149,8 @@ const StorefrontContent: React.FC = () => {
     selectedOccasion !== 'all' ||
     Boolean(searchTerm) ||
     selectedSizeFilter !== 'all' ||
-    sortBy !== 'featured';
+    sortBy !== 'featured' ||
+    brandFilter !== 'Stöffa';
 
   return (
     <div className="bg-[#faf9f6]">
@@ -181,13 +170,13 @@ const StorefrontContent: React.FC = () => {
           <div className="max-w-3xl space-y-2">
             <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-widest text-stone-500 font-semibold">
               <BookOpen className="w-3.5 h-3.5 text-stone-700" />
-              <span>ATELIER ÉTOILE &bull; SEASONAL NARRATIVE</span>
+              <span>STÖFFA STYLE &bull; ARTISANAL FOOTWEAR ATELIER</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-serif text-stone-900 font-medium leading-snug">
               &ldquo;{storytellingText}&rdquo;
             </h3>
             <p className="text-xs text-stone-500 font-light">
-              Crafted in Florence and Scandicci under gold-rated ethical environmental stewardship.
+              Handcrafted in India with non-skid rubber outsoles, ergonomic memory-foam cushioning, and ethical vegan leathers.
             </p>
           </div>
         </div>
@@ -197,33 +186,62 @@ const StorefrontContent: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 text-xs font-mono text-stone-500 uppercase tracking-widest mb-1 font-semibold">
               <Compass className="w-3.5 h-3.5 text-stone-700" />
-              <span>Autumn / Winter 2026 Footwear & Leather Edition</span>
+              <span>Artisanal Kolhapuri Wedges &amp; Festive Heels</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-serif text-stone-900 font-medium tracking-tight">
-              Women&apos;s Shoes & Architectural Bags
+              Stöffa Style Footwear Collection
             </h2>
             <p className="text-xs text-stone-500 mt-1">
               Real-time checkout in <strong>{activeCurrency.code}</strong> &bull; Localized for{' '}
-              <strong>{activeLanguage.name}</strong> &bull; Showing {filteredProducts.length} pieces
+              <strong>{activeLanguage.name}</strong> &bull; Showing {filteredProducts.length} Stöffa pieces
             </p>
           </div>
 
-          {/* Silhouette Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            {categories.map((cat) => (
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Brand Filter Toggle: Stöffa Only */}
+            <div className="flex items-center p-1 rounded-full bg-stone-100 border border-stone-300 text-xs font-mono font-medium shadow-2xs">
               <button
-                key={cat}
-                id={`filter-cat-${cat.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider transition-all shrink-0 ${
-                  selectedCategory === cat
+                id="brand-filter-stoffa-btn"
+                onClick={() => setBrandFilter('Stöffa')}
+                className={`px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 ${
+                  brandFilter === 'Stöffa'
                     ? 'bg-stone-900 text-white font-semibold shadow-xs'
-                    : 'bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-stone-200'
+                    : 'text-stone-600 hover:text-stone-900'
                 }`}
               >
-                {getCategoryLabel(cat)}
+                <Sparkles className="w-3 h-3 text-amber-300" />
+                <span>Stöffa Only</span>
               </button>
-            ))}
+              <button
+                id="brand-filter-all-btn"
+                onClick={() => setBrandFilter('all')}
+                className={`px-3 py-1.5 rounded-full transition-all ${
+                  brandFilter === 'all'
+                    ? 'bg-stone-900 text-white font-semibold shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                All Brands
+              </button>
+            </div>
+
+            {/* Silhouette Filter Pills */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  id={`filter-cat-${cat.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 rounded-full text-xs font-medium uppercase tracking-wider transition-all shrink-0 ${
+                    selectedCategory === cat
+                      ? 'bg-stone-900 text-white font-semibold shadow-xs'
+                      : 'bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-stone-200'
+                  }`}
+                >
+                  {getCategoryLabel(cat)}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -303,9 +321,23 @@ const StorefrontContent: React.FC = () => {
         </div>
 
         {/* Active Filter Indicators Bar */}
-        {(searchTerm || selectedSizeFilter !== 'all' || selectedOccasion !== 'all') && (
+        {(brandFilter === 'Stöffa' || searchTerm || selectedSizeFilter !== 'all' || selectedOccasion !== 'all' || selectedCategory !== 'All') && (
           <div className="flex items-center gap-2 flex-wrap text-xs font-mono text-stone-600">
             <span className="text-stone-400">Active Filters:</span>
+            {brandFilter === 'Stöffa' && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100/80 text-amber-900 border border-amber-300 font-semibold shadow-2xs">
+                <Sparkles className="w-3 h-3 text-amber-600" />
+                <span>Brand: Stöffa Only ({filteredProducts.length})</span>
+                <button
+                  onClick={() => setBrandFilter('all')}
+                  className="hover:text-amber-950 ml-0.5"
+                  title="Show all brands"
+                  aria-label="Remove brand filter"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
             {searchTerm && (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-200 text-stone-800">
                 <Search className="w-3 h-3 text-stone-500" />

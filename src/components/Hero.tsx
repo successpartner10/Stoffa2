@@ -5,12 +5,10 @@ import {
   Compass,
   Expand,
   Eye,
-  Layers,
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
 import { useCommerce } from '../context/CommerceContext';
-import { AI_MEDIA_ASSETS } from '../data/productMedia';
 
 export const Hero: React.FC = () => {
   const {
@@ -30,70 +28,70 @@ export const Hero: React.FC = () => {
 
   const heroAngles = [
     {
-      url: AI_MEDIA_ASSETS.stoffaBaboucheOnModel,
-      label: 'On-Model: The Suede Babouche Slipper',
-      tag: '✨ Lookbook 01',
-      isAi: true,
-      title: 'The Stöffa Suede Slip-On Babouche',
-      desc: 'High-fashion model wearing the chocolate brown suede collapsible-heel babouche with relaxed cropped ivory linen trousers',
-      productId: 'stoffa_01',
-      price: 480,
-      badge: 'Runway Look 01',
+      url: 'https://cdn.shopify.com/s/files/1/0730/6697/1178/files/sto657G_9.jpg?v=1788565811',
+      label: 'On-Model: Skin Crossfront High Wedge Gold',
+      tag: '✨ Stöffa Icon 01',
+      isAi: false,
+      title: 'Skin Crossfront High Wedge Gold',
+      desc: 'Signature 3.5-inch high wedge with hand-braided natural jute dori and golden metallic toe loop on cushioned memory footbed',
+      productId: 'skin-crossfront-3-5-inch-wedge-gold',
+      price: 50,
+      badge: 'Bestseller Wedge',
     },
     {
-      url: AI_MEDIA_ASSETS.stoffaToteOnModel,
-      label: 'On-Model: Soft Foldover Nappa Carryall',
-      tag: '✨ Lookbook 02',
-      isAi: true,
-      title: 'The Stöffa Soft Foldover Nappa Carryall Tote',
-      desc: 'Model carrying the cognac soft foldover lamb nappa tote over shoulder with fluid sand linen trench in Florence',
-      productId: 'stoffa_02',
-      price: 720,
-      badge: 'Gallery Edition',
+      url: 'https://cdn.shopify.com/s/files/1/0730/6697/1178/files/STO_115_E_102_A_0c22a07a-6eaa-4552-9f36-c6d20543e1fd.jpg?v=1788565964',
+      label: 'On-Model: Classic High K Wedge Ink',
+      tag: '✨ Stöffa Icon 02',
+      isAi: false,
+      title: 'Classic High K Wedge Ink',
+      desc: 'Artisanal Kolhapuri high wedge in midnight ink black with gold-woven accents and non-skid rubber sole',
+      productId: 'classic-high-k-wedge-ink',
+      price: 48,
+      badge: 'Signature Kolhapuri',
     },
     {
-      url: AI_MEDIA_ASSETS.stoffaBootOnModel,
-      label: 'On-Model: Pleated Elastic-Gore Chelsea Boot',
-      tag: '✨ Lookbook 03',
-      isAi: true,
-      title: 'The Stöffa Pleated Elastic-Gore Boot',
-      desc: 'Model wearing the rich walnut calfskin Chelsea boots with micro-pleated stretch gore and tailored ankle wool trousers',
-      productId: 'stoffa_03',
-      price: 680,
-      badge: 'Milan Street Style',
+      url: 'https://cdn.shopify.com/s/files/1/0730/6697/1178/files/STB_141_A_112_A_f60cac26-3fc5-4da9-8f0a-16fbb36386f0.jpg?v=1788565915',
+      label: 'On-Model: Crystal Higher K Wedge Champagne',
+      tag: '✨ Stöffa Bridal 03',
+      isAi: false,
+      title: 'Crystal Higher K Wedge Champagne & Silver',
+      desc: '4.5-inch glamorous bridal high wedge with pavé crystal encrusted straps and balanced front platform',
+      productId: 'crystal-higher-k-wedge-silver',
+      price: 60,
+      badge: 'Bridal Collection',
     },
     {
-      url: AI_MEDIA_ASSETS.stoffaLoaferOnModel,
-      label: 'On-Model: Deconstructed Penny Loafer',
-      tag: '✨ Lookbook 04',
-      isAi: true,
-      title: 'The Stöffa Deconstructed Penny Loafer',
-      desc: 'Model wearing the dark taupe glove-soft reverse suede penny loafers in an Italian modernist art gallery',
-      productId: 'stoffa_06',
-      price: 540,
-      badge: 'Artisanal Loafer',
+      url: 'https://cdn.shopify.com/s/files/1/0730/6697/1178/files/STB170_C_CHAMPAGNE_6_fbe5f1bb-99c4-4f55-9b0b-2649613a2f8a.jpg?v=1788565845',
+      label: 'On-Model: Crystal Low Wedge Champagne',
+      tag: '✨ Stöffa Festive 04',
+      isAi: false,
+      title: 'Crystal Low Wedge Champagne',
+      desc: '2.25-inch low wedge with braided champagne strap and sparkling crystal highlights for effortless day-to-night wear',
+      productId: 'crystal-braid-2-25-inch-wedge-champagne',
+      price: 52,
+      badge: 'Festive Low Wedge',
     },
     {
-      url: AI_MEDIA_ASSETS.stoffaWeekenderOnModel,
-      label: 'On-Model: Suede Weekender Duffel',
-      tag: '✨ Lookbook 05',
-      isAi: true,
-      title: 'The Stöffa Water-Repellent Suede Weekender Duffel',
-      desc: 'Luxury travel look: Model holding the bitter chocolate hydrophobic suede duffel with bridle leather harness straps',
-      productId: 'stoffa_05',
-      price: 950,
-      badge: 'Travel Collection',
+      url: 'https://cdn.shopify.com/s/files/1/0730/6697/1178/files/STO645TAUPE_9_8622f6da-827c-47bc-ad6a-2d4d3ec85a53.jpg?v=1788565833',
+      label: 'On-Model: Tassel K Flats Taupe',
+      tag: '✨ Stöffa Everyday 05',
+      isAi: false,
+      title: 'Tassel K Flats Taupe',
+      desc: 'Handcrafted Kolhapuri flat with playful tiered braided tassels and ultra-soft memory cushioning',
+      productId: 'tassel-k-flats-taupe',
+      price: 45,
+      badge: 'Everyday Comfort',
     },
     {
-      url: AI_MEDIA_ASSETS.shoesDenimCu,
-      label: 'On-Model: Sculptural Pointed Slingback',
-      tag: '✨ Lookbook 06',
-      isAi: true,
-      title: 'The Stöffa Sculptural Pointed Slingback',
-      desc: 'Model feet styled in the 50mm architectural kitten heel slingbacks with cropped raw-hem denim',
-      productId: 'stoffa_04',
-      price: 490,
-      badge: 'Architectural Heel',
+      url: 'https://cdn.shopify.com/s/files/1/0730/6697/1178/files/STO_115_111_A_6d1e2743-656d-41c8-9e50-bda91f83a522.jpg?v=1788565982',
+      label: 'On-Model: Classic K Block Heel Camel & Black',
+      tag: '✨ Stöffa Modern 06',
+      isAi: false,
+      title: 'Classic K Block Heel Camel & Black',
+      desc: '2.25-inch ergonomic flared block heel with traditional Kolhapuri strap engineering for all-day celebrations',
+      productId: 'classic-k-block-heel-black',
+      price: 48,
+      badge: 'Architectural Block',
     },
   ];
 
@@ -128,15 +126,15 @@ export const Hero: React.FC = () => {
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900 text-stone-100 text-xs font-mono font-medium shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>HAUTE COUTURE FOOTWEAR & LEATHER COLLECTION</span>
+              <span>STÖFFA STYLE &bull; AUTHENTIC ARTISANAL FOOTWEAR</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif tracking-tight leading-[1.1] text-stone-900 font-medium">
-              Sartorial Sculptures in Motion
+              Handcrafted Elegance in Every Step
             </h1>
 
             <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed max-w-2xl">
-              Impeccably tailored silhouettes, architectural leather goods, and hand-lasted pointed slingbacks. Designed with timeless Stoffa understated elegance for modern women of discerning taste.
+              Authentic Stöffa Style handcrafted footwear (stoffastyle.com). Featuring signature Kolhapuri high &amp; low wedges, bridal pavé crystal platforms, and cushioned flats engineered with memory-foam footbeds and non-skid soles for effortless celebrations.
             </p>
 
             {/* Antler & Juun.J Curated Event Shortcuts */}
@@ -202,81 +200,68 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Right Column: Haute Couture Spotlight Card with Angles & Zoom */}
+          {/* Right Column: Stöffa Spotlight Card with Clean Image (NO text or box on image) */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none space-y-3">
-              <div
-                className="relative rounded-2xl overflow-hidden aspect-[3/4] shadow-2xl border border-stone-200 bg-stone-900 group"
-              >
+              {/* Pure Stöffa Image Container - completely clean with zero overlays */}
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/5] shadow-xl border border-stone-200 bg-stone-100 group">
                 <img
                   src={activeAngle.url}
-                  alt={activeAngle.label}
+                  alt={activeAngle.title}
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
+                  className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/20 to-transparent pointer-events-none"></div>
+              </div>
 
-                {/* Top Badge & Zoom Button */}
-                <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10">
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md bg-stone-900/85 text-white border border-stone-700/60 shadow-sm flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-                    <span>{activeAngle.badge || activeAngle.tag}</span>
-                  </span>
+              {/* Product Details Card - positioned neatly BELOW the image */}
+              <div className="p-4 rounded-xl bg-white border border-stone-200/90 shadow-sm space-y-2.5">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="text-[10px] uppercase tracking-wider text-stone-500 font-mono font-semibold">
+                      STÖFFA ATELIER &bull; HANDCRAFTED FOOTWEAR
+                    </div>
+                    <h4 className="text-base font-serif font-semibold text-stone-900 leading-tight mt-0.5">
+                      {activeAngle.title}
+                    </h4>
+                    <p className="text-xs text-stone-600 font-light mt-1 line-clamp-2">
+                      {activeAngle.desc}
+                    </p>
+                  </div>
 
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsZoomOpen(true);
-                    }}
-                    className="p-2 rounded-full bg-stone-900/80 hover:bg-stone-900 text-white backdrop-blur-md border border-stone-700/60 shadow-sm transition-colors"
-                    title="View 4x Ultra HD High-Res"
-                  >
-                    <Expand className="w-4 h-4" />
-                  </button>
+                  <div className="text-right shrink-0">
+                    <span className="inline-block px-2 py-0.5 mb-1 rounded text-[10px] uppercase font-bold tracking-wider bg-stone-900 text-stone-100">
+                      {activeAngle.badge}
+                    </span>
+                    <div className="text-base font-semibold text-stone-900 font-mono">
+                      {formatPrice(activeAngle.price)}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Bottom Floating Card: Styled Product Details & Quick Inspect */}
-                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-white/95 backdrop-blur-md border border-stone-200/90 shadow-xl space-y-2">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="text-[10px] uppercase tracking-wider text-stone-500 font-mono font-semibold">
-                        HAUTE COUTURE LOOKBOOK &bull; ATELIER ÉTOILE
-                      </div>
-                      <h4 className="text-sm font-serif font-semibold text-stone-900 leading-tight">
-                        {activeAngle.title}
-                      </h4>
-                      <p className="text-[11px] text-stone-600 font-light mt-0.5 line-clamp-2">
-                        {activeAngle.desc}
-                      </p>
-                    </div>
+                <div className="pt-2 flex items-center justify-between border-t border-stone-100">
+                  <button
+                    onClick={() => activeProduct && setSelectedProductModal(activeProduct)}
+                    className="text-xs text-stone-900 font-medium hover:underline flex items-center gap-1.5"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span>Inspect {activeProduct?.title ? activeProduct.title.replace('The Stöffa ', '') : 'Product'}</span>
+                  </button>
 
-                    <div className="text-right shrink-0">
-                      <div className="text-[10px] text-stone-400 font-mono">Curated Piece</div>
-                      <div className="text-sm font-semibold text-stone-900 font-mono">
-                        {formatPrice(activeAngle.price)}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-1 flex items-center justify-between border-t border-stone-100">
-                    <button
-                      onClick={() => activeProduct && setSelectedProductModal(activeProduct)}
-                      className="text-xs text-stone-900 font-medium hover:underline flex items-center gap-1"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>Inspect {activeProduct?.title ? activeProduct.title.replace('The Stöffa ', '') : 'Product'}</span>
-                    </button>
-                    <span className="text-[10px] font-mono text-stone-400">
-                      4x Retina HD &bull; Italian Craft
-                    </span>
-                  </div>
+                  <button
+                    onClick={() => setIsZoomOpen(true)}
+                    className="text-xs text-stone-600 hover:text-stone-950 font-mono flex items-center gap-1"
+                  >
+                    <Expand className="w-3.5 h-3.5" />
+                    <span>Full Screen</span>
+                  </button>
                 </div>
               </div>
 
-              {/* Angle Thumbnails Selector */}
+              {/* Angle Thumbnails Selector - clean thumbnails without dots/badges */}
               <div className="p-3 rounded-xl bg-white border border-stone-200 shadow-2xs flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 text-[11px] font-mono text-stone-500 shrink-0 font-medium">
                   <Camera className="w-3.5 h-3.5 text-stone-700" />
-                  <span className="hidden sm:inline">Couture Views:</span>
+                  <span className="hidden sm:inline">Stöffa Views:</span>
                 </div>
 
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
@@ -287,24 +272,19 @@ export const Hero: React.FC = () => {
                         key={idx}
                         type="button"
                         onClick={() => setActiveHeroAngleIndex(idx)}
-                        className={`relative w-12 h-14 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${
+                        className={`w-12 h-14 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${
                           isSelected
                             ? 'border-stone-900 ring-2 ring-stone-900/30 scale-105 shadow-sm'
                             : 'border-stone-200 opacity-60 hover:opacity-100'
                         }`}
-                        title={angle.label}
+                        title={angle.title}
                       >
                         <img
                           src={angle.url}
-                          alt={angle.label}
+                          alt={angle.title}
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover"
                         />
-                        {angle.isAi && (
-                          <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-amber-500 rounded-bl-sm flex items-center justify-center">
-                            <span className="w-1 h-1 bg-white rounded-full"></span>
-                          </span>
-                        )}
                       </button>
                     );
                   })}
@@ -318,97 +298,61 @@ export const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* Haute Couture Campaign Editorial Lookbook Strip (3 High-Fashion Vignettes) */}
+        {/* Stöffa Editorial Lookbook Strip - Clean images with details below */}
         <div className="pt-6 border-t border-stone-200/80 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div className="text-[10px] font-mono uppercase tracking-widest text-stone-500 font-semibold">
-                Haute Couture Campaign Vignettes &bull; Autumn / Winter 2026
+                Stöffa Atelier Highlights &bull; Iconic Silhouettes
               </div>
               <h3 className="text-xl font-serif text-stone-900 font-medium">
-                The Stoffa Wardrobe: Handcrafted Footwear & Sculptural Bags
+                Signature Handcrafted Footwear
               </h3>
             </div>
             <span className="text-xs text-stone-500 font-mono">
-              Photographed on location in Florence & Milan
+              Pure Stöffa Handmade Artistry
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Vignette 1: Suede Babouche */}
-            <div
-              onClick={() => setActiveHeroAngleIndex(0)}
-              className="group relative rounded-2xl overflow-hidden aspect-[16/10] bg-stone-900 border border-stone-200 cursor-pointer shadow-sm hover:shadow-md transition-all"
-            >
-              <img
-                src={AI_MEDIA_ASSETS.stoffaBaboucheOnModel}
-                alt="The Stöffa Suede Babouche Slipper On-Model"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/20 to-transparent"></div>
-              <div className="absolute bottom-3 inset-x-3 text-white space-y-0.5">
-                <span className="text-[9px] font-mono uppercase tracking-wider text-amber-300 font-semibold">
-                  Look 01 &bull; Florence Courtyard
-                </span>
-                <h5 className="font-serif text-sm font-medium leading-snug">
-                  The Suede Slip-On Babouche
-                </h5>
-                <p className="text-[10px] text-stone-300 font-light truncate">
-                  Model wearing chocolate suede collapsible-heel slippers with cropped ivory linen trousers
-                </p>
+            {heroAngles.slice(0, 3).map((item, idx) => (
+              <div
+                key={idx}
+                onClick={() => {
+                  setActiveHeroAngleIndex(idx);
+                  const p = products.find((prod) => prod.id === item.productId);
+                  if (p) setSelectedProductModal(p);
+                }}
+                className="group rounded-2xl overflow-hidden bg-white border border-stone-200 cursor-pointer shadow-sm hover:shadow-md transition-all flex flex-col"
+              >
+                {/* 100% Pure Stöffa photo without any text or box overlay */}
+                <div className="aspect-[4/3] w-full overflow-hidden bg-stone-100">
+                  <img
+                    src={item.url}
+                    alt={item.title}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-500"
+                  />
+                </div>
+                {/* Clean text in card body BELOW image */}
+                <div className="p-4 space-y-1 bg-white">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-stone-500 font-semibold">
+                      Featured 0{idx + 1}
+                    </span>
+                    <span className="text-xs font-mono font-bold text-stone-900">
+                      {formatPrice(item.price)}
+                    </span>
+                  </div>
+                  <h5 className="font-serif text-sm font-semibold text-stone-900 group-hover:text-stone-700 transition-colors">
+                    {item.title}
+                  </h5>
+                  <p className="text-[11px] text-stone-600 font-light line-clamp-2">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-            </div>
-
-            {/* Vignette 2: Soft Foldover Tote */}
-            <div
-              onClick={() => setActiveHeroAngleIndex(1)}
-              className="group relative rounded-2xl overflow-hidden aspect-[16/10] bg-stone-900 border border-stone-200 cursor-pointer shadow-sm hover:shadow-md transition-all"
-            >
-              <img
-                src={AI_MEDIA_ASSETS.stoffaToteOnModel}
-                alt="The Stöffa Soft Foldover Nappa Carryall Tote On-Model"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/20 to-transparent"></div>
-              <div className="absolute bottom-3 inset-x-3 text-white space-y-0.5">
-                <span className="text-[9px] font-mono uppercase tracking-wider text-amber-300 font-semibold">
-                  Look 02 &bull; Colonnade Promenade
-                </span>
-                <h5 className="font-serif text-sm font-medium leading-snug">
-                  The Soft Foldover Nappa Carryall
-                </h5>
-                <p className="text-[10px] text-stone-300 font-light truncate">
-                  Model carrying the cognac lamb nappa tote over shoulder with fluid sand linen trench
-                </p>
-              </div>
-            </div>
-
-            {/* Vignette 3: Pleated Elastic-Gore Boot */}
-            <div
-              onClick={() => setActiveHeroAngleIndex(2)}
-              className="group relative rounded-2xl overflow-hidden aspect-[16/10] bg-stone-900 border border-stone-200 cursor-pointer shadow-sm hover:shadow-md transition-all"
-            >
-              <img
-                src={AI_MEDIA_ASSETS.stoffaBootOnModel}
-                alt="The Stöffa Pleated Elastic-Gore Chelsea Boot On-Model"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/20 to-transparent"></div>
-              <div className="absolute bottom-3 inset-x-3 text-white space-y-0.5">
-                <span className="text-[9px] font-mono uppercase tracking-wider text-amber-300 font-semibold">
-                  Look 03 &bull; Milan Street Style
-                </span>
-                <h5 className="font-serif text-sm font-medium leading-snug">
-                  The Pleated Elastic-Gore Boot
-                </h5>
-                <p className="text-[10px] text-stone-300 font-light truncate">
-                  Model wearing walnut calfskin Chelsea boots with micro-pleated stretch gore
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

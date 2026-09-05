@@ -70,7 +70,17 @@ export function getProductAngles(
   category: string,
   baseImages: string[]
 ): ProductAngle[] {
-  const highResBase = (baseImages || []).map(toRetinaHd);
+  const highResBase = (baseImages || []).filter(Boolean).map(toRetinaHd);
+
+  // Return strictly authentic Stöffa product imagery
+  if (highResBase.length > 0) {
+    return highResBase.map((imgUrl, i) => ({
+      url: imgUrl,
+      label: `Stöffa Perspective ${i + 1}`,
+      tag: i === 0 ? 'Front' : i === 1 ? 'Profile' : i === 2 ? 'Pair' : `Angle ${i + 1}`,
+      shotType: (i === 0 ? 'hero' : i === 1 ? 'side' : 'detail') as 'hero' | 'side' | 'detail',
+    }));
+  }
 
   // 1. The Stöffa Suede Slip-On Babouche
   if (id === 'stoffa_01') {
@@ -413,6 +423,42 @@ export function getProductAngles(
     ? stoffaBaboucheOnModel
     : aiShoesLegsDress;
 
+  // Multi-angle catalog images support
+  if (highResBase.length >= 3) {
+    const defaultLabels = [
+      { label: 'Studio Hero: Front View', tag: 'Front Angle', shotType: 'hero' as const },
+      { label: 'Architectural Profile', tag: 'Side Profile', shotType: 'side' as const },
+      { label: 'Pair Composition', tag: 'Pair View', shotType: 'detail' as const },
+      { label: 'Top Elevation & Arch', tag: 'Top Angle', shotType: 'detail' as const },
+      { label: 'Artisanal Craft & Texture', tag: 'Detail CU', shotType: 'detail' as const },
+    ];
+
+    const mappedAngles: ProductAngle[] = highResBase.slice(0, 5).map((imgUrl, i) => {
+      const def = defaultLabels[i] || {
+        label: `Artisanal Angle ${i + 1}`,
+        tag: `Angle ${i + 1}`,
+        shotType: 'detail' as const,
+      };
+      return {
+        url: imgUrl,
+        label: def.label,
+        tag: def.tag,
+        shotType: def.shotType,
+      };
+    });
+
+    mappedAngles.push({
+      url: onModelCloseUp,
+      label: 'On-Model: Editorial Lookbook',
+      tag: '✨ On-Model',
+      isAiImage: true,
+      aiDescription: 'Fashion editorial: Model styled wearing handcrafted footwear silhouette with tailored ensemble',
+      shotType: 'ai_cu',
+    });
+
+    return mappedAngles;
+  }
+
   return [
     {
       url: highResBase[0] || stoffaSuedeSlipper,
@@ -427,7 +473,7 @@ export function getProductAngles(
       shotType: 'side',
     },
     {
-      url: 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=1600&q=90&dpr=2',
+      url: highResBase[2] || 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=1600&q=90&dpr=2',
       label: 'Tuscan Leather & Sole CU',
       tag: 'Craft Close-Up',
       shotType: 'detail',

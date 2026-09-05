@@ -1058,7 +1058,7 @@ export const AdminDashboard: React.FC = () => {
                 className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xs transition-colors"
               >
                 <Sparkles className="w-4 h-4 text-stone-950" />
-                <span>Import Stöffa Collection (16 Items)</span>
+                <span>Import Stöffa Collection ({products.length} Items)</span>
               </button>
 
               <button
@@ -1104,7 +1104,7 @@ export const AdminDashboard: React.FC = () => {
                   Stöffa Store Products & High-Fashion Lookbook
                 </h3>
                 <p className="text-xs text-stone-300 max-w-2xl leading-relaxed">
-                  Directly imported from Stöffa. Includes water-resistant Tuscan suede babouche slippers, hand-pleated elastic boots, soft foldover lamb nappa totes, suede weekender duffels, and 4x Retina HD editorial lookbook imagery with consistent signature footwear.
+                  Directly imported from Stöffa Style (stoffastyle.com). Handcrafted luxury footwear, signature Kolhapuri high & low wedges, crystal festive bridal heels, block heels, comfortable flats, and artisanal leather accessories with multi-angle photography and editorial lookbook styling.
                 </p>
               </div>
 
@@ -1122,7 +1122,7 @@ export const AdminDashboard: React.FC = () => {
                   className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition-transform active:scale-95"
                 >
                   <RefreshCw className="w-4 h-4 text-stone-950" />
-                  <span>Sync 16 Stöffa Products</span>
+                  <span>Sync Stöffa Collection ({products.length} Products)</span>
                 </button>
                 <button
                   onClick={() => {
